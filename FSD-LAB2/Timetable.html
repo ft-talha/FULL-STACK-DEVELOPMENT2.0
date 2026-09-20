@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Class Timetable</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #dbeafe, #f8fafc);
+        }
+
+        h1 {
+            text-align: center;
+            color: #172554;
+            margin-bottom: 30px;
+        }
+
+        .table-box {
+            width: 100%;
+            overflow-x: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px #999;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1100px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #172554;
+            color: white;
+            padding: 15px 10px;
+            font-size: 14px;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        tbody tr {
+            transition: 0.3s;
+        }
+
+        tbody tr:hover {
+            background-color: #e0f2fe;
+            transform: scale(1.01);
+            box-shadow: 0 3px 10px #aaa;
+        }
+
+        .subject {
+            font-weight: bold;
+            color: #172554;
+        }
+
+        .teacher {
+            color: #444;
+        }
+
+        .time {
+            background-color: #bbf7d0;
+            color: #14532d;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .time:hover {
+            background-color: #22c55e;
+            color: white;
+            transform: scale(1.08);
+            cursor: pointer;
+        }
+
+        .credit {
+            font-weight: bold;
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        th:first-child {
+            border-radius: 10px 0 0 0;
+        }
+
+        th:last-child {
+            border-radius: 0 10px 0 0;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .table-box {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 class="title">My Class Timetable</h1>
+
+    <p class="subtitle">
+        Fall 2026 - BS Computer Science
+    </p>
+
+    <div class="table-box">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Sr#</th>
+                    <th>Subject Name</th>
+                    <th>Faculty Name</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                    <th>Sunday</th>
+                    <th>Cr. Hrs</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>1</td>
+                    <td class="subject">F-26-Advisory Class-806</td>
+                    <td class="teacher">Ms. Eeman Fatima</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="time">12:00 - 12:50</td>
+                    <td></td>
+                    <td></td>
+                    <td class="credit">0</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td class="subject">F-26-Artificial Intelligence-804</td>
+                    <td class="teacher">Ms. Maryam Wardah</td>
+                    <td class="time">08:00 - 08:50</td>
+                    <td></td>
+                    <td></td>
+                    <td class="time">09:00 - 09:50</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="credit">2</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td class="subject">F-26-Artificial Intelligence Lab-805</td>
+                    <td class="teacher">Ms. Maryam Wardah</td>
+                    <td></td>
+                    <td class="time">08:00 - 10:40</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="credit">1</td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td class="subject">F-26-Design and Analysis of Algorithms-800</td>
+                    <td class="teacher">Mr. Muhammad Junaid Nazar</td>
+                    <td class="time">10:00 - 10:50</td>
+                    <td class="time">13:00 - 13:50</td>
+                    <td class="time">08:00 - 08:50</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="credit">3</td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td class="subject">F-26-Full Stack Web Development-807</td>
+                    <td class="teacher">Mr. Hafiz Obaidullah Khan</td>
+                    <td></td>
+                    <td></td>
+                    <td class="time">14:00 - 14:50</td>
+                    <td class="time">14:00 - 14:50</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="credit">2</td>
+                </tr>
+
+                <tr>
+                    <td>6</td>
+                    <td class="subject">F-26-Full Stack Web Development Lab-808</td>
+                    <td class="teacher">Mr. Hafiz Obaidullah Khan</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="time">11:00 - 13:40</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="credit">1</td>
+                </tr>
+
+                <tr>
+                    <td>7</td>
+                    <td class="subject">F-26-Introduction to Management-799</td>
+                    <td class="teacher">Ms. Ayesha Munir</td>
+                    <td class="time">13:00 - 13:50</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="time">10:00 - 10:50</td>
+                    <td></td>
+                    <td></td>
+                    <td class="credit">2</td>
+                </tr>
+
+                <tr>
+                    <td>8</td>
+                    <td class="subject">F-26-Linear Algebra-803</td>
+                    <td class="teacher">Dr. Waqas Sarwar Abbasi</td>
+                    <td class="time">11:00 - 11:50</td>
+                    <td class="time">12:00 - 12:50</td>
+                    <td></td>
+                    <td></td>
+                    <td class="time">11:00 - 11:50</td>
+                    <td></td>
+                    <td></td>
+                    <td class="credit">3</td>
+                </tr>
+
+                <tr>
+                    <td>9</td>
+                    <td class="subject">F-26-Operating Systems-801</td>
+                    <td class="teacher">Ms. Warda Aslam</td>
+                    <td class="time">09:00 - 09:50</td>
+                    <td class="time">14:00 - 14:50</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="credit">2</td>
+                </tr>
+
+                <tr>
+                    <td>10</td>
+                    <td class="subject">F-26-Operating Systems Lab-802</td>
+                    <td class="teacher">Ms. Warda Aslam</td>
+                    <td></td>
+                    <td></td>
+                    <td class="time">11:00 - 13:40</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="credit">1</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</body>
+
+</html>

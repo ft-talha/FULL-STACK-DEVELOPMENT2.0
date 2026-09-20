@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSD LAB#1</title>
+
+    <style>
+        body {
+            color: black;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(187, 251, 182);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calculator-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-top: 20px;
+            background-color: rgb(83, 179, 83);
+            margin: 10px 40%;
+            border-radius: 10px;
+            padding: 10px;
+
+        }
+
+        .calculator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 280px;
+            margin: 20px auto;
+            border: 3px solid rgb(83, 179, 83);
+            padding: 10px;
+            background-color: rgb(39, 100, 39);
+        }
+
+        .cal-screen {
+
+            background-color: white;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            height: 40px;
+            width: 90%;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        button {
+            width: 60px;
+            height: 50px;
+            font-size: 1.5rem;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+            padding: 10px;
+        }
+
+        #simple {
+            background-color: rgb(223, 244, 223);
+            border: 1px solid rgb(83, 179, 83);
+        }
+
+        #dark-blue {
+            background-color: darkblue;
+        }
+
+        #red {
+            background-color: red;
+        }
+
+        #yellow {
+            background-color: yellow;
+        }
+
+        #blue {
+            background-color: blue;
+        }
+
+        #light-green {
+            background-color: lightgreen;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 class="calculator-title">Calculator UI</h1>
+    <div class="calculator">
+        <div class="cal-screen">
+            <p id="result">0</p>
+        </div>
+        <div class="buttons">
+            <button id="simple">%</button>
+            <button id="simple">^</button>
+            <button id="simple">C</button>
+            <button id="dark-blue">DEL</button>
+        </div>
+        <div class="buttons">
+            <button id="simple">7</button>
+            <button id="simple">8</button>
+            <button id="simple">9</button>
+            <button id="red">-</button>
+        </div>
+        <div class="buttons">
+            <button id="simple">4</button>
+            <button id="simple">5</button>
+            <button id="simple">6</button>
+            <button id="blue">/</button>
+        </div>
+        <div class="buttons">
+            <button id="simple">1</button>
+            <button id="simple">2</button>
+            <button id="simple">3</button>
+            <button id="yellow">x</button>
+        </div>
+        <div class="buttons">
+            <button id="simple">.</button>
+            <button id="simple">0</button>
+            <button id="simple">=</button>
+            <button id="light-green">+</button>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

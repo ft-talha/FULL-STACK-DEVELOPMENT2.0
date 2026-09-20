@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Talha Portfolio</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+        }
+
+        .main {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .left {
+            width: 35%;
+            background-color: #000000;
+            color: #ffffff;
+            padding: 50px;
+            border-right: 2px solid #f59e0b;
+        }
+
+        .right {
+            width: 65%;
+            background-color: #18181b;
+            color: #ffffff;
+            padding: 50px;
+        }
+
+        .left h1 {
+            font-size: 45px;
+            margin-bottom: 5px;
+            color: #eab308;
+        }
+
+        .left h2 {
+            font-weight: normal;
+            color: #fef08a;
+        }
+
+        .left p {
+            line-height: 1.6;
+            color: #e4e4e7;
+        }
+
+        .skills {
+            margin-top: 35px;
+        }
+
+        .skill {
+            background-color: #27272a;
+            color: #fef08a;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #eab308;
+            transition: 0.3s;
+        }
+
+        .skill:hover {
+            background-color: #eab308;
+            color: #000000;
+            font-weight: bold;
+            transform: translateX(8px);
+        }
+
+        .contact {
+            margin-top: 35px;
+        }
+
+        .contact a {
+            color: #fef08a;
+            text-decoration: none;
+            display: block;
+            margin: 10px 0;
+        }
+
+        .contact a:hover {
+            color: #eab308;
+            text-decoration: underline;
+        }
+
+        .right h1 {
+            color: #eab308;
+            font-size: 38px;
+            margin-top: 0;
+        }
+
+        .right h2 {
+            color: #fef08a;
+            border-bottom: 2px solid #eab308;
+            padding-bottom: 8px;
+            margin-top: 35px;
+        }
+
+        .about {
+            line-height: 1.7;
+            color: #d4d4d8;
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .project {
+            background-color: #27272a;
+            padding: 20px;
+            border-left: 5px solid #eab308;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .project:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(234, 179, 8, 0.2);
+        }
+
+        .project h3 {
+            color: #eab308;
+            margin-top: 0;
+        }
+
+        .project p {
+            color: #d4d4d8;
+            line-height: 1.5;
+        }
+
+        .education {
+            background-color: #27272a;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #eab308;
+            color: #d4d4d8;
+        }
+
+        .education h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        @media (max-width: 800px) {
+
+            .main {
+                flex-direction: column;
+            }
+
+            .left {
+                width: 100%;
+                padding: 35px;
+                border-right: none;
+                border-bottom: 2px solid #eab308;
+            }
+
+            .right {
+                width: 100%;
+                padding: 35px;
+            }
+
+            .projects {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="main">
+
+        <!-- LEFT COLUMN -->
+
+        <div class="left">
+
+            <h1>Talha</h1>
+
+            <h2>Computer Science Student</h2>
+
+            <p>
+                BS Computer Science student interested in
+                software development, web development and
+                mobile application development.
+            </p>
+
+
+            <div class="skills">
+
+                <h2>Skills</h2>
+
+                <div class="skill">
+                    HTML
+                </div>
+
+                <div class="skill">
+                    CSS
+                </div>
+
+                <div class="skill">
+                    C++
+                </div>
+
+                <div class="skill">
+                    Java
+                </div>
+
+                <div class="skill">
+                    Flutter & Dart
+                </div>
+
+                <div class="skill">
+                    MySQL & Firebase
+                </div>
+
+            </div>
+
+
+            <div class="contact">
+
+                <h2>Contact</h2>
+
+                <a href="mailto:muhammadtalha8150@gmail.com">
+                    Email
+                </a>
+
+                <a href="https://github.com/talha-23" target="_blank">
+                    GitHub
+                </a>
+
+                <a href="https://www.linkedin.com/in/muhammad-talha-cs"
+                    target="_blank">
+                    LinkedIn
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+
+        <div class="right">
+
+            <h1>My Portfolio</h1>
+
+
+            <h2>About Me</h2>
+
+            <p class="about">
+
+                I am a Computer Science student passionate about
+                turning ideas into real-world software solutions.
+                My main interests are app development and web
+                development.
+
+                <br><br>
+
+                I am currently learning new technologies and
+                exploring areas such as Artificial Intelligence
+                and Data Science.
+
+            </p>
+
+
+            <h2>My Projects</h2>
+
+            <div class="projects">
+
+                <div class="project">
+
+                    <h3>Medicata</h3>
+
+                    <p>
+                        A medication reminder and tracking
+                        application developed using Flutter.
+                    </p>
+
+                </div>
+
+
+                <div class="project">
+
+                    <h3>SCAEN</h3>
+
+                    <p>
+                        An emergency assistance application
+                        designed to provide help during
+                        emergency situations.
+                    </p>
+
+                </div>
+
+
+                <div class="project">
+
+                    <h3>Campus Pulse</h3>
+
+                    <p>
+                        A student-focused application for
+                        sharing campus information and updates.
+                    </p>
+
+                </div>
+
+
+                <div class="project">
+
+                    <h3>EduConnect</h3>
+
+                    <p>
+                        A university academic portal developed
+                        using Blazor Server and C#.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <h2>Education</h2>
+
+            <div class="education">
+
+                <h3>BS Computer Science</h3>
+
+                <p>
+                    Air University Islamabad
+                </p>
+
+                <p>
+                    Computer Science Student
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

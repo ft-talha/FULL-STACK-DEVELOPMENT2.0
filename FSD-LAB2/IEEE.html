@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IEEE Paper</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background-color: #dddddd;
+            font-family: "Times New Roman", serif;
+            color: #111111;
+        }
+
+        .paper {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 30px auto;
+            padding: 20mm 18mm;
+            background-color: white;
+            box-shadow: 0 0 15px #999999;
+        }
+
+        /* Title */
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 18px;
+            line-height: 1.3;
+        }
+
+        /* Authors */
+
+        .authors {
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .authors strong {
+            font-size: 16px;
+        }
+
+        /* Abstract */
+
+        .abstract {
+            margin-bottom: 15px;
+            text-align: justify;
+            line-height: 1.35;
+            font-size: 12px;
+        }
+
+        .abstract-title {
+            font-weight: bold;
+        }
+
+        .keywords {
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        /* Two columns */
+
+        .columns {
+            column-count: 2;
+            column-gap: 20px;
+            column-rule: none;
+            text-align: justify;
+        }
+
+        /* Sections */
+
+        h2 {
+            font-size: 13px;
+            text-align: center;
+            margin-top: 12px;
+            margin-bottom: 7px;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-size: 12px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        p {
+            font-size: 11px;
+            line-height: 1.35;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        /* Lists */
+
+        ul {
+            font-size: 11px;
+            padding-left: 18px;
+            line-height: 1.4;
+        }
+
+        /* Equation */
+
+        .equation {
+            text-align: center;
+            font-size: 13px;
+            margin: 15px 0;
+            font-style: italic;
+        }
+
+        /* Figure */
+
+        .figure {
+            break-inside: avoid;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .figure-box {
+            height: 120px;
+            background-color: #eeeeee;
+            border: 1px solid #777777;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .caption {
+            font-size: 10px;
+            margin-top: 5px;
+        }
+
+        /* Table */
+
+        .table-container {
+            break-inside: avoid;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid #555555;
+            padding: 5px;
+            text-align: center;
+        }
+
+        th {
+            font-weight: bold;
+        }
+
+        .table-caption {
+            text-align: center;
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+
+        /* References */
+
+        .references {
+            font-size: 10px;
+        }
+
+        .reference {
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        /* Footer */
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 10px;
+            color: #555555;
+        }
+
+       
+
+       
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="paper">
+
+
+        <!-- TITLE -->
+
+        <div class="title">
+
+            A Study of Modern Web Development
+            Using HTML and CSS
+
+        </div>
+
+
+        <!-- AUTHORS -->
+
+        <div class="authors">
+
+            <strong>Muhammad Talha</strong><br>
+
+            Department of Computer Science<br>
+
+            Air University, Islamabad, Pakistan<br>
+
+            muhammadtalha8150@gmail.com
+
+        </div>
+
+
+        <!-- ABSTRACT -->
+
+        <div class="abstract">
+
+            <span class="abstract-title">
+                Abstract—
+            </span>
+
+            Web development has become an important part of
+            modern software development. HTML provides the
+            structure of a web page while CSS is used to control
+            its appearance and layout. This paper presents a
+            basic study of modern web development using HTML
+            and CSS. Different concepts including layouts,
+            responsive design, Flexbox, Grid, colors, spacing,
+            and user interface design are discussed. The purpose
+            of this study is to understand how these technologies
+            can be combined to create simple, responsive and
+            user-friendly web interfaces.
+
+        </div>
+
+
+        <!-- KEYWORDS -->
+
+        <div class="keywords">
+
+            <strong>Keywords—</strong>
+
+            HTML, CSS, Web Development, Flexbox, Grid,
+            Responsive Design, User Interface
+
+        </div>
+
+
+
+        <!-- TWO COLUMNS -->
+
+        <div class="columns">
+
+
+            <!-- INTRODUCTION -->
+
+            <h2>
+                I. Introduction
+            </h2>
+
+            <p>
+
+                The World Wide Web has changed the way people
+                communicate, learn, work and access information.
+                Websites and web applications are now used in
+                education, business, healthcare, entertainment
+                and many other areas.
+
+            </p>
+
+            <p>
+
+                HTML and CSS are two fundamental technologies
+                used in web development. HTML is responsible for
+                creating the structure of a webpage, while CSS
+                controls its visual presentation.
+
+            </p>
+
+            <p>
+
+                A combination of HTML and CSS allows developers
+                to create interfaces that are organized,
+                attractive and responsive on different screen
+                sizes.
+
+            </p>
+
+
+
+            <!-- HTML -->
+
+            <h2>
+                II. HTML
+            </h2>
+
+            <p>
+
+                HyperText Markup Language, commonly known as HTML,
+                is used to define the structure of a webpage.
+                HTML uses elements such as headings, paragraphs,
+                links, images, tables and forms.
+
+            </p>
+
+            <p>
+
+                For example, a simple HTML heading can be created
+                using the following element:
+
+            </p>
+
+            <p>
+                &lt;h1&gt;My Website&lt;/h1&gt;
+            </p>
+
+            <p>
+
+                HTML provides the basic structure on which CSS
+                styles can be applied.
+
+            </p>
+
+
+
+            <!-- CSS -->
+
+            <h2>
+                III. CSS
+            </h2>
+
+            <p>
+
+                Cascading Style Sheets, or CSS, is used to style
+                HTML elements. CSS can control colors, fonts,
+                spacing, borders, sizes and layouts.
+
+            </p>
+
+            <p>
+
+                CSS also provides several layout systems. Two
+                commonly used systems are Flexbox and CSS Grid.
+
+            </p>
+
+
+
+            <!-- FLEXBOX -->
+
+            <h2>
+                IV. Flexbox
+            </h2>
+
+            <p>
+
+                Flexbox is a CSS layout system designed mainly
+                for arranging elements in one direction. It can
+                arrange elements in rows or columns.
+
+            </p>
+
+            <p>
+
+                The following properties are commonly used with
+                Flexbox:
+
+            </p>
+
+            <ul>
+
+                <li>display: flex</li>
+
+                <li>flex-direction</li>
+
+                <li>justify-content</li>
+
+                <li>align-items</li>
+
+                <li>flex-wrap</li>
+
+            </ul>
+
+
+
+            <!-- GRID -->
+
+            <h2>
+                V. CSS Grid
+            </h2>
+
+            <p>
+
+                CSS Grid is a two-dimensional layout system.
+                It allows developers to create rows and columns
+                for arranging content.
+
+            </p>
+
+            <p>
+
+                Grid is particularly useful for dashboards,
+                galleries, cards and other structured layouts.
+
+            </p>
+
+
+
+            <!-- RESPONSIVE -->
+
+            <h2>
+                VI. Responsive Design
+            </h2>
+
+            <p>
+
+                Responsive web design allows a website to adjust
+                according to the size of the user's screen.
+                This is important because websites are accessed
+                from computers, tablets and mobile phones.
+
+            </p>
+
+            <p>
+
+                CSS media queries can be used to apply different
+                styles for different screen sizes.
+
+            </p>
+
+
+
+            <!-- EQUATION -->
+
+            <h2>
+                VII. Web Performance
+            </h2>
+
+            <p>
+
+                A simple way to represent page loading time can
+                be expressed using the following equation:
+
+            </p>
+
+            <div class="equation">
+
+                T = T<sub>DNS</sub> + T<sub>Connection</sub>
+                + T<sub>Download</sub>
+
+            </div>
+
+            <p>
+
+                Reducing unnecessary resources and optimizing
+                webpage structure can help improve the overall
+                performance of a website.
+
+            </p>
+
+
+
+            <!-- FIGURE -->
+
+            <div class="figure">
+
+                <div class="figure-box">
+
+                    Web Development Process
+
+                </div>
+
+                <div class="caption">
+
+                    Fig. 1. Basic web development process.
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TABLE -->
+
+            <div class="table-container">
+
+                <div class="table-caption">
+
+                    TABLE I<br>
+                    COMPARISON OF HTML AND CSS
+
+                </div>
+
+                <table>
+
+                    <tr>
+
+                        <th>
+                            Feature
+                        </th>
+
+                        <th>
+                            HTML
+                        </th>
+
+                        <th>
+                            CSS
+                        </th>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            Purpose
+                        </td>
+
+                        <td>
+                            Structure
+                        </td>
+
+                        <td>
+                            Styling
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            Layout
+                        </td>
+
+                        <td>
+                            Basic
+                        </td>
+
+                        <td>
+                            Advanced
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            Colors
+                        </td>
+
+                        <td>
+                            Limited
+                        </td>
+
+                        <td>
+                            Extensive
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            Responsive
+                        </td>
+
+                        <td>
+                            No
+                        </td>
+
+                        <td>
+                            Yes
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+
+
+            <!-- APPLICATION -->
+
+            <h2>
+                VIII. Applications
+            </h2>
+
+            <p>
+
+                HTML and CSS are used in many types of web
+                applications. They are commonly used for
+                educational websites, portfolios, dashboards,
+                business websites, blogs and online stores.
+
+            </p>
+
+            <p>
+
+                Modern frameworks and libraries may also use
+                HTML and CSS concepts as their foundation.
+
+            </p>
+
+
+
+            <!-- ADVANTAGES -->
+
+            <h2>
+                IX. Advantages
+            </h2>
+
+            <p>
+
+                HTML and CSS are relatively easy to learn and
+                provide a strong foundation for web development.
+                They are supported by modern web browsers and
+                can be used to create responsive interfaces.
+
+            </p>
+
+            <p>
+
+                Another important advantage is that both
+                technologies can be used without requiring
+                complex development environments.
+
+            </p>
+
+
+
+            <!-- LIMITATIONS -->
+
+            <h2>
+                X. Limitations
+            </h2>
+
+            <p>
+
+                HTML and CSS alone cannot provide advanced
+                application logic. JavaScript or a backend
+                programming language is normally required for
+                interactive features, data processing and
+                database operations.
+
+            </p>
+
+
+
+            <!-- CONCLUSION -->
+
+            <h2>
+                XI. Conclusion
+            </h2>
+
+            <p>
+
+                HTML and CSS are fundamental technologies for
+                developing modern websites. HTML provides the
+                structure while CSS provides the visual design
+                and layout.
+
+            </p>
+
+            <p>
+
+                Concepts such as Flexbox, Grid, responsive design
+                and CSS styling allow developers to create
+                organized and user-friendly interfaces. Learning
+                these concepts provides a strong foundation for
+                further web development.
+
+            </p>
+
+
+
+            <!-- REFERENCES -->
+
+            <h2>
+                References
+            </h2>
+
+            <div class="references">
+
+                <div class="reference">
+
+                    [1] W3C, "HTML Standard," World Wide Web
+                    Consortium.
+
+                </div>
+
+                <div class="reference">
+
+                    [2] W3C, "CSS Specifications," World Wide
+                    Web Consortium.
+
+                </div>
+
+                <div class="reference">
+
+                    [3] M. Duckett, "HTML and CSS: Design and
+                    Build Websites," Wiley, 2014.
+
+                </div>
+
+                <div class="reference">
+
+                    [4] Mozilla Developer Network, "HTML and CSS
+                    Documentation."
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="footer">
+
+            IEEE Style Web Development Paper | Muhammad Talha
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

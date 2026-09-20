@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --dark: #064320;
+            --green: #467a49;
+            --light-green: #ddfedb;
+            --background: #f4f7fb;
+            --white: #ffffff;
+            --text: #1f2937;
+            --gray: #6b7280;
+            --green: #16a34a;
+            --orange: #f1f50b;
+            --bgreen: #2ac503;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+        }
+
+        /* Main layout */
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+
+        .sidebar {
+            width: 240px;
+            background-color: var(--dark);
+            color: white;
+            padding: 25px 15px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            padding: 10px 15px;
+            margin-bottom: 35px;
+        }
+
+        .logo span {
+            color: #60a5fa;
+        }
+
+        .menu-title {
+            color: #9ca3af;
+            font-size: 12px;
+            padding: 0 15px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 13px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            color: #d1d5db;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: #1f2937;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .menu-item.active {
+            background-color: var(--green);
+            color: white;
+        }
+
+        .menu-icon {
+            width: 30px;
+        }
+
+        /* Main content */
+
+        .content {
+            margin-left: 240px;
+            width: calc(100% - 240px);
+            padding: 30px;
+        }
+
+        /* Header */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .header p {
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-picture {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #045e26, #72e986);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Welcome */
+
+        .welcome {
+            background: linear-gradient(135deg, #036e13, #819704);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .welcome h2 {
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #dbeafe;
+        }
+
+        .welcome-button {
+            background-color: white;
+            color: var(--green);
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .welcome-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Statistics */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background-color: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #e5e7eb;
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px #d1d5db;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .blue {
+            background-color: var(--light-green);
+        }
+
+        .green {
+            background-color: #dcfce7;
+        }
+
+        .orange {
+            background-color: #fef3c7;
+        }
+
+        .purple {
+            background-color: #ede9fe;
+        }
+
+        .stat-card h3 {
+            font-size: 27px;
+            margin-top: 18px;
+        }
+
+        .stat-card p {
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        /* Main grid */
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #e5e7eb;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            font-size: 20px;
+        }
+
+        .view {
+            color: var(--green);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Progress */
+
+        .course {
+            margin-bottom: 22px;
+        }
+
+        .course-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .course-name {
+            font-weight: bold;
+        }
+
+        .percentage {
+            color: var(--gray);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 9px;
+            background-color: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .html-progress {
+            width: 85%;
+            background-color: var(--blue);
+        }
+
+        .css-progress {
+            width: 70%;
+            background-color: var(--bgreen);
+        }
+
+        .cpp-progress {
+            width: 60%;
+            background-color: var(--green);
+        }
+
+        .database-progress {
+            width: 75%;
+            background-color: var(--orange);
+        }
+
+        /* Tasks */
+
+        .task {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .task:last-child {
+            border-bottom: none;
+        }
+
+        .task-circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--green);
+        }
+
+        .task-info {
+            flex: 1;
+        }
+
+        .task-info h4 {
+            font-size: 14px;
+        }
+
+        .task-info p {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        .task-date {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* Activity */
+
+        .activity {
+            margin-top: 20px;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .activity-icon {
+            width: 35px;
+            height: 35px;
+            background-color: var(--light-green);
+            color: var(--green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .activity-text p {
+            font-size: 14px;
+        }
+
+        .activity-text span {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* Responsive */
+
+        @media (max-width: 1000px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                width: 70px;
+                padding: 20px 8px;
+            }
+
+            .logo {
+                font-size: 0;
+                text-align: center;
+            }
+
+            .logo span {
+                font-size: 25px;
+            }
+
+            .menu-title,
+            .menu-text {
+                display: none;
+            }
+
+            .menu-item {
+                justify-content: center;
+            }
+
+            .menu-icon {
+                width: auto;
+            }
+
+            .content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="dashboard">
+
+
+        <!-- Sidebar -->
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                Study<span>Hub</span>
+            </div>
+
+
+            <p class="menu-title">
+                Menu
+            </p>
+
+
+            <div class="menu-item active">
+
+                <span class="menu-icon">⌂</span>
+
+                <span class="menu-text">
+                    Dashboard
+                </span>
+
+            </div>
+
+
+            <div class="menu-item">
+
+                <span class="menu-icon">▣</span>
+
+                <span class="menu-text">
+                    My Courses
+                </span>
+
+            </div>
+
+
+            <div class="menu-item">
+
+                <span class="menu-icon">✓</span>
+
+                <span class="menu-text">
+                    Tasks
+                </span>
+
+            </div>
+
+
+            <div class="menu-item">
+
+                <span class="menu-icon">◷</span>
+
+                <span class="menu-text">
+                    Schedule
+                </span>
+
+            </div>
+
+
+            <div class="menu-item">
+
+                <span class="menu-icon">★</span>
+
+                <span class="menu-text">
+                    Achievements
+                </span>
+
+            </div>
+
+
+            <br>
+
+
+            <p class="menu-title">
+                Account
+            </p>
+
+
+            <div class="menu-item">
+
+                <span class="menu-icon">⚙</span>
+
+                <span class="menu-text">
+                    Settings
+                </span>
+
+            </div>
+
+
+            <div class="menu-item">
+
+                <span class="menu-icon">?</span>
+
+                <span class="menu-text">
+                    Help
+                </span>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- Main content -->
+
+        <main class="content">
+
+
+            <!-- Header -->
+
+            <header class="header">
+
+                <div>
+
+                    <h1>
+                        Dashboard
+                    </h1>
+
+                    <p>
+                        Track your learning progress
+                    </p>
+
+                </div>
+
+
+                <div class="profile">
+
+                    <div class="profile-picture">
+                        T
+                    </div>
+
+                    <div>
+                        <strong>
+                            Talha
+                        </strong>
+
+                        <p>
+                            CS Student
+                        </p>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- Welcome -->
+
+            <section class="welcome">
+
+                <div>
+
+                    <h2>
+                        Welcome back, Talha
+                    </h2>
+
+                    <p>
+                        Keep learning and complete your goals today.
+                    </p>
+
+                </div>
+
+
+                <button class="welcome-button">
+                    View Schedule
+                </button>
+
+            </section>
+
+
+
+            <!-- Statistics -->
+
+            <section class="stats">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Courses
+                        </span>
+
+                        <div class="stat-icon green">
+                            ▣
+                        </div>
+
+                    </div>
+
+                    <h3>
+                        6
+                    </h3>
+
+                    <p>
+                        Active courses
+                    </p>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Tasks
+                        </span>
+
+                        <div class="stat-icon green">
+                            ✓
+                        </div>
+
+                    </div>
+
+                    <h3>
+                        24
+                    </h3>
+
+                    <p>
+                        Tasks completed
+                    </p>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Hours
+                        </span>
+
+                        <div class="stat-icon orange">
+                            ◷
+                        </div>
+
+                    </div>
+
+                    <h3>
+                        38
+                    </h3>
+
+                    <p>
+                        Study hours
+                    </p>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Progress
+                        </span>
+
+                        <div class="stat-icon green">
+                            ★
+                        </div>
+
+                    </div>
+
+                    <h3>
+                        78%
+                    </h3>
+
+                    <p>
+                        Overall progress
+                    </p>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- Main cards -->
+
+            <section class="main-grid">
+
+
+                <!-- Course progress -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h2>
+                            Course Progress
+                        </h2>
+
+                        <span class="view">
+                            View all
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="course">
+
+                        <div class="course-info">
+
+                            <span class="course-name">
+                                Full Stack Development
+                            </span>
+
+                            <span class="percentage">
+                                85%
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress html-progress">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="course">
+
+                        <div class="course-info">
+
+                            <span class="course-name">
+                                Computer Networks
+                            </span>
+
+                            <span class="percentage">
+                                70%
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress css-progress">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="course">
+
+                        <div class="course-info">
+
+                            <span class="course-name">
+                                Object Oriented Programming
+                            </span>
+
+                            <span class="percentage">
+                                60%
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress cpp-progress">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="course">
+
+                        <div class="course-info">
+
+                            <span class="course-name">
+                                Database Systems
+                            </span>
+
+                            <span class="percentage">
+                                75%
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress database-progress">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Tasks -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h2>
+                            Upcoming Tasks
+                        </h2>
+
+                        <span class="view">
+                            See all
+                        </span>
+
+                    </div>
+
+
+                    <div class="task">
+
+                        <div class="task-circle">
+                        </div>
+
+                        <div class="task-info">
+
+                            <h4>
+                                FSD Lab Task
+                            </h4>
+
+                            <p>
+                                HTML & CSS
+                            </p>
+
+                        </div>
+
+                        <span class="task-date">
+                            Today
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="task">
+
+                        <div class="task-circle">
+                        </div>
+
+                        <div class="task-info">
+
+                            <h4>
+                                Network Assignment
+                            </h4>
+
+                            <p>
+                                Computer Networks
+                            </p>
+
+                        </div>
+
+                        <span class="task-date">
+                            Tomorrow
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="task">
+
+                        <div class="task-circle">
+                        </div>
+
+                        <div class="task-info">
+
+                            <h4>
+                                Database Quiz
+                            </h4>
+
+                            <p>
+                                DBMS
+                            </p>
+
+                        </div>
+
+                        <span class="task-date">
+                            Friday
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="task">
+
+                        <div class="task-circle">
+                        </div>
+
+                        <div class="task-info">
+
+                            <h4>
+                                Project Meeting
+                            </h4>
+
+                            <p>
+                                Group Project
+                            </p>
+
+                        </div>
+
+                        <span class="task-date">
+                            Monday
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- Activity -->
+
+            <section class="card activity">
+
+                <div class="card-header">
+
+                    <h2>
+                        Recent Activity
+                    </h2>
+
+                    <span class="view">
+                        View history
+                    </span>
+
+                </div>
+
+
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+                        ✓
+                    </div>
+
+                    <div class="activity-text">
+
+                        <p>
+                            Completed Full Stack Development Lab
+                        </p>
+
+                        <span>
+                            2 hours ago
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+                        ★
+                    </div>
+
+                    <div class="activity-text">
+
+                        <p>
+                            Completed a new course milestone
+                        </p>
+
+                        <span>
+                            Yesterday
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+                        +
+                    </div>
+
+                    <div class="activity-text">
+
+                        <p>
+                            Added Database Systems to your courses
+                        </p>
+
+                        <span>
+                            2 days ago
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+
+</body>
+
+</html>

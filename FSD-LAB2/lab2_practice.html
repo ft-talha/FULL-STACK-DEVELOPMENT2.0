@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSD LAB 2</title>
+    <style>
+        :root {
+            /*variables*/
+            --background: radial-gradient(black, white);
+        }
+
+        html {
+            font-size: 20px;
+            color: rgb(141, 7, 30);
+            font-weight: 800;
+            background: var(--background);
+            font-size: 20px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .btns {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btns button {
+            margin-bottom: 12px;
+
+        }
+
+        .inherit {
+            color: inherit;
+            font-weight: inherit;
+            height: 4rem;
+            width: 14vw;
+            font-size: inherit;
+
+        }
+
+        .initial {
+            color: initial;
+            font-weight: initial;
+            height: initial;
+            width: initial;
+            font-size: initial;
+        }
+
+        .unset {
+            color: unset;
+            font-weight: unset;
+            height: unset;
+            width: unset;
+            font-size: unset;
+        }
+
+        .revert {
+            color: revert;
+            font-weight: revert;
+            height: revert;
+            width: revert;
+            font-size: revert;
+        }
+
+        .post p {
+            /* all p insdide class post */
+            color: white;
+            background-color: rgb(131, 92, 118);
+        }
+
+        .post>p {
+            /* direct child  p insdide class post */
+            color: rgb(93, 180, 238);
+            background-color: rgb(37, 41, 40);
+            border-left: 3px solid yellow;
+        }
+
+        .post h2+p {
+            /*single  p insdide class post*/
+            color: rgb(93, 180, 238);
+            background-color: rgb(22, 184, 143);
+            border-left: 13px solid rgb(212, 228, 213);
+        }
+
+        .post h2~p {
+            /*single  p insdide class post*/
+            font-size: 32px
+        }
+
+        a[target] {
+            /* sir a me target attribute walaypar implement hoi*/
+            font-weight: 800;
+        }
+
+        a {
+            display: block;
+            color: pink;
+            margin: 10px;
+        }
+
+        a[href^="https"]::before {
+            content: ";) ";
+        }
+
+        a[lang|="en"] {
+            border-left: 10px solid blue;
+        }
+
+        .flex-box {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 300;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
+            background-color: antiquewhite;
+            width: 50%;
+        }
+
+        .flex-box2 {
+            min-width: 50%;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 300;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            align-items: center;
+            flex-wrap: wrap;
+            background-color: aliceblue;
+            gap: 18px;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .grids {
+            display: grid;
+            gap: 10px;
+
+        }
+
+        .class {
+            height: 10%;
+            width: 10%;
+            background-color: blanchedalmond;
+            padding: 19px;
+        }
+
+        .talha {
+            position: sticky;
+            top: 10px;
+            left: 10px;
+            background-color: aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 class="talha"> lab practice</h2>
+    <div style="border: 10px solid white;padding: 12px;">
+        <div class="btns">
+            <button class="inherit"> hello</button>
+            <button class="initial"> hello</button>
+            <button class="unset"> hello</button>
+            <button class="revert"> hello</button>
+        </div>
+
+        <article class="post">
+            <h2>new</h2>
+            <p>paragraph</p>
+            <div>dive <p>hello world</p>
+            </div>
+            <p>paragraph</p>
+        </article>
+        <br style="height: 12px; color: antiquewhite;">
+    </div>
+
+    <div style="border: 5px solid lightgreen;">
+        <a href="https//hello" target="_blank">heloo ji</a>
+        <a href="" target="_blank">heloo ji</a>
+        <a href="" target="_blank" lang="en-Pk">heloo ji</a>
+        <a href="" target="_blank">heloo ji</a>
+    </div>
+
+
+    <div class="main">
+        <div class="flex-box2">
+            <h2>helo</h2>
+            <h2>helo</h2>
+            <h2>helo</h2>
+            <h2>helo</h2>
+            <h2>helo</h2>
+            <h2>helo</h2>
+        </div>
+        <div class="flex-box">
+            <h2>helo</h2>
+            <h2>helo</h2>
+            <h2>helo</h2>
+            <h2>helo</h2>
+            <h2>helo</h2>
+            <h2>helo</h2>
+        </div>
+    </div>
+
+    <div class="grids">
+        <div class="class">1</div>
+        <div class="class">2</div>
+        <div class="class">3</div>
+        <div class="class">4</div>
+        <div class="class">5</div>
+
+    </div>
+</body>
+
+</html>

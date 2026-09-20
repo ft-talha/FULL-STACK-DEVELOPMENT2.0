@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Facebook Home</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background-color: #18191a;
+            color: #e4e6eb;
+            font-family: Arial, sans-serif;
+        }
+
+        /* navbar */
+
+        .navbar {
+            height: 70px;
+            background-color: #242526;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 1px solid #3a3b3c;
+        }
+
+        .left-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background-color: #1877f2;
+            border-radius: 50%;
+            color: white;
+            font-size: 38px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search {
+            width: 300px;
+            padding: 13px 20px;
+            border: none;
+            border-radius: 25px;
+            background-color: #3a3b3c;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search::placeholder {
+            color: #b0b3b8;
+        }
+
+        .nav-center {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item {
+            width: 100px;
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 25px;
+            color: #b0b3b8;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .nav-item:hover {
+            background-color: #3a3b3c;
+        }
+
+        .nav-item.active {
+            color: #1877f2;
+            border-bottom: 3px solid #1877f2;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: #3a3b3c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .nav-circle:hover {
+            background-color: #4e4f50;
+        }
+
+        /* main */
+
+        .main {
+            display: grid;
+            grid-template-columns: 270px 1fr 320px;
+            gap: 20px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        /* left sidebar */
+
+        .left {
+            padding: 25px 10px;
+            height: calc(100vh - 70px);
+            position: sticky;
+            top: 70px;
+            overflow-y: auto;
+        }
+
+        .side-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .side-item:hover {
+            background-color: #3a3b3c;
+        }
+
+        .side-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3a3b3c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #1877f2;
+            font-weight: bold;
+        }
+
+        .user-icon {
+            background-color: #b0b3b8;
+            color: #242526;
+        }
+
+        /* center */
+
+        .center {
+            width: 710px;
+            max-width: 100%;
+            margin: 25px auto;
+        }
+
+        /* create post */
+
+        .create-post {
+            background-color: #242526;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .create-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile {
+            width: 48px;
+            height: 48px;
+            background-color: #b0b3b8;
+            color: #555;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .mind {
+            flex: 1;
+            background-color: #3a3b3c;
+            color: #b0b3b8;
+            padding: 14px 18px;
+            border-radius: 25px;
+            font-size: 18px;
+        }
+
+        .post-options {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #3a3b3c;
+            margin-top: 15px;
+            padding-top: 10px;
+        }
+
+        .post-option {
+            padding: 8px 15px;
+            color: #b0b3b8;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .post-option:hover {
+            background-color: #3a3b3c;
+        }
+
+        /* stories */
+
+        .stories {
+            display: flex;
+            gap: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .story {
+            min-width: 135px;
+            height: 230px;
+            border-radius: 10px;
+            position: relative;
+            background-color: #3a3b3c;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .story:hover {
+            transform: scale(1.02);
+        }
+
+        .story:nth-child(1) {
+            background-color: #555;
+        }
+
+        .story:nth-child(2) {
+            background-color: #334e68;
+        }
+
+        .story:nth-child(3) {
+            background-color: #536d43;
+        }
+
+        .story:nth-child(4) {
+            background-color: #664d67;
+        }
+
+        .story:nth-child(5) {
+            background-color: #6b584c;
+        }
+
+        .story-profile {
+            width: 45px;
+            height: 45px;
+            background-color: #1877f2;
+            border: 4px solid #1877f2;
+            border-radius: 50%;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .story-name {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .create-story {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #242526;
+            padding: 12px 5px;
+            text-align: center;
+        }
+
+        /* post */
+
+        .post {
+            background-color: #242526;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+        }
+
+        .post-user {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .post-user-name {
+            font-weight: bold;
+        }
+
+        .post-time {
+            color: #b0b3b8;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .menu {
+            color: #b0b3b8;
+            font-size: 22px;
+        }
+
+        .post-text {
+            padding: 0 15px 15px;
+            font-size: 17px;
+            line-height: 1.4;
+        }
+
+        .post-image {
+            height: 350px;
+            background-color: #555;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .post-image.two {
+            background-color: #34495e;
+        }
+
+        .post-stats {
+            padding: 10px 15px;
+            color: #b0b3b8;
+            font-size: 14px;
+            border-bottom: 1px solid #3a3b3c;
+        }
+
+        .post-buttons {
+            display: flex;
+        }
+
+        .post-button {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            color: #b0b3b8;
+            cursor: pointer;
+        }
+
+        .post-button:hover {
+            background-color: #3a3b3c;
+        }
+
+        /* right sidebar */
+
+        .right {
+            padding: 25px 10px;
+            height: calc(100vh - 70px);
+            position: sticky;
+            top: 70px;
+            overflow-y: auto;
+        }
+
+        .right h2 {
+            font-size: 18px;
+            color: #b0b3b8;
+        }
+
+        .sponsor {
+            display: flex;
+            gap: 12px;
+            padding: 12px 5px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .sponsor:hover {
+            background-color: #3a3b3c;
+        }
+
+        .ad {
+            width: 90px;
+            height: 90px;
+            background-color: #555;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 6px;
+        }
+
+        .ad-text {
+            font-weight: bold;
+        }
+
+        .line {
+            border-top: 1px solid #3a3b3c;
+            margin: 15px 0;
+        }
+
+        .request {
+            display: flex;
+            gap: 10px;
+            padding: 10px 5px;
+            align-items: center;
+        }
+
+        .request-buttons {
+            display: flex;
+            gap: 5px;
+            margin-top: 7px;
+        }
+
+        .confirm {
+            background-color: #1877f2;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .delete {
+            background-color: #3a3b3c;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .confirm:hover,
+        .delete:hover {
+            opacity: 0.8;
+        }
+
+        /* responsive */
+
+        @media (max-width: 1100px) {
+
+            .main {
+                grid-template-columns: 220px 1fr;
+            }
+
+            .right {
+                display: none;
+            }
+
+            .center {
+                width: 700px;
+            }
+
+        }
+
+        @media (max-width: 750px) {
+
+            .main {
+                display: block;
+            }
+
+            .left {
+                display: none;
+            }
+
+            .nav-center {
+                display: none;
+            }
+
+            .search {
+                width: 180px;
+            }
+
+            .center {
+                width: 100%;
+                padding: 10px;
+            }
+
+            .stories {
+                overflow-x: auto;
+            }
+
+            .story {
+                min-width: 130px;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- navbar -->
+
+    <div class="navbar">
+
+
+        <div class="left-nav">
+
+            <div class="logo">
+                f
+            </div>
+
+            <input class="search" type="text" placeholder="Search Facebook">
+
+        </div>
+
+
+        <div class="nav-center">
+
+            <div class="nav-item active">
+                🏠
+            </div>
+
+            <div class="nav-item">
+                ▷
+            </div>
+
+            <div class="nav-item">
+                👥
+            </div>
+
+            <div class="nav-item">
+                🛒
+            </div>
+
+            <div class="nav-item">
+                ◉
+            </div>
+
+        </div>
+
+
+        <div class="nav-right">
+
+            <div class="nav-circle">
+                ☷
+            </div>
+
+            <div class="nav-circle">
+                ♡
+            </div>
+
+            <div class="nav-circle">
+                🔔
+            </div>
+
+            <div class="nav-circle">
+                T
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- main -->
+
+    <div class="main">
+
+
+        <!-- left sidebar -->
+
+        <div class="left">
+
+
+            <div class="side-item">
+
+                <div class="side-icon user-icon">
+                    T
+                </div>
+
+                Muhammad Talha
+
+            </div>
+
+
+            <div class="side-item">
+
+                <div class="side-icon">
+                    ✣
+                </div>
+
+                Meta AI
+
+            </div>
+
+
+            <div class="side-item">
+
+                <div class="side-icon">
+                    👥
+                </div>
+
+                Friends
+
+            </div>
+
+
+            <div class="side-item">
+
+                <div class="side-icon">
+                    ◷
+                </div>
+
+                Memories
+
+            </div>
+
+
+            <div class="side-item">
+
+                <div class="side-icon">
+                    🔖
+                </div>
+
+                Saved
+
+            </div>
+
+
+            <div class="side-item">
+
+                <div class="side-icon">
+                    👨‍👩‍👧
+                </div>
+
+                Groups
+
+            </div>
+
+
+            <div class="side-item">
+
+                <div class="side-icon">
+                    ▶
+                </div>
+
+                Reels
+
+            </div>
+
+
+            <div class="side-item">
+
+                <div class="side-icon">
+                    🏪
+                </div>
+
+                Marketplace
+
+            </div>
+
+
+            <div class="side-item">
+
+                <div class="side-icon">
+                    ▣
+                </div>
+
+                Feeds
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- center -->
+
+        <div class="center">
+
+
+            <!-- create post -->
+
+            <div class="create-post">
+
+                <div class="create-top">
+
+                    <div class="profile">
+                        T
+                    </div>
+
+                    <div class="mind">
+                        What's on your mind, Muhammad?
+                    </div>
+
+                </div>
+
+
+                <div class="post-options">
+
+                    <div class="post-option">
+                        Video
+                    </div>
+
+                    <div class="post-option">
+                        Photo
+                    </div>
+
+                    <div class="post-option">
+                        Feeling
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- stories -->
+
+            <div class="stories">
+
+
+                <div class="story">
+
+                    <div class="story-profile">
+                        +
+                    </div>
+
+                    <div class="create-story">
+                        Create story
+                    </div>
+
+                </div>
+
+
+                <div class="story">
+
+                    <div class="story-profile">
+                        H
+                    </div>
+
+                    <div class="story-name">
+                        Hammad Hassan
+                    </div>
+
+                </div>
+
+
+                <div class="story">
+
+                    <div class="story-profile">
+                        B
+                    </div>
+
+                    <div class="story-name">
+                        Bilal Tariq
+                    </div>
+
+                </div>
+
+
+                <div class="story">
+
+                    <div class="story-profile">
+                        I
+                    </div>
+
+                    <div class="story-name">
+                        Ishtiaq Aziz
+                    </div>
+
+                </div>
+
+
+                <div class="story">
+
+                    <div class="story-profile">
+                        M
+                    </div>
+
+                    <div class="story-name">
+                        Muhammad
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- first post -->
+
+            <div class="post">
+
+
+                <div class="post-header">
+
+                    <div class="post-user">
+
+                        <div class="profile">
+                            M
+                        </div>
+
+                        <div>
+
+                            <div class="post-user-name">
+                                Muhammad Qasim
+                            </div>
+
+                            <div class="post-time">
+                                AI comment · 3 days ago · Islamabad
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="menu">
+                        ...
+                    </div>
+
+                </div>
+
+
+                <div class="post-text">
+
+                    All the great things come one day and
+                    the night would be well. Then morning
+                    sunshine is to be arrived.
+
+                </div>
+
+
+                <div class="post-image">
+                    MY POST
+                </div>
+
+
+                <div class="post-stats">
+
+                    125 Likes &nbsp;&nbsp;&nbsp;
+                    18 Comments
+
+                </div>
+
+
+                <div class="post-buttons">
+
+                    <div class="post-button">
+                        Like
+                    </div>
+
+                    <div class="post-button">
+                        Comment
+                    </div>
+
+                    <div class="post-button">
+                        Share
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- second post -->
+
+            <div class="post">
+
+
+                <div class="post-header">
+
+                    <div class="post-user">
+
+                        <div class="profile">
+                            A
+                        </div>
+
+                        <div>
+
+                            <div class="post-user-name">
+                                Ali Khan
+                            </div>
+
+                            <div class="post-time">
+                                Yesterday · Public
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="menu">
+                        ...
+                    </div>
+
+                </div>
+
+
+                <div class="post-text">
+
+                    Learning HTML and CSS for my university
+                    project. Slowly getting better at web design.
+
+                </div>
+
+
+                <div class="post-image two">
+                    WEB DEVELOPMENT
+                </div>
+
+
+                <div class="post-stats">
+
+                    87 Likes &nbsp;&nbsp;&nbsp;
+                    12 Comments
+
+                </div>
+
+
+                <div class="post-buttons">
+
+                    <div class="post-button">
+                        Like
+                    </div>
+
+                    <div class="post-button">
+                        Comment
+                    </div>
+
+                    <div class="post-button">
+                        Share
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- right sidebar -->
+
+        <div class="right">
+
+
+            <h2>
+                Sponsored
+            </h2>
+
+
+            <div class="sponsor">
+
+                <div class="ad">
+                    AD
+                </div>
+
+                <div class="ad-text">
+
+                    Get up to
+                    <br>
+                    $6,000
+                    <br>
+                    Ad Credit
+
+                </div>
+
+            </div>
+
+
+            <div class="sponsor">
+
+                <div class="ad">
+                    SHOP
+                </div>
+
+                <div class="ad-text">
+
+                    Start your
+                    <br>
+                    business faster
+
+                </div>
+
+            </div>
+
+
+            <div class="line"></div>
+
+
+            <h2>
+
+                Friend requests
+
+            </h2>
+
+
+            <div class="request">
+
+
+                <div class="profile">
+                    H
+                </div>
+
+
+                <div>
+
+                    <b>
+                        Humayun Satti
+                    </b>
+
+                    <br>
+
+                    <small>
+                        1 mutual friend
+                    </small>
+
+
+                    <div class="request-buttons">
+
+                        <button class="confirm">
+                            Confirm
+                        </button>
+
+                        <button class="delete">
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="line"></div>
+
+
+            <h2>
+                Contacts
+            </h2>
+
+
+            <div class="side-item">
+
+                <div class="side-icon">
+                    A
+                </div>
+
+                Ali Khan
+
+            </div>
+
+
+            <div class="side-item">
+
+                <div class="side-icon">
+                    H
+                </div>
+
+                Hamza
+
+            </div>
+
+
+            <div class="side-item">
+
+                <div class="side-icon">
+                    U
+                </div>
+
+                Usman
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>
