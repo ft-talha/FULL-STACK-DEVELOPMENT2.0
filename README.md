@@ -1,5 +1,6 @@
 # FULL-STACK-DEVELOPMENT
 This repository contains all the practice exercises and lab tasks completed during the Full Stack Web Development lab, instructed by Sir Ubaidullah Khan, for the Fall 2026 session.
+#TRANSFERED ALL WORK FROM OLD TO THIS REPO BCZ AN ERROR OCCUERED
 
 # Point to note
 
@@ -7,4 +8,5 @@ This repository was created after Lab 2. The tasks from Lab 1 and Lab 2 had alre
 
 
 This repository contains all the practice exercises and lab tasks completed during the Full Stack Web Development lab, instructed by Sir Ubaidullah Khan, for the Fall 2026 session.
->>>>>>> c6eb5da6dbf621a44c97eed7a9916d1991d8a5d7
+
+
