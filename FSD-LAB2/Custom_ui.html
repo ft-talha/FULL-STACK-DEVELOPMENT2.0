@@ -1,225 +1,218 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dodge the Blocks — Screen Fitted Edition</title>
+    <title>Dodge the Blocks</title>
+
     <style>
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none;
         }
 
         body {
             height: 100vh;
-            width: 100vw;
-            background: radial-gradient(circle at center, #1b1e2e 0%, #080a10 100%);
+            background: #080a10;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            padding: 12px;
+            font-family: Arial, sans-serif;
         }
 
-        /* Pure CSS Lane Steering Controller Logic */
-        #lane-left, #lane-center, #lane-right {
+        input {
             display: none;
         }
 
-        #lane-left:checked ~ .game .player {
-            left: 15%;
-            transform: translateX(-50%) rotate(-6deg);
-        }
-
-        #lane-center:checked ~ .game .player {
-            left: 50%;
-            transform: translateX(-50%) rotate(0deg);
-        }
-
-        #lane-right:checked ~ .game .player {
-            left: 85%;
-            transform: translateX(-50%) rotate(6deg);
-        }
-
-        /* Active Button Styling */
-        #lane-left:checked ~ .game .controls label[for="lane-left"],
-        #lane-center:checked ~ .game .controls label[for="lane-center"],
-        #lane-right:checked ~ .game .controls label[for="lane-right"] {
-            background: #00f0ff;
-            color: #000;
-            box-shadow: 0 0 15px #00f0ff;
-        }
-
         .game {
-            width: min(420px, 95vw);
-            height: min(650px, 94vh);
+            width: 420px;
+            height: 650px;
             background: #11141d;
+            border: 2px solid #333;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.15);
-            border: 2px solid #23293a;
-            display: flex;
-            flex-direction: column;
-            position: relative;
         }
 
-        /* Header HUD */
         .game-header {
             height: 60px;
-            padding: 10px 20px;
+            background: #181c27;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #181c27;
-            border-bottom: 2px solid #2a3144;
+            padding: 10px 20px;
             color: white;
-            flex-shrink: 0;
         }
 
         .game-header h1 {
+            color: #00f0ff;
             font-size: 18px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            background: linear-gradient(45deg, #00f0ff, #ff007f);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
         }
 
         .score-box {
             background: #0d111a;
-            padding: 6px 14px;
-            border-radius: 8px;
-            border: 1px solid #00f0ff;
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
-            font-weight: bold;
             color: #00f0ff;
-            font-family: monospace;
-            font-size: 14px;
+            border: 1px solid #00f0ff;
+            padding: 7px 12px;
+            border-radius: 8px;
         }
 
-        /* Road Display (Fills Remaining Screen Height) */
         .road {
-            flex: 1;
-            width: 100%;
+            height: 500px;
             background: #181920;
             position: relative;
             overflow: hidden;
             border-left: 10px solid #ff0055;
             border-right: 10px solid #ff0055;
-            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
         }
 
-        /* Lane Markings */
         .lane-divider {
             position: absolute;
-            width: 6px;
-            height: 100%;
             top: 0;
+            width: 5px;
+            height: 100%;
+            background: transparent;
         }
 
-        .lane-divider-1 { left: 33.33%; }
-        .lane-divider-2 { left: 66.66%; }
+        .lane-divider-1 {
+            left: 33%;
+        }
+
+        .lane-divider-2 {
+            left: 66%;
+        }
 
         .line {
-            position: absolute;
-            width: 6px;
+            width: 5px;
             height: 70px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
-            animation: roadMove 0.8s linear infinite;
+            background: #777;
+            position: absolute;
+            left: 0;
+            animation: roadMove 1s linear infinite;
         }
 
-        .line-1 { top: -100px; }
-        .line-2 { top: 100px; }
-        .line-3 { top: 300px; }
-        .line-4 { top: 500px; }
+        .line-1 {
+            top: -100px;
+        }
+
+        .line-2 {
+            top: 100px;
+        }
+
+        .line-3 {
+            top: 300px;
+        }
+
+        .line-4 {
+            top: 500px;
+        }
 
         @keyframes roadMove {
-            0% { transform: translateY(-200px); }
-            100% { transform: translateY(400px); }
+            from {
+                transform: translateY(-100px);
+            }
+
+            to {
+                transform: translateY(500px);
+            }
         }
 
-        /* Obstacle Blocks */
         .block {
             width: 52px;
             height: 78px;
-            border-radius: 10px;
             position: absolute;
-            top: -120px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            z-index: 5;
+            top: -100px;
+            border-radius: 10px;
         }
 
         .block::after {
-            content: '';
+            content: "";
             position: absolute;
-            bottom: 6px;
-            left: 6px;
-            right: 6px;
+            bottom: 7px;
+            left: 7px;
+            width: 38px;
             height: 8px;
             background: #ff0055;
             border-radius: 3px;
-            box-shadow: 0 0 8px #ff0055;
         }
 
         .block1 {
             left: 15%;
-            transform: translateX(-50%);
-            background: linear-gradient(180deg, #ff416c, #ff4b2b);
-            animation: fall1 2.8s linear infinite;
+            background: #ff416c;
+            animation: fall1 3s linear infinite;
         }
 
         .block2 {
             left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(180deg, #f7b733, #fc4a1a);
-            animation: fall2 3.6s linear infinite 0.9s;
+            background: #f7a623;
+            animation: fall2 3.5s linear infinite;
+            animation-delay: 1s;
         }
 
         .block3 {
             left: 85%;
-            transform: translateX(-50%);
-            background: linear-gradient(180deg, #8e2de2, #4a00e0);
-            animation: fall3 3.1s linear infinite 1.8s;
+            background: #7137d8;
+            animation: fall3 3.2s linear infinite;
+            animation-delay: 2s;
         }
 
         @keyframes fall1 {
-            0% { top: -120px; }
-            100% { top: 108%; }
+            from {
+                top: -100px;
+            }
+
+            to {
+                top: 100%;
+            }
         }
 
         @keyframes fall2 {
-            0% { top: -120px; }
-            100% { top: 108%; }
+            from {
+                top: -100px;
+            }
+
+            to {
+                top: 100%;
+            }
         }
 
         @keyframes fall3 {
-            0% { top: -120px; }
-            100% { top: 108%; }
+            from {
+                top: -100px;
+            }
+
+            to {
+                top: 100%;
+            }
         }
 
-        /* Player Sports Car */
         .player {
             width: 52px;
             height: 82px;
-            background: linear-gradient(180deg, #00f0ff, #0072ff);
-            border-radius: 10px;
+            background: #00aaff;
             position: absolute;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            border: 2px solid #ffffff;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
-            transition: left 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.25s ease;
-            z-index: 10;
+            border: 2px solid white;
+            border-radius: 10px;
+            transition: left 0.3s;
         }
 
-        /* Windshield */
+        #lane-left:checked ~ .game .player {
+            left: 15%;
+        }
+
+        #lane-center:checked ~ .game .player {
+            left: 50%;
+        }
+
+        #lane-right:checked ~ .game .player {
+            left: 85%;
+        }
+
         .window {
             width: 36px;
             height: 24px;
@@ -228,96 +221,94 @@
             top: 18px;
             left: 6px;
             border-radius: 5px;
-            border: 1px solid rgba(0, 240, 255, 0.5);
         }
 
-        /* Headlights Beam Effect */
-        .headlights {
-            position: absolute;
-            top: -30px;
-            left: 0;
-            right: 0;
-            height: 30px;
-            background: linear-gradient(0deg, rgba(0,240,255,0.4) 0%, rgba(0,240,255,0) 100%);
-            clip-path: polygon(10% 100%, 0% 0%, 100% 0%, 90% 100%);
-        }
-
-        /* Wheels */
         .wheel {
             width: 8px;
             height: 18px;
-            background: #05070a;
+            background: #050505;
             position: absolute;
             border-radius: 3px;
-            border: 1px solid #333;
         }
 
-        .wheel-tl { left: -6px; top: 12px; }
-        .wheel-tr { right: -6px; top: 12px; }
-        .wheel-bl { left: -6px; bottom: 12px; }
-        .wheel-br { right: -6px; bottom: 12px; }
+        .wheel-tl {
+            left: -6px;
+            top: 12px;
+        }
 
-        /* Steering Control Panel */
+        .wheel-tr {
+            right: -6px;
+            top: 12px;
+        }
+
+        .wheel-bl {
+            left: -6px;
+            bottom: 12px;
+        }
+
+        .wheel-br {
+            right: -6px;
+            bottom: 12px;
+        }
+
         .controls {
-            padding: 10px 15px;
+            height: 60px;
             background: #181c27;
             display: flex;
-            justify-content: space-between;
             gap: 8px;
-            border-top: 1px solid #2a3144;
-            flex-shrink: 0;
+            padding: 10px 15px;
         }
 
         .btn-control {
             flex: 1;
-            padding: 10px 0;
-            border: 1px solid #2a3144;
-            border-radius: 8px;
             background: #0f131d;
-            color: #8f9cae;
-            font-weight: bold;
-            font-size: 12px;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 8px;
             text-align: center;
+            padding: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
         .btn-control:hover {
-            border-color: #00f0ff;
-            color: #ffffff;
+            background: #00f0ff;
+            color: black;
         }
 
-        /* Sub-Footer Instructions */
-        .instructions {
-            padding: 6px 10px 10px;
-            text-align: center;
-            background: #181c27;
-            color: #65758d;
-            font-size: 11px;
-            flex-shrink: 0;
+        #lane-left:checked ~ .game label[for="lane-left"],
+        #lane-center:checked ~ .game label[for="lane-center"],
+        #lane-right:checked ~ .game label[for="lane-right"] {
+            background: #00f0ff;
+            color: black;
         }
+
+        .instructions {
+            height: 30px;
+            background: #181c27;
+            color: #777;
+            text-align: center;
+            font-size: 11px;
+            padding: 7px;
+        }
+
     </style>
 </head>
 
 <body>
 
-    <!-- Hidden Radio Controls for Pure CSS Steering -->
     <input type="radio" name="lane" id="lane-left">
     <input type="radio" name="lane" id="lane-center" checked>
     <input type="radio" name="lane" id="lane-right">
 
     <div class="game">
 
-        <!-- HUD Header -->
         <div class="game-header">
-            <h1>Dodge Blocks</h1>
+            <h1>DODGE BLOCKS</h1>
             <div class="score-box">SCORE: 1,280</div>
         </div>
 
-        <!-- Racetrack -->
         <div class="road">
 
-            <!-- Lane Dividers -->
             <div class="lane-divider lane-divider-1">
                 <div class="line line-1"></div>
                 <div class="line line-2"></div>
@@ -332,36 +323,45 @@
                 <div class="line line-4"></div>
             </div>
 
-            <!-- Falling Traffic Blocks -->
             <div class="block block1"></div>
             <div class="block block2"></div>
             <div class="block block3"></div>
 
-            <!-- Player Sports Car -->
             <div class="player">
-                <div class="headlights"></div>
+
                 <div class="window"></div>
+
                 <div class="wheel wheel-tl"></div>
                 <div class="wheel wheel-tr"></div>
                 <div class="wheel wheel-bl"></div>
                 <div class="wheel wheel-br"></div>
+
             </div>
 
         </div>
 
-        <!-- Pure CSS Control Panel -->
         <div class="controls">
-            <label for="lane-left" class="btn-control">◀ LEFT</label>
-            <label for="lane-center" class="btn-control">▲ CENTER</label>
-            <label for="lane-right" class="btn-control">RIGHT ▶</label>
+
+            <label for="lane-left" class="btn-control">
+                LEFT
+            </label>
+
+            <label for="lane-center" class="btn-control">
+                CENTER
+            </label>
+
+            <label for="lane-right" class="btn-control">
+                RIGHT
+            </label>
+
         </div>
 
         <div class="instructions">
-            Click buttons or tap lanes to steer your vehicle!
+            Click the buttons to move the car
         </div>
 
     </div>
 
 </body>
-
 </html>
+```
