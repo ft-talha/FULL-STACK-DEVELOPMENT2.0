@@ -1,76 +1,477 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Stack Development - Main Dashboard</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #f4f7f6;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 600px;
-            width: 100%;
+    <title>Full Stack Development | Muhammad Talha</title>
+
+```
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background: #eef3f8;
+        color: #2c3e50;
+        min-height: 100vh;
+    }
+
+    .top-bar {
+        background: #1f3c5b;
+        color: white;
+        padding: 12px 7%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .university-name {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .semester {
+        font-size: 13px;
+        color: #dce8f2;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 25px auto;
+        padding: 0 20px;
+    }
+
+    .hero {
+        background: white;
+        border-radius: 13px;
+        padding: 24px 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        margin-bottom: 18px;
+    }
+
+    .hero-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .hero-text h1 {
+        font-size: 30px;
+        margin-bottom: 5px;
+        color: #1f3c5b;
+    }
+
+    .hero-text h2 {
+        font-size: 17px;
+        font-weight: 500;
+        color: #0984e3;
+        margin-bottom: 7px;
+    }
+
+    .hero-text p {
+        color: #667085;
+        line-height: 1.5;
+        font-size: 14px;
+        max-width: 650px;
+    }
+
+    .student-box {
+        min-width: 200px;
+        background: #f3f8fc;
+        padding: 14px 18px;
+        border-radius: 10px;
+        border-left: 4px solid #0984e3;
+    }
+
+    .student-box p {
+        margin-bottom: 4px;
+        font-size: 13px;
+    }
+
+    .student-box strong {
+        color: #1f3c5b;
+    }
+
+    .course-info {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 22px;
+    }
+
+    .info-card {
+        background: white;
+        padding: 15px 18px;
+        border-radius: 10px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .info-card span {
+        display: block;
+        font-size: 11px;
+        color: #7f8c8d;
+        margin-bottom: 4px;
+    }
+
+    .info-card h3 {
+        font-size: 14px;
+        color: #1f3c5b;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .section-title h2 {
+        font-size: 25px;
+        color: #1f3c5b;
+        margin-bottom: 4px;
+    }
+
+    .section-title p {
+        color: #7f8c8d;
+        font-size: 13px;
+    }
+
+    .labs-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+    .lab-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        transition: 0.3s;
+    }
+
+    .lab-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.11);
+    }
+
+    .lab-number {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 10px;
+        background: #0984e3;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+    .lab-card h3 {
+        color: #1f3c5b;
+        margin-bottom: 6px;
+        font-size: 17px;
+    }
+
+    .lab-card p {
+        color: #7f8c8d;
+        font-size: 13px;
+        line-height: 1.45;
+        margin-bottom: 14px;
+    }
+
+    .lab-btn {
+        display: inline-block;
+        background: #0984e3;
+        color: white;
+        text-decoration: none;
+        padding: 9px 19px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .lab-btn:hover {
+        background: #0769b5;
+    }
+
+    .repo-btn {
+        display: inline-block;
+        margin-top: 10px;
+        color: #0984e3;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .repo-btn:hover {
+        text-decoration: underline;
+    }
+
+    .quick-section {
+        margin-top: 20px;
+        background: white;
+        padding: 18px 22px;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .quick-section h2 {
+        color: #1f3c5b;
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+
+    .quick-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .quick-link {
+        text-decoration: none;
+        color: #1f3c5b;
+        background: #eef6fd;
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 13px;
+        transition: 0.3s;
+    }
+
+    .quick-link:hover {
+        background: #d9ecfb;
+    }
+
+    footer {
+        margin-top: 25px;
+        background: #1f3c5b;
+        color: white;
+        text-align: center;
+        padding: 14px;
+    }
+
+    footer p {
+        font-size: 12px;
+        color: #dce8f2;
+        margin: 2px 0;
+    }
+
+    @media (max-width: 800px) {
+
+        .top-bar {
+            padding: 12px 5%;
+            flex-direction: column;
+            gap: 3px;
             text-align: center;
         }
-        h1 {
-            margin-bottom: 10px;
-            color: #2c3e50;
+
+        .hero-content {
+            flex-direction: column;
+            align-items: stretch;
         }
-        p {
-            margin-bottom: 25px;
-            color: #7f8c8d;
+
+        .student-box {
+            width: 100%;
         }
-        .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
+
+        .course-info {
+            grid-template-columns: 1fr;
         }
-        .nav-btn {
-            display: block;
-            padding: 15px 20px;
-            background-color: #0984e3;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background-color 0.3s, transform 0.2s;
+
+        .labs-grid {
+            grid-template-columns: 1fr;
         }
-        .nav-btn:hover {
-            background-color: #0769b5;
-            transform: translateY(-2px);
+
+        .hero-text h1 {
+            font-size: 26px;
         }
-    </style>
+    }
+</style>
+```
+
 </head>
+
 <body>
 
-    <div class="container">
-        <h1>Full Stack Development Labs</h1>
-        <p>Select a lab to navigate to its index page:</p>
+```
+<header class="top-bar">
+    <div class="university-name">AIR University Islamabad</div>
+    <div class="semester">BS Computer Science | 5th Semester</div>
+</header>
 
-        <div class="nav-grid">
-            <!-- Relative paths configured for your folder structure -->
-            <a href="./FSD-LAB1/index.html" class="nav-btn">FSD Lab 1</a>
-            <a href="./FSD-LAB2/index.html" class="nav-btn">FSD Lab 2</a>
-            <a href="./FSD-LAB3/index.html" class="nav-btn">FSD Lab 3</a>
+
+<main class="container">
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-text">
+                <h1>Full Stack Development</h1>
+
+                <h2>Lab Work & Course Dashboard</h2>
+
+                <p>
+                    A collection of my Full Stack Development laboratory
+                    tasks and practical work completed during the semester.
+                </p>
+            </div>
+
+            <div class="student-box">
+                <p><strong>Student:</strong> Muhammad Talha</p>
+                <p><strong>Program:</strong> BS Computer Science</p>
+                <p><strong>Semester:</strong> 5th Semester</p>
+            </div>
+
         </div>
-    </div>
+
+    </section>
+
+
+    <section class="course-info">
+
+        <div class="info-card">
+            <span>University</span>
+            <h3>AIR University Islamabad</h3>
+        </div>
+
+        <div class="info-card">
+            <span>Course</span>
+            <h3>Full Stack Development</h3>
+        </div>
+
+        <div class="info-card">
+            <span>Instructor</span>
+            <h3>Hafiz Ubaidullah Khan</h3>
+        </div>
+
+    </section>
+
+
+    <section>
+
+        <div class="section-title">
+            <h2>My Lab Work</h2>
+            <p>Select a lab to view its tasks and activities.</p>
+        </div>
+
+
+        <div class="labs-grid">
+
+            <div class="lab-card">
+
+                <div class="lab-number">01</div>
+
+                <h3>FSD Lab 1</h3>
+
+                <p>
+                    HTML and CSS basics, webpage structure and
+                    interface design tasks.
+                </p>
+
+                <a href="./FSD-LAB1/index.html" class="lab-btn">
+                    View Live
+                </a>
+
+                <br>
+
+                <a href="https://github.com/ft-talha/FSD-LAB1.git" class="repo-btn">
+                    Open Repo
+                </a>
+
+            </div>
+
+
+            <div class="lab-card">
+
+                <div class="lab-number">02</div>
+
+                <h3>FSD Lab 2</h3>
+
+                <p>
+                    CSS units, inheritance, flexbox, variables and
+                    layout practices.
+                </p>
+
+                <a href="./FSD-LAB2/index.html" class="lab-btn">
+                    View Live
+                </a>
+
+                <br>
+
+                <a href="https://github.com/ft-talha/FULL-STACK-DEVELOPMENT/tree/main/FSD-LAB2" class="repo-btn">
+                    Open Repo
+                </a>
+
+            </div>
+
+
+            <!-- <div class="lab-card">
+
+                <div class="lab-number">03</div>
+
+                <h3>FSD Lab 3</h3>
+
+                <p>
+                    Full stack development tasks and practical
+                    exercises completed during the course.
+                </p>
+
+                <a href="./FSD-LAB3/index.html" class="lab-btn">
+                    Open Lab 3
+                </a>
+
+            </div> -->
+
+        </div>
+
+    </section>
+
+
+    <section class="quick-section">
+
+        <h2>Quick Navigation</h2>
+
+        <div class="quick-links">
+
+            <a href="./FSD-LAB1/index.html" class="quick-link">
+                Lab 1
+            </a>
+
+            <a href="./FSD-LAB2/index.html" class="quick-link">
+                Lab 2
+            </a>
+
+            <a href="./FSD-LAB3/index.html" class="quick-link">
+                Lab 3
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>Full Stack Development Course</p>
+
+    <p>
+        Muhammad Talha | BS Computer Science | 5th Semester |
+        AIR University Islamabad
+    </p>
+
+</footer>
+```
 
 </body>
 </html>
