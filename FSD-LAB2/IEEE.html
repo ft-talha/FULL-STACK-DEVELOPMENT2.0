@@ -1,749 +1,674 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>IEEE Paper</title>
-
+    <title>Conference Paper Template - IEEE Standard</title>
     <style>
-        * {
+        /* =========================================================
+           1. CORE SYSTEM STYLES & CSS VARIABLES
+           ========================================================= */
+        :root {
+            --paper-bg: #ffffff;
+            --paper-text: #000000;
+            --ui-bg: #0f172a;
+            --ui-card: #1e293b;
+            --ui-accent: #0284c7;
+            --ui-text: #f8fafc;
+            --border-line: #000000;
+            --font-serif: "Times New Roman", Times, "Cambria", serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: "Courier New", Courier, monospace;
+        }
+
+        *, *::before, *::after {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            background-color: #dddddd;
-            font-family: "Times New Roman", serif;
-            color: #111111;
+            background-color: var(--ui-bg);
+            color: var(--ui-text);
+            font-family: var(--font-sans);
+            line-height: 1.4;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .paper {
-            width: 210mm;
-            min-height: 297mm;
-            margin: 30px auto;
-            padding: 20mm 18mm;
-            background-color: white;
-            box-shadow: 0 0 15px #999999;
+        /* =========================================================
+           2. PURE CSS TOOLBAR & VIEW CONTROLLER
+           ========================================================= */
+        /* Hidden Radio Controls for View Modes */
+        input[type="radio"].view-toggle {
+            display: none;
         }
 
-        /* Title */
-
-        .title {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 18px;
-            line-height: 1.3;
+        .toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            background: var(--ui-card);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
-        /* Authors */
-
-        .authors {
-            text-align: center;
-            margin-bottom: 25px;
-            line-height: 1.5;
+        .toolbar-title {
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #38bdf8;
         }
 
-        .authors strong {
-            font-size: 16px;
+        .toolbar-options {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 0.25rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Abstract */
+        .view-label {
+            padding: 0.4rem 0.85rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #94a3b8;
+        }
 
-        .abstract {
-            margin-bottom: 15px;
+        /* Active Radio Button Styles */
+        #mode-a4:checked ~ .toolbar .view-label[for="mode-a4"],
+        #mode-full:checked ~ .toolbar .view-label[for="mode-full"] {
+            background: var(--ui-accent);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+        }
+
+        .print-btn {
+            background: #10b981;
+            color: #ffffff;
+            padding: 0.4rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.8125rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: background 0.2s;
+        }
+
+        .print-btn:hover {
+            background: #059669;
+        }
+
+        /* =========================================================
+           3. IEEE ACADEMIC PAPER LAYOUT (A4 CONTAINER)
+           ========================================================= */
+        .page-container {
+            margin: 2rem auto;
+            transition: all 0.3s ease;
+        }
+
+        /* Mode 1: Styled IEEE Sheet (Default) */
+        #mode-a4:checked ~ .page-container {
+            width: 8.5in;
+            min-height: 11in;
+            background-color: var(--paper-bg);
+            color: var(--paper-text);
+            padding: 0.75in 0.625in 1in 0.625in;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border-radius: 2px;
+        }
+
+        /* Mode 2: Responsive Screen View */
+        #mode-full:checked ~ .page-container {
+            width: 95%;
+            max-width: 1200px;
+            background-color: var(--paper-bg);
+            color: var(--paper-text);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Academic Typography Engine */
+        .paper-sheet {
+            font-family: var(--font-serif);
+            font-size: 10pt;
+            line-height: 1.18;
+            color: #000000;
             text-align: justify;
-            line-height: 1.35;
-            font-size: 12px;
+        }
+
+        /* =========================================================
+           4. PAPER HEADER: TITLE & AUTHORS GRID
+           ========================================================= */
+        .paper-header {
+            text-align: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .paper-title {
+            font-size: 24pt;
+            font-weight: normal;
+            line-height: 1.15;
+            margin-bottom: 0.25rem;
+            text-align: center;
+        }
+
+        .paper-subtitle-note {
+            font-size: 9pt;
+            font-style: italic;
+            margin-bottom: 1.25rem;
+            color: #333333;
+        }
+
+        /* 6 Authors Grid (3 Columns x 2 Rows Layout) */
+        .authors-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem 0.5rem;
+            margin: 1rem 0 1.5rem 0;
+            text-align: center;
+        }
+
+        @media (max-width: 640px) {
+            .authors-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+
+        .author-card {
+            font-size: 10pt;
+            line-height: 1.2;
+        }
+
+        .author-name {
+            font-size: 10pt;
+            font-weight: normal;
+        }
+
+        .author-line {
+            font-size: 9pt;
+            display: block;
+        }
+
+        .author-email {
+            font-size: 9pt;
+            font-family: var(--font-serif);
+            display: block;
+            word-break: break-all;
+        }
+
+        /* =========================================================
+           5. ABSTRACT & KEYWORDS BOX (FULL WIDTH TOP)
+           ========================================================= */
+        .abstract-section {
+            font-size: 9pt;
+            font-weight: bold;
+            line-height: 1.2;
+            margin-bottom: 1.25rem;
+            padding: 0 0.1in;
         }
 
         .abstract-title {
+            font-style: italic;
             font-weight: bold;
         }
 
-        .keywords {
-            font-size: 12px;
-            margin-bottom: 20px;
+        .keywords-title {
+            font-style: italic;
+            font-weight: bold;
         }
 
-        /* Two columns */
-
-        .columns {
+        /* =========================================================
+           6. TWO-COLUMN IEEE BODY CONTENT
+           ========================================================= */
+        .two-column-body {
             column-count: 2;
-            column-gap: 20px;
-            column-rule: none;
+            column-gap: 0.24in;
+            column-fill: balance;
             text-align: justify;
         }
 
-        /* Sections */
-
-        h2 {
-            font-size: 13px;
-            text-align: center;
-            margin-top: 12px;
-            margin-bottom: 7px;
-            text-transform: uppercase;
-        }
-
-        h3 {
-            font-size: 12px;
-            margin-top: 10px;
-            margin-bottom: 5px;
+        @media (max-width: 768px) {
+            #mode-full:checked ~ .page-container .two-column-body {
+                column-count: 1;
+            }
         }
 
         p {
-            font-size: 11px;
-            line-height: 1.35;
-            margin-top: 0;
-            margin-bottom: 8px;
+            text-indent: 1em;
+            margin-bottom: 0.4em;
+        }
+
+        p.no-indent {
+            text-indent: 0;
+        }
+
+        /* Section Headings (IEEE Roman Numerals & Small Caps) */
+        .heading-1 {
+            font-size: 10pt;
+            text-transform: uppercase;
+            text-align: center;
+            margin-top: 10pt;
+            margin-bottom: 4pt;
+            font-weight: normal;
+            letter-spacing: 0.5px;
+            break-after: avoid;
+        }
+
+        .heading-2 {
+            font-size: 10pt;
+            font-style: italic;
+            margin-top: 8pt;
+            margin-bottom: 3pt;
+            font-weight: normal;
+            text-align: left;
+            break-after: avoid;
+        }
+
+        .heading-3 {
+            font-size: 10pt;
+            font-style: italic;
+            display: inline;
+            margin-right: 0.4em;
         }
 
         /* Lists */
-
-        ul {
-            font-size: 11px;
-            padding-left: 18px;
-            line-height: 1.4;
+        ul.paper-list {
+            padding-left: 1.2em;
+            margin-bottom: 0.5rem;
         }
 
-        /* Equation */
-
-        .equation {
-            text-align: center;
-            font-size: 13px;
-            margin: 15px 0;
-            font-style: italic;
+        ul.paper-list li {
+            margin-bottom: 0.2em;
+            text-indent: 0;
         }
 
-        /* Figure */
-
-        .figure {
-            break-inside: avoid;
-            text-align: center;
-            margin: 15px 0;
-        }
-
-        .figure-box {
-            height: 120px;
-            background-color: #eeeeee;
-            border: 1px solid #777777;
+        /* =========================================================
+           7. MATHEMATICAL EQUATIONS
+           ========================================================= */
+        .equation-row {
             display: flex;
-            justify-content: center;
             align-items: center;
-            font-size: 12px;
+            justify-content: space-between;
+            margin: 0.6rem 0;
+            padding: 0 0.5rem;
+            text-indent: 0;
         }
 
-        .caption {
-            font-size: 10px;
-            margin-top: 5px;
+        .equation-math {
+            margin: 0 auto;
+            font-style: italic;
+            font-family: "Times New Roman", Times, serif;
         }
 
-        /* Table */
-
-        .table-container {
-            break-inside: avoid;
-            margin: 15px 0;
+        .equation-num {
+            font-style: normal;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 10px;
-        }
-
-        th,
-        td {
-            border: 1px solid #555555;
-            padding: 5px;
+        /* =========================================================
+           8. TABLES & FIGURES (SPANNING & SINGLE COLUMN)
+           ========================================================= */
+        .paper-table-container {
+            margin: 1rem 0;
             text-align: center;
-        }
-
-        th {
-            font-weight: bold;
+            text-indent: 0;
+            break-inside: avoid;
         }
 
         .table-caption {
+            font-size: 8pt;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+            font-weight: normal;
+            letter-spacing: 0.5px;
+        }
+
+        .paper-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 8pt;
+            margin: 0 auto;
+        }
+
+        .paper-table th, 
+        .paper-table td {
+            padding: 4px 6px;
             text-align: center;
-            font-size: 10px;
-            margin-bottom: 5px;
         }
 
-        /* References */
-
-        .references {
-            font-size: 10px;
+        .paper-table tr.top-border {
+            border-top: 1.5px solid var(--border-line);
         }
 
-        .reference {
-            margin-bottom: 6px;
-            line-height: 1.3;
+        .paper-table tr.header-border {
+            border-bottom: 1px solid var(--border-line);
         }
 
-        /* Footer */
+        .paper-table tr.bottom-border {
+            border-bottom: 1.5px solid var(--border-line);
+        }
 
-        .footer {
+        .table-footnote {
+            font-size: 7.5pt;
+            text-align: left;
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+
+        .figure-box {
+            border: 1px dashed #666666;
+            background: #f9f9f9;
+            padding: 1.5rem 1rem;
             text-align: center;
-            margin-top: 25px;
-            font-size: 10px;
+            margin: 1rem 0 0.4rem 0;
+            font-size: 8pt;
             color: #555555;
+            break-inside: avoid;
         }
 
-       
+        .figure-caption {
+            font-size: 8pt;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-indent: 0;
+        }
 
-       
+        /* =========================================================
+           9. REFERENCES & FOOTNOTES
+           ========================================================= */
+        .references-section {
+            margin-top: 1rem;
+        }
+
+        .reference-item {
+            font-size: 8pt;
+            line-height: 1.25;
+            padding-left: 1.5em;
+            text-indent: -1.5em;
+            margin-bottom: 0.35rem;
+            text-align: left;
+        }
+
+        /* =========================================================
+           10. PRINT OPTIMIZATION (@MEDIA PRINT)
+           ========================================================= */
+        @media print {
+            @page {
+                size: letter;
+                margin: 0.75in 0.625in 1in 0.625in;
+            }
+
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+            }
+
+            .toolbar {
+                display: none !important;
+            }
+
+            .page-container {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                background: transparent !important;
+            }
+
+            .two-column-body {
+                column-count: 2 !important;
+                column-gap: 0.24in !important;
+            }
+        }
     </style>
-
 </head>
-
-
 <body>
 
+    <!-- Pure CSS Radio Inputs for View Toggle -->
+    <input type="radio" name="view-mode" id="mode-a4" class="view-toggle" checked>
+    <input type="radio" name="view-mode" id="mode-full" class="view-toggle">
 
-    <div class="paper">
-
-
-        <!-- TITLE -->
-
-        <div class="title">
-
-            A Study of Modern Web Development
-            Using HTML and CSS
-
+    <!-- Top Controls Toolbar -->
+    <header class="toolbar">
+        <div class="toolbar-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            IEEE Conference Paper Template
         </div>
 
-
-        <!-- AUTHORS -->
-
-        <div class="authors">
-
-            <strong>Muhammad Talha</strong><br>
-
-            Department of Computer Science<br>
-
-            Air University, Islamabad, Pakistan<br>
-
-            muhammadtalha8150@gmail.com
-
+        <div class="toolbar-options">
+            <label for="mode-a4" class="view-label" title="Print-ready Page Layout">A4 Page View</label>
+            <label for="mode-full" class="view-label" title="Responsive Full Screen Layout">Full Screen View</label>
         </div>
 
-
-        <!-- ABSTRACT -->
-
-        <div class="abstract">
-
-            <span class="abstract-title">
-                Abstract—
-            </span>
-
-            Web development has become an important part of
-            modern software development. HTML provides the
-            structure of a web page while CSS is used to control
-            its appearance and layout. This paper presents a
-            basic study of modern web development using HTML
-            and CSS. Different concepts including layouts,
-            responsive design, Flexbox, Grid, colors, spacing,
-            and user interface design are discussed. The purpose
-            of this study is to understand how these technologies
-            can be combined to create simple, responsive and
-            user-friendly web interfaces.
-
-        </div>
-
-
-        <!-- KEYWORDS -->
-
-        <div class="keywords">
-
-            <strong>Keywords—</strong>
-
-            HTML, CSS, Web Development, Flexbox, Grid,
-            Responsive Design, User Interface
-
-        </div>
-
-
-
-        <!-- TWO COLUMNS -->
-
-        <div class="columns">
-
-
-            <!-- INTRODUCTION -->
-
-            <h2>
-                I. Introduction
-            </h2>
-
-            <p>
-
-                The World Wide Web has changed the way people
-                communicate, learn, work and access information.
-                Websites and web applications are now used in
-                education, business, healthcare, entertainment
-                and many other areas.
-
-            </p>
-
-            <p>
-
-                HTML and CSS are two fundamental technologies
-                used in web development. HTML is responsible for
-                creating the structure of a webpage, while CSS
-                controls its visual presentation.
-
-            </p>
-
-            <p>
-
-                A combination of HTML and CSS allows developers
-                to create interfaces that are organized,
-                attractive and responsive on different screen
-                sizes.
-
-            </p>
-
-
-
-            <!-- HTML -->
-
-            <h2>
-                II. HTML
-            </h2>
-
-            <p>
-
-                HyperText Markup Language, commonly known as HTML,
-                is used to define the structure of a webpage.
-                HTML uses elements such as headings, paragraphs,
-                links, images, tables and forms.
-
-            </p>
-
-            <p>
-
-                For example, a simple HTML heading can be created
-                using the following element:
-
-            </p>
-
-            <p>
-                &lt;h1&gt;My Website&lt;/h1&gt;
-            </p>
-
-            <p>
-
-                HTML provides the basic structure on which CSS
-                styles can be applied.
-
-            </p>
-
-
-
-            <!-- CSS -->
-
-            <h2>
-                III. CSS
-            </h2>
-
-            <p>
-
-                Cascading Style Sheets, or CSS, is used to style
-                HTML elements. CSS can control colors, fonts,
-                spacing, borders, sizes and layouts.
-
-            </p>
-
-            <p>
-
-                CSS also provides several layout systems. Two
-                commonly used systems are Flexbox and CSS Grid.
-
-            </p>
-
-
-
-            <!-- FLEXBOX -->
-
-            <h2>
-                IV. Flexbox
-            </h2>
-
-            <p>
-
-                Flexbox is a CSS layout system designed mainly
-                for arranging elements in one direction. It can
-                arrange elements in rows or columns.
-
-            </p>
-
-            <p>
-
-                The following properties are commonly used with
-                Flexbox:
-
-            </p>
-
-            <ul>
-
-                <li>display: flex</li>
-
-                <li>flex-direction</li>
-
-                <li>justify-content</li>
-
-                <li>align-items</li>
-
-                <li>flex-wrap</li>
-
-            </ul>
-
-
-
-            <!-- GRID -->
-
-            <h2>
-                V. CSS Grid
-            </h2>
-
-            <p>
-
-                CSS Grid is a two-dimensional layout system.
-                It allows developers to create rows and columns
-                for arranging content.
-
-            </p>
-
-            <p>
-
-                Grid is particularly useful for dashboards,
-                galleries, cards and other structured layouts.
-
-            </p>
-
-
-
-            <!-- RESPONSIVE -->
-
-            <h2>
-                VI. Responsive Design
-            </h2>
-
-            <p>
-
-                Responsive web design allows a website to adjust
-                according to the size of the user's screen.
-                This is important because websites are accessed
-                from computers, tablets and mobile phones.
-
-            </p>
-
-            <p>
-
-                CSS media queries can be used to apply different
-                styles for different screen sizes.
-
-            </p>
-
-
-
-            <!-- EQUATION -->
-
-            <h2>
-                VII. Web Performance
-            </h2>
-
-            <p>
-
-                A simple way to represent page loading time can
-                be expressed using the following equation:
-
-            </p>
-
-            <div class="equation">
-
-                T = T<sub>DNS</sub> + T<sub>Connection</sub>
-                + T<sub>Download</sub>
-
-            </div>
-
-            <p>
-
-                Reducing unnecessary resources and optimizing
-                webpage structure can help improve the overall
-                performance of a website.
-
-            </p>
-
-
-
-            <!-- FIGURE -->
-
-            <div class="figure">
-
+        <a href="javascript:window.print()" class="print-btn" title="Print or Save as PDF">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            Print / Save PDF
+        </a>
+    </header>
+
+    <!-- Main Academic Paper Sheet Container -->
+    <main class="page-container">
+        <article class="paper-sheet">
+
+            <!-- Title & Header Section -->
+            <header class="paper-header">
+                <h1 class="paper-title">Paper Title*</h1>
+                <p class="paper-subtitle-note">*Note: Sub-titles are not captured in Xplore and should not be used</p>
+
+                <!-- 6 Authors Grid -->
+                <div class="authors-grid">
+                    
+                    <div class="author-card">
+                        <span class="author-name">line 1: 1st Given Name Surname</span>
+                        <span class="author-line">line 2: dept. name of organization (of Affiliation)</span>
+                        <span class="author-line">line 3: name of organization (of Affiliation)</span>
+                        <span class="author-line">line 4: City, Country</span>
+                        <span class="author-email">line 5: email address or ORCID</span>
+                    </div>
+
+                    <div class="author-card">
+                        <span class="author-name">line 1: 2nd Given Name Surname</span>
+                        <span class="author-line">line 2: dept. name of organization (of Affiliation)</span>
+                        <span class="author-line">line 3: name of organization (of Affiliation)</span>
+                        <span class="author-line">line 4: City, Country</span>
+                        <span class="author-email">line 5: email address or ORCID</span>
+                    </div>
+
+                    <div class="author-card">
+                        <span class="author-name">line 1: 3rd Given Name Surname</span>
+                        <span class="author-line">line 2: dept. name of organization (of Affiliation)</span>
+                        <span class="author-line">line 3: name of organization (of Affiliation)</span>
+                        <span class="author-line">line 4: City, Country</span>
+                        <span class="author-email">line 5: email address or ORCID</span>
+                    </div>
+
+                    <div class="author-card">
+                        <span class="author-name">line 1: 4th Given Name Surname</span>
+                        <span class="author-line">line 2: dept. name of organization (of Affiliation)</span>
+                        <span class="author-line">line 3: name of organization (of Affiliation)</span>
+                        <span class="author-line">line 4: City, Country</span>
+                        <span class="author-email">line 5: email address or ORCID</span>
+                    </div>
+
+                    <div class="author-card">
+                        <span class="author-name">line 1: 5th Given Name Surname</span>
+                        <span class="author-line">line 2: dept. name of organization (of Affiliation)</span>
+                        <span class="author-line">line 3: name of organization (of Affiliation)</span>
+                        <span class="author-line">line 4: City, Country</span>
+                        <span class="author-email">line 5: email address or ORCID</span>
+                    </div>
+
+                    <div class="author-card">
+                        <span class="author-name">line 1: 6th Given Name Surname</span>
+                        <span class="author-line">line 2: dept. name of organization (of Affiliation)</span>
+                        <span class="author-line">line 3: name of organization (of Affiliation)</span>
+                        <span class="author-line">line 4: City, Country</span>
+                        <span class="author-email">line 5: email address or ORCID</span>
+                    </div>
+
+                </div>
+            </header>
+
+            <!-- Full Width Abstract & Keywords Section -->
+            <section class="abstract-section">
+                <p class="no-indent">
+                    <span class="abstract-title">Abstract—This electronic document is a “live” template and already defines the components of your paper [title, text, heads, etc.] in its style sheet. *CRITICAL: Do Not Use Symbols, Special Characters, Footnotes, or Math in Paper Title or Abstract. (Abstract)</span>
+                </p>
+                <p class="no-indent" style="margin-top: 0.4rem;">
+                    <span class="keywords-title">Keywords—component, formatting, style, styling, insert (key words)</span>
+                </p>
+            </section>
+
+            <!-- Two-Column Main Paper Body -->
+            <div class="two-column-body">
+
+                <!-- SECTION I -->
+                <h2 class="heading-1">I. Introduction</h2>
+                <p>This template, modified in MS Word 2007 and saved as a “Word 97-2003 Document” for the PC, provides authors with most of the formatting specifications needed for preparing electronic versions of their papers. All standard paper components have been specified for three reasons: (1) ease of use when formatting individual papers, (2) automatic compliance to electronic requirements that facilitate the concurrent or later production of electronic products, and (3) conformity of style throughout a conference proceedings. Margins, column widths, line spacing, and type styles are built-in; examples of the type styles are provided throughout this document and are identified in italic type, within parentheses, following the example. Some components, such as multi-leveled equations, graphics, and tables are not prescribed, although the various table text styles are provided. The formatter will need to create these components, incorporating the applicable criteria that follow.</p>
+
+                <!-- SECTION II -->
+                <h2 class="heading-1">II. Ease of Use</h2>
+                
+                <h3 class="heading-2">A. Selecting a Template</h3>
+                <p>First, confirm that you have the correct template for your paper size. This template has been tailored for output on the US-letter paper size. If you are using A4-sized paper, please close this file and download the file “MSW_A4_format”.</p>
+
+                <h3 class="heading-2">B. Maintaining the Integrity of the Specifications</h3>
+                <p>Identify applicable funding agency here. If none, delete this text box.</p>
+                <p>The template is used to format your paper and style the text. All margins, column widths, line spaces, and text fonts are prescribed; please do not alter them. You may note peculiarities. For example, the head margin in this template measures proportionately more than is customary. This measurement and others are deliberate, using specifications that anticipate your paper as one part of the entire proceedings, and not as an independent document. Please do not revise any of the current designations.</p>
+
+                <!-- SECTION III -->
+                <h2 class="heading-1">III. Prepare Your Paper Before Styling</h2>
+                <p>Before you begin to format your paper, first write and save the content as a separate text file. Complete all content and organizational editing before formatting. Please note sections A-D below for more information on proofreading, spelling and grammar.</p>
+                <p>Keep your text and graphic files separate until after the text has been formatted and styled. Do not use hard tabs, and limit use of hard returns to only one return at the end of a paragraph. Do not add any kind of pagination anywhere in the paper. Do not number text heads-the template will do that for you.</p>
+
+                <h3 class="heading-2">A. Abbreviations and Acronyms</h3>
+                <p>Define abbreviations and acronyms the first time they are used in the text, even after they have been defined in the abstract. Abbreviations such as IEEE, SI, MKS, CGS, sc, dc, and rms do not have to be defined. Do not use abbreviations in the title or heads unless they are unavoidable.</p>
+
+                <h3 class="heading-2">B. Units</h3>
+                <p>Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as “3.5-inch disk drive”.</p>
+                <p>Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.</p>
+                <p>Do not mix complete spellings and abbreviations of units: “Wb/m²” or “webers per square meter”, not “webers/m²”. Spell out units when they appear in text: “. . . a few henries”, not “. . . a few H”.</p>
+
+                <ul class="paper-list">
+                    <li>Use a zero before decimal points: “0.25”, not “.25”.</li>
+                    <li>Use “cm³”, not “cc”.</li>
+                </ul>
+
+                <h3 class="heading-2">C. Equations</h3>
+                <p>The equations are an exception to the prescribed specifications of this template. You will need to determine whether or not your equation should be typed using either the Times New Roman or the Symbol font (please no other font). To create multileveled equations, it may be necessary to treat the equation as a graphic and insert it into the text after your paper is styled.</p>
+                <p>Number equations consecutively. Equation numbers, within parentheses, are to position flush right, as in (1), using a right tab stop. To make your equations more compact, you may use the solidus ( / ), the exp function, or appropriate exponents. Italicize Roman symbols for quantities and variables, but not Greek symbols. Use a long dash rather than a hyphen for a minus sign. Punctuate equations with commas or periods when they are part of a sentence, as in:</p>
+
+                <!-- Equation 1 -->
+                <div class="equation-row">
+                    <span class="equation-math">a + b = γ</span>
+                    <span class="equation-num">(1)</span>
+                </div>
+
+                <p>Note that the equation is centered using a center tab stop. Be sure that the symbols in your equation have been defined before or immediately following the equation. Use “(1)”, not “Eq. (1)” or “equation (1)”, except at the beginning of a sentence: “Equation (1) is . . .”</p>
+
+                <h3 class="heading-2">D. Some Common Mistakes</h3>
+                <p>The word “data” is plural, not singular.</p>
+                <p>The subscript for the permeability of vacuum <i>μ</i><sub>0</sub>, and other common scientific constants, is zero with subscript formatting, not a lowercase letter “o”.</p>
+                <p>In American English, commas, semicolons, periods, question and exclamation marks are located within quotation marks only when a complete thought or name is cited, such as a title or full quotation. When quotation marks are used, instead of a bold or italic typeface, to highlight a word or phrase, punctuation should appear outside of the quotation marks. A parenthetical phrase or statement at the end of a sentence is punctuated outside of the closing parenthesis (like this). (A parenthetical sentence is punctuated within the parentheses.)</p>
+                <p>A graph within a graph is an “inset”, not an “insert”. The word alternatively is preferred to the word “alternately” (unless you really mean something that alternates).</p>
+                <p>Do not use the word “essentially” to mean “approximately” or “effectively”.</p>
+                <p>In your paper title, if the words “that uses” can accurately replace the word “using”, capitalize the “u”; if not, keep using lower-cased.</p>
+                <p>Be aware of the different meanings of the homophones “affect” and “effect”, “complement” and “compliment”, “discreet” and “discrete”, “principal” and “principle”.</p>
+                <p>Do not confuse “imply” and “infer”.</p>
+                <p>The prefix “non” is not a word; it should be joined to the word it modifies, usually without a hyphen.</p>
+                <p>There is no period after the “et” in the Latin abbreviation “et al.”. The abbreviation “i.e.” means “that is”, and the abbreviation “e.g.” means “for example”. An excellent style manual for science writers is [7].</p>
+
+                <!-- SECTION IV -->
+                <h2 class="heading-1">IV. Using the Template</h2>
+                <p>After the text edit has been completed, the paper is ready for the template. Duplicate the template file by using the Save As command, and use the naming convention prescribed by your conference for the name of your paper. In this newly created file, highlight all of the contents and import your prepared text file. You are now ready to style your paper; use the scroll down window on the left of the MS Word Formatting toolbar.</p>
+
+                <h3 class="heading-2">A. Authors and Affiliations</h3>
+                <p>The template is designed for, but not limited to, six authors. A minimum of one author is required for all conference articles. Author names should be listed starting from left to right and then moving down to the next line. This is the author sequence that will be used in future citations and by indexing services. Names should not be listed in columns nor group by affiliation. Please keep your affiliations as succinct as possible (for example, do not differentiate among departments of the same organization).</p>
+
+                <h3 class="heading-2">B. Identify the Headings</h3>
+                <p>Headings, or heads, are organizational devices that guide the reader through your paper. There are two types: component heads and text heads.</p>
+                <p>Component heads identify the different components of your paper and are not topically subordinate to each other. Examples include Acknowledgments and References and, for these, the correct style to use is “Heading 5”. Use “figure caption” for your Figure captions, and “table head” for your table title.</p>
+                <p>Text heads organize the topics on a relational, hierarchical basis. For example, the paper title is the primary text head because all subsequent material relates and elaborates on this one topic.</p>
+
+                <h3 class="heading-2">C. Figures and Tables</h3>
+                <p>Positioning Figures and Tables: Place figures and tables at the top and bottom of columns. Avoid placing them in the middle of columns. Large figures and tables may span across both columns. Figure captions should be below the figures; table heads should appear above the tables. Insert figures and tables after they are cited in the text. Use the abbreviation “Fig. 1”, even at the beginning of a sentence.</p>
+
+                <!-- Sample IEEE Table -->
+                <div class="paper-table-container">
+                    <div class="table-caption">Table I. Table Type Styles</div>
+                    <table class="paper-table">
+                        <thead>
+                            <tr class="top-border">
+                                <th>Table Head</th>
+                                <th colspan="3">Table Column Head</th>
+                            </tr>
+                            <tr class="header-border">
+                                <th></th>
+                                <th>Table column subhead</th>
+                                <th>Subhead</th>
+                                <th>Subhead</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bottom-border">
+                                <td>copy</td>
+                                <td>More table copy<sup>a</sup></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="table-footnote"><sup>a.</sup> Sample of a Table footnote. (Table footnote)</div>
+                </div>
+
+                <!-- Sample IEEE Figure Placeholder -->
                 <div class="figure-box">
-
-                    Web Development Process
-
+                    [ Sample Figure Graphic / Chart Box ]
                 </div>
-
-                <div class="caption">
-
-                    Fig. 1. Basic web development process.
-
-                </div>
-
-            </div>
-
-
-
-            <!-- TABLE -->
-
-            <div class="table-container">
-
-                <div class="table-caption">
-
-                    TABLE I<br>
-                    COMPARISON OF HTML AND CSS
-
-                </div>
-
-                <table>
-
-                    <tr>
-
-                        <th>
-                            Feature
-                        </th>
-
-                        <th>
-                            HTML
-                        </th>
-
-                        <th>
-                            CSS
-                        </th>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>
-                            Purpose
-                        </td>
-
-                        <td>
-                            Structure
-                        </td>
-
-                        <td>
-                            Styling
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>
-                            Layout
-                        </td>
-
-                        <td>
-                            Basic
-                        </td>
-
-                        <td>
-                            Advanced
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>
-                            Colors
-                        </td>
-
-                        <td>
-                            Limited
-                        </td>
-
-                        <td>
-                            Extensive
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>
-                            Responsive
-                        </td>
-
-                        <td>
-                            No
-                        </td>
-
-                        <td>
-                            Yes
-                        </td>
-
-                    </tr>
-
-                </table>
-
-            </div>
-
-
-
-            <!-- APPLICATION -->
-
-            <h2>
-                VIII. Applications
-            </h2>
-
-            <p>
-
-                HTML and CSS are used in many types of web
-                applications. They are commonly used for
-                educational websites, portfolios, dashboards,
-                business websites, blogs and online stores.
-
-            </p>
-
-            <p>
-
-                Modern frameworks and libraries may also use
-                HTML and CSS concepts as their foundation.
-
-            </p>
-
-
-
-            <!-- ADVANTAGES -->
-
-            <h2>
-                IX. Advantages
-            </h2>
-
-            <p>
-
-                HTML and CSS are relatively easy to learn and
-                provide a strong foundation for web development.
-                They are supported by modern web browsers and
-                can be used to create responsive interfaces.
-
-            </p>
-
-            <p>
-
-                Another important advantage is that both
-                technologies can be used without requiring
-                complex development environments.
-
-            </p>
-
-
-
-            <!-- LIMITATIONS -->
-
-            <h2>
-                X. Limitations
-            </h2>
-
-            <p>
-
-                HTML and CSS alone cannot provide advanced
-                application logic. JavaScript or a backend
-                programming language is normally required for
-                interactive features, data processing and
-                database operations.
-
-            </p>
-
-
-
-            <!-- CONCLUSION -->
-
-            <h2>
-                XI. Conclusion
-            </h2>
-
-            <p>
-
-                HTML and CSS are fundamental technologies for
-                developing modern websites. HTML provides the
-                structure while CSS provides the visual design
-                and layout.
-
-            </p>
-
-            <p>
-
-                Concepts such as Flexbox, Grid, responsive design
-                and CSS styling allow developers to create
-                organized and user-friendly interfaces. Learning
-                these concepts provides a strong foundation for
-                further web development.
-
-            </p>
-
-
-
-            <!-- REFERENCES -->
-
-            <h2>
-                References
-            </h2>
-
-            <div class="references">
-
-                <div class="reference">
-
-                    [1] W3C, "HTML Standard," World Wide Web
-                    Consortium.
-
-                </div>
-
-                <div class="reference">
-
-                    [2] W3C, "CSS Specifications," World Wide
-                    Web Consortium.
-
-                </div>
-
-                <div class="reference">
-
-                    [3] M. Duckett, "HTML and CSS: Design and
-                    Build Websites," Wiley, 2014.
-
-                </div>
-
-                <div class="reference">
-
-                    [4] Mozilla Developer Network, "HTML and CSS
-                    Documentation."
-
+                <div class="figure-caption">Fig. 1. Example of a figure caption. (figure caption)</div>
+
+                <p>Figure Labels: Use 8 point Times New Roman for Figure labels. Use words rather than symbols or abbreviations when writing Figure axis labels to avoid confusing the reader. As an example, write the quantity “Magnetization”, or “Magnetization, M”, not just “M”. If including units in the label, present them within parentheses. Do not label axes only with units. In the example, write “Magnetization (A/m)” or “Magnetization {A[m(1)]}”, not just “A/m”. Do not label axes with a ratio of quantities and units. For example, write “Temperature (K)”, not “Temperature/K”.</p>
+
+                <!-- ACKNOWLEDGMENT SECTION -->
+                <h2 class="heading-1">Acknowledgment</h2>
+                <p>The preferred spelling of the word “acknowledgment” in America is without an “e” after the “g”. Avoid the stilted expression “one of us (R. B. G.) thanks ...”. Instead, try “R. B. G. thanks...”. Put sponsor acknowledgments in the unnumbered footnote on the first page.</p>
+
+                <!-- REFERENCES SECTION -->
+                <h2 class="heading-1">References</h2>
+                <div class="references-section">
+                    <div class="reference-item">[1] G. Eason, B. Noble, and I. N. Sneddon, “On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,” <i>Phil. Trans. Roy. Soc. London</i>, vol. A247, pp. 529–551, April 1955.</div>
+                    <div class="reference-item">[2] J. Clerk Maxwell, <i>A Treatise on Electricity and Magnetism</i>, 3rd ed., vol. 2. Oxford: Clarendon, 1892, pp.68–73.</div>
+                    <div class="reference-item">[3] I. S. Jacobs and C. P. Bean, “Fine particles, thin films and exchange anisotropy,” in <i>Magnetism</i>, vol. III, G. T. Rado and H. Suhl, Eds. New York: Academic, 1963, pp. 271–350.</div>
+                    <div class="reference-item">[4] K. Elissa, “Title of paper if known,” unpublished.</div>
+                    <div class="reference-item">[5] R. Nicole, “Title of paper with only first word capitalized,” <i>J. Name Stand. Abbrev.</i>, in press.</div>
+                    <div class="reference-item">[6] Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, “Electron spectroscopy studies on magneto-optical media and plastic substrate interface,” <i>IEEE Transl. J. Magn. Japan</i>, vol. 2, pp. 740–741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].</div>
+                    <div class="reference-item">[7] M. Young, <i>The Technical Writer’s Handbook</i>. Mill Valley, CA: University Science, 1989.</div>
+                    <div class="reference-item">[8] K. Eves and J. Valasek, “Adaptive control for singularly perturbed systems examples,” Code Ocean, Aug. 2023. [Online]. Available: https://codeocean.com/capsule/4989235/tree</div>
+                    <div class="reference-item">[9] D. P. Kingma and M. Welling, “Auto-encoding variational Bayes,” 2013, arXiv:1312.6114. [Online]. Available: https://arxiv.org/abs/1312.6114</div>
+                    <div class="reference-item">[10] S. Liu, “Wi-Fi Energy Detection Testbed (12MTC),” 2023, GitHub repository. [Online]. Available: https://github.com/liustone99/Wi-Fi-Energy-Detection-Testbed-12MTC</div>
+                    <div class="reference-item">[11] “Treatment episode data set: discharges (TEDS-D): concatenated, 2006 to 2009.” U.S. Department of Health and Human Services, Substance Abuse and Mental Health Services Administration, Office of Applied Studies, August, 2013, DOI:10.3886/ICPSR30122.v2</div>
                 </div>
 
             </div>
 
-
-        </div>
-
-
-        <div class="footer">
-
-            IEEE Style Web Development Paper | Muhammad Talha
-
-        </div>
-
-
-    </div>
-
+        </article>
+    </main>
 
 </body>
-
 </html>

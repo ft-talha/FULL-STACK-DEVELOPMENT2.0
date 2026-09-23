@@ -1,356 +1,1356 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Talha Portfolio</title>
-
+    <title>Muhammad Talha | BS Computer Science Student & Flutter Developer</title>
+    
+    <!-- Font Awesome 6 CSS CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- C#ogle Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --bg-body: #090d16;
+            --bg-card: #111827;
+            --bg-card-hover: #1f2937;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(6, 182, 212, 0.3);
+            
+            --accent-cyan: #06b6d4;
+            --accent-indigo: #6366f1;
+            --accent-emerald: #10b981;
+            
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --text-dim: #6b7280;
+            
+            --glow-cyan: rgba(6, 182, 212, 0.15);
+            --glow-emerald: rgba(16, 185, 129, 0.15);
+        }
 
-        * {
+        *, *::before, *::after {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-        }
-
-        .main {
-            display: flex;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
             min-height: 100vh;
         }
 
-        .left {
-            width: 35%;
-            background-color: #000000;
-            color: #ffffff;
-            padding: 50px;
-            border-right: 2px solid #f59e0b;
+        code, pre {
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        .right {
-            width: 65%;
-            background-color: #18181b;
-            color: #ffffff;
-            padding: 50px;
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 9999px;
+            border: 2px solid #090d16;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-cyan);
         }
 
-        .left h1 {
-            font-size: 45px;
-            margin-bottom: 5px;
-            color: #eab308;
+        .glass-card {
+            background-color: rgba(17, 24, 39, 0.75);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 1.25rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .left h2 {
-            font-weight: normal;
-            color: #fef08a;
+        .glass-card:hover {
+            border-color: var(--border-highlight);
+            box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.15);
         }
 
-        .left p {
-            line-height: 1.6;
-            color: #e4e4e7;
+        .text-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .skills {
-            margin-top: 35px;
+        .bg-gradient-accent {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
         }
 
-        .skill {
-            background-color: #27272a;
-            color: #fef08a;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #eab308;
-            transition: 0.3s;
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
         }
 
-        .skill:hover {
-            background-color: #eab308;
-            color: #000000;
-            font-weight: bold;
-            transform: translateX(8px);
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
         }
 
-        .contact {
-            margin-top: 35px;
+        @keyframes fillSkillBar {
+            from { width: 0%; }
+            to { width: var(--skill-percent); }
         }
 
-        .contact a {
-            color: #fef08a;
-            text-decoration: none;
+        .animated-pulse {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        .animated-float {
+            animation: floatSlow 4s infinite ease-in-out;
+        }
+
+        .app-layout {
+            max-width: 1536px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        @media (min-width: 1024px) {
+            .app-layout {
+                flex-direction: row;
+            }
+
+            .sidebar-column {
+                width: 32%;
+                max-width: 420px;
+                min-width: 340px;
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                padding: 1.5rem;
+                overflow-y: auto;
+                flex-shrink: 0;
+            }
+
+            .content-column {
+                width: 68%;
+                flex-grow: 1;
+                padding: 2.5rem 2rem;
+            }
+        }
+
+        .avatar-frame {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.25rem;
+            border-radius: 2rem;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo), var(--accent-emerald));
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.3);
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 1.75rem;
+            background-color: var(--bg-card);
             display: block;
-            margin: 10px 0;
         }
 
-        .contact a:hover {
-            color: #eab308;
-            text-decoration: underline;
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 9999px;
+            color: #34d399;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
 
-        .right h1 {
-            color: #eab308;
-            font-size: 38px;
-            margin-top: 0;
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulseGlow 1.5s infinite;
         }
 
-        .right h2 {
-            color: #fef08a;
-            border-bottom: 2px solid #eab308;
-            padding-bottom: 8px;
-            margin-top: 35px;
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
         }
 
-        .about {
-            line-height: 1.7;
-            color: #d4d4d8;
+        .nav-link-item:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+            padding-left: 1.25rem;
         }
 
-        .projects {
+        .nav-link-item i {
+            color: var(--accent-cyan);
+            width: 1.25rem;
+        }
+
+        .social-btn {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .social-btn:hover {
+            color: #ffffff;
+            background: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px -4px rgba(6, 182, 212, 0.4);
+        }
+
+        .cta-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.875rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-decoration: none;
+            box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.3);
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px -4px rgba(6, 182, 212, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .mobile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            background: rgba(17, 24, 39, 0.9);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (min-width: 1024px) {
+            .mobile-header {
+                display: none;
+            }
+        }
+
+        #mobile-menu-toggle {
+            display: none;
+        }
+
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(9, 13, 22, 0.96);
+            backdrop-filter: blur(16px);
+            z-index: 50;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transform: translateY(-100%);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #mobile-menu-toggle:checked ~ .mobile-drawer {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .section-block {
+            margin-bottom: 4rem;
+            scroll-margin-top: 2rem;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .section-title {
+                font-size: 2.25rem;
+            }
+        }
+
+        .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
         }
 
-        .project {
-            background-color: #27272a;
-            padding: 20px;
-            border-left: 5px solid #eab308;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-
-        .project:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(234, 179, 8, 0.2);
-        }
-
-        .project h3 {
-            color: #eab308;
-            margin-top: 0;
-        }
-
-        .project p {
-            color: #d4d4d8;
-            line-height: 1.5;
-        }
-
-        .education {
-            background-color: #27272a;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 5px solid #eab308;
-            color: #d4d4d8;
-        }
-
-        .education h3 {
-            margin-top: 0;
-            color: #eab308;
-        }
-
-        @media (max-width: 800px) {
-
-            .main {
-                flex-direction: column;
-            }
-
-            .left {
-                width: 100%;
-                padding: 35px;
-                border-right: none;
-                border-bottom: 2px solid #eab308;
-            }
-
-            .right {
-                width: 100%;
-                padding: 35px;
-            }
-
-            .projects {
-                grid-template-columns: 1fr;
+        @media (min-width: 640px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
+        .stat-card {
+            padding: 1.25rem 1rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            line-height: 1;
+            margin-bottom: 0.35rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .skill-input-radio {
+            display: none;
+        }
+
+        .skill-filter-nav {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(17, 24, 39, 0.8);
+            padding: 0.25rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .skill-filter-label {
+            padding: 0.4rem 0.85rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        #sf-all:checked ~ .skill-filter-nav label[for="sf-all"],
+        #sf-frontend:checked ~ .skill-filter-nav label[for="sf-frontend"],
+        #sf-backend:checked ~ .skill-filter-nav label[for="sf-backend"],
+        #sf-devops:checked ~ .skill-filter-nav label[for="sf-devops"] {
+            background: var(--accent-cyan);
+            color: #090d16;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .skill-card {
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        #sf-frontend:checked ~ .skills-grid .skill-card:not([data-category="frontend"]),
+        #sf-backend:checked ~ .skills-grid .skill-card:not([data-category="backend"]),
+        #sf-devops:checked ~ .skills-grid .skill-card:not([data-category="devops"]) {
+            display: none;
+        }
+
+        .skill-bar-track {
+            width: 100%;
+            height: 8px;
+            background: #1f2937;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 0.75rem;
+        }
+
+        .skill-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-indigo));
+            border-radius: 9999px;
+            width: var(--skill-percent);
+            animation: fillSkillBar 1.5s ease-out forwards;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .project-thumb {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+            background: #1f2937;
+        }
+
+        .project-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-img {
+            transform: scale(1.08);
+        }
+
+        .project-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(9, 13, 22, 0.75);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .badge-pill {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .modal-wrapper {
+            position: fixed;
+            inset: 0;
+            background: rgba(9, 13, 22, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-wrapper:target {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-highlight);
+            border-radius: 1.5rem;
+            max-width: 650px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-wrapper:target .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: var(--accent-cyan);
+            color: #090d16;
+        }
+
+        .timeline-radio {
+            display: none;
+        }
+
+        .timeline-tab-nav {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(17, 24, 39, 0.8);
+            padding: 0.25rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            width: fit-content;
+        }
+
+        .timeline-tab-label {
+            padding: 0.4rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #tl-work:checked ~ .timeline-tab-nav label[for="tl-work"],
+        #tl-edu:checked ~ .timeline-tab-nav label[for="tl-edu"] {
+            background: var(--accent-cyan);
+            color: #090d16;
+        }
+
+        #tl-work:checked ~ .timeline-content-edu,
+        #tl-edu:checked ~ .timeline-content-work {
+            display: none;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid #1f2937;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: calc(-2rem - 6px);
+            top: 0.25rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: rgba(9, 13, 22, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.875rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+            background: rgba(17, 24, 39, 0.9);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
     </style>
-
 </head>
-
 <body>
 
-    <div class="main">
-
-        <!-- LEFT COLUMN -->
-
-        <div class="left">
-
-            <h1>Talha</h1>
-
-            <h2>Computer Science Student</h2>
-
-            <p>
-                BS Computer Science student interested in
-                software development, web development and
-                mobile application development.
-            </p>
-
-
-            <div class="skills">
-
-                <h2>Skills</h2>
-
-                <div class="skill">
-                    HTML
-                </div>
-
-                <div class="skill">
-                    CSS
-                </div>
-
-                <div class="skill">
-                    C++
-                </div>
-
-                <div class="skill">
-                    Java
-                </div>
-
-                <div class="skill">
-                    Flutter & Dart
-                </div>
-
-                <div class="skill">
-                    MySQL & Firebase
-                </div>
-
+    <!-- MOBILE TOP BAR -->
+    <header class="mobile-header">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent-cyan);">
+                <img src="https://via.placeholder.com/150x150.png?text=Talha" alt="Muhammad Talha" style="width:100%; height:100%; object-fit:cover;">
             </div>
-
-
-            <div class="contact">
-
-                <h2>Contact</h2>
-
-                <a href="mailto:muhammadtalha8150@gmail.com">
-                    Email
-                </a>
-
-                <a href="https://github.com/talha-23" target="_blank">
-                    GitHub
-                </a>
-
-                <a href="https://www.linkedin.com/in/muhammad-talha-cs"
-                    target="_blank">
-                    LinkedIn
-                </a>
-
+            <div>
+                <h2 style="font-size: 0.875rem; font-weight: 700; color: var(--text-main);">Muhammad Talha</h2>
+                <p style="font-size: 0.6875rem; color: var(--accent-cyan); font-weight: 600;">CS Student & Flutter Developer</p>
             </div>
-
         </div>
 
+        <!-- Checkbox Trigger for Mobile Drawer -->
+        <label for="mobile-menu-toggle" style="cursor: pointer; padding: 0.5rem; color: var(--text-main); font-size: 1.25rem;">
+            <i class="fa-solid fa-bars"></i>
+        </label>
+    </header>
 
-        <!-- RIGHT COLUMN -->
-
-        <div class="right">
-
-            <h1>My Portfolio</h1>
-
-
-            <h2>About Me</h2>
-
-            <p class="about">
-
-                I am a Computer Science student passionate about
-                turning ideas into real-world software solutions.
-                My main interests are app development and web
-                development.
-
-                <br><br>
-
-                I am currently learning new technologies and
-                exploring areas such as Artificial Intelligence
-                and Data Science.
-
-            </p>
-
-
-            <h2>My Projects</h2>
-
-            <div class="projects">
-
-                <div class="project">
-
-                    <h3>Medicata</h3>
-
-                    <p>
-                        A medication reminder and tracking
-                        application developed using Flutter.
-                    </p>
-
+    <!-- PURE CSS MOBILE MENU DRAWER -->
+    <input type="checkbox" id="mobile-menu-toggle">
+    <div class="mobile-drawer">
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <img src="https://via.placeholder.com/150x150.png?text=Talha" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-cyan);">
+                <div>
+                    <h3 style="font-size: 1rem; font-weight: 800;">Muhammad Talha</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">Islamabad, Pakistan</span>
                 </div>
-
-
-                <div class="project">
-
-                    <h3>SCAEN</h3>
-
-                    <p>
-                        An emergency assistance application
-                        designed to provide help during
-                        emergency situations.
-                    </p>
-
-                </div>
-
-
-                <div class="project">
-
-                    <h3>Campus Pulse</h3>
-
-                    <p>
-                        A student-focused application for
-                        sharing campus information and updates.
-                    </p>
-
-                </div>
-
-
-                <div class="project">
-
-                    <h3>EduConnect</h3>
-
-                    <p>
-                        A university academic portal developed
-                        using Blazor Server and C#.
-                    </p>
-
-                </div>
-
             </div>
-
-
-            <h2>Education</h2>
-
-            <div class="education">
-
-                <h3>BS Computer Science</h3>
-
-                <p>
-                    Air University Islamabad
-                </p>
-
-                <p>
-                    Computer Science Student
-                </p>
-
-            </div>
-
+            <label for="mobile-menu-toggle" style="cursor: pointer; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
+                <i class="fa-solid fa-xmark"></i>
+            </label>
         </div>
+
+        <nav style="display: flex; flex-direction: column; gap: 0.75rem; margin: auto 0;">
+            <label for="mobile-menu-toggle"><a href="#about" class="nav-link-item"><span style="display:flex; align-items:center; gap:0.75rem;"><i class="fa-solid fa-user"></i> About Overview</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.75rem;"></i></a></label>
+            <label for="mobile-menu-toggle"><a href="#skills" class="nav-link-item"><span style="display:flex; align-items:center; gap:0.75rem;"><i class="fa-solid fa-code"></i> Skills & Stack</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.75rem;"></i></a></label>
+            <label for="mobile-menu-toggle"><a href="#projects" class="nav-link-item"><span style="display:flex; align-items:center; gap:0.75rem;"><i class="fa-solid fa-laptop-code"></i> Featured Projects</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.75rem;"></i></a></label>
+            <label for="mobile-menu-toggle"><a href="#experience" class="nav-link-item"><span style="display:flex; align-items:center; gap:0.75rem;"><i class="fa-solid fa-briefcase"></i> Experience</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.75rem;"></i></a></label>
+            <label for="mobile-menu-toggle"><a href="#contact" class="nav-link-item"><span style="display:flex; align-items:center; gap:0.75rem;"><i class="fa-solid fa-paper-plane"></i> Contact Me</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.75rem;"></i></a></label>
+        </nav>
+
+        <a href="#contact" onclick="document.getElementById('mobile-menu-toggle').checked=false;" class="cta-btn">
+            <i class="fa-solid fa-download"></i> Download Resume CV
+        </a>
+    </div>
+
+    <div class="app-layout">
+
+        <!-- LEFT COLUMN: STICKY SIDEBAR -->
+        <aside class="sidebar-column">
+            <div class="glass-card" style="padding: 1.75rem 1.25rem; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                
+                <div>
+                    <!-- Glowing Profile Avatar -->
+                    <div class="avatar-frame animated-float">
+                        <img src="https://images.unsplash.com/photo-1578863873955-40421002faa6?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Muhammad Talha Profile" class="avatar-img">
+                    </div>
+
+                    <!-- Available for Work Pulse Badge -->
+                    <div class="status-badge" style="margin-bottom: 1rem;">
+                        <span class="status-dot"></span>
+                        Available for Opportunities
+                    </div>
+
+                    <!-- Name & Professional Title -->
+                    <h1 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.25rem;">Muhammad Talha</h1>
+                    <p style="font-size: 0.8125rem; font-weight: 600; color: var(--accent-cyan); margin-bottom: 1rem;">
+                        BS Computer Science Student & Flutter Developer
+                    </p>
+
+                    <!-- Pitch Paragraph -->
+                    <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.5rem; padding: 0 0.5rem;">
+                        BS Computer Science student at Air University Islamabad, building mobile and web applications with Flutter, C++, C#, JavaScript, Firebase, and databases.
+                    </p>
+
+                    <!-- Quick Information List -->
+                    <div style="display: flex; flex-direction: column; gap: 0.6rem; text-align: left; background: rgba(9, 13, 22, 0.4); padding: 0.85rem; border-radius: 0.875rem; border: 1px solid var(--border-color); margin-bottom: 1.5rem; font-size: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--text-dim);"><i class="fa-solid fa-envelope" style="color: var(--accent-cyan); margin-right: 0.35rem;"></i> Email:</span>
+                            <span style="font-weight: 600; color: var(--text-main);">talha-23</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--text-dim);"><i class="fa-solid fa-location-dot" style="color: var(--accent-cyan); margin-right: 0.35rem;"></i> Location:</span>
+                            <span style="font-weight: 600; color: var(--text-main);">Islamabad, Pakistan</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--text-dim);"><i class="fa-solid fa-award" style="color: var(--accent-cyan); margin-right: 0.35rem;"></i> Experience:</span>
+                            <span style="font-weight: 600; color: var(--accent-emerald);">3+ Semesters</span>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Anchor Navigation Links -->
+                    <nav style="display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1.5rem;" class="desktop-only-nav">
+                        <a href="#about" class="nav-link-item"><span><i class="fa-solid fa-user"></i> About Overview</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem; opacity: 0.5;"></i></a>
+                        <a href="#skills" class="nav-link-item"><span><i class="fa-solid fa-code"></i> Technical Stack</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem; opacity: 0.5;"></i></a>
+                        <a href="#projects" class="nav-link-item"><span><i class="fa-solid fa-layer-group"></i> Featured Projects</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem; opacity: 0.5;"></i></a>
+                        <a href="#experience" class="nav-link-item"><span><i class="fa-solid fa-briefcase"></i> Experience & Edu</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem; opacity: 0.5;"></i></a>
+                        <a href="#contact" class="nav-link-item"><span><i class="fa-solid fa-paper-plane"></i> Get In Touch</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem; opacity: 0.5;"></i></a>
+                    </nav>
+                </div>
+
+                <div>
+                    <!-- Social Media Links -->
+                    <div style="display: flex; items-center; justify-content: center; gap: 0.6rem; margin-bottom: 1.25rem;">
+                        <a href="https://github.com/talha-23" target="_blank" class="social-btn" title="GitHub Profile"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://linkedin.com/in/muhammad-talha-cs" target="_blank" class="social-btn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" target="_blank" class="social-btn" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" target="_blank" class="social-btn" title="Dribbble Portfolio"><i class="fa-brands fa-dribbble"></i></a>
+                    </div>
+
+                    <!-- CV Download Button -->
+                    <a href="#contact" class="cta-btn">
+                        <i class="fa-solid fa-file-arrow-down"></i> Download Resume CV
+                    </a>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- RIGHT COLUMN: MAIN CONTENT -->
+        <main class="content-column">
+
+            <!-- SECTION 1: HERO & ABOUT OVERVIEW -->
+            <section id="about" class="section-block">
+                <div class="glass-card" style="padding: 2rem; position: relative; overflow: hidden; margin-bottom: 1.5rem;">
+                    <!-- Decorative ambient gradient blur -->
+                    <div style="position: absolute; top: -3rem; right: -3rem; width: 12rem; height: 12rem; background: var(--accent-cyan); opacity: 0.12; filter: blur(50px); border-radius: 50%; pointer-events: none;"></div>
+
+                    <span class="section-tag"><i class="fa-solid fa-sparkles"></i> Welcome to my space</span>
+                    <h2 class="section-title">
+                        Building Useful Applications & <span class="text-gradient">Practical Software Solutions.</span>
+                    </h2>
+
+                    <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 1.5rem;">
+                        Hello! I am <strong style="color: var(--text-main);">Muhammad Talha</strong>, a passionate BS Computer Science Student with over 6 years of experience engineering modern web applications, microservices, and design systems. I bridge the gap between robust backend performance and slick, user-centric interfaces.
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+                        <div class="glass-card" style="padding: 1rem; display: flex; align-items: flex-start; gap: 0.85rem; background: rgba(9,13,22,0.5);">
+                            <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.625rem; background: var(--glow-cyan); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; shrink: 0;">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 0.875rem; font-weight: 700; margin-bottom: 0.2rem;">Practical Application Development</h4>
+                                <p style="font-size: 0.75rem; color: var(--text-muted);">Building simple, responsive and user-friendly applications for real-world problems.</p>
+                            </div>
+                        </div>
+
+                        <div class="glass-card" style="padding: 1rem; display: flex; align-items: flex-start; gap: 0.85rem; background: rgba(9,13,22,0.5);">
+                            <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.625rem; background: var(--glow-emerald); color: var(--accent-emerald); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; shrink: 0;">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 0.875rem; font-weight: 700; margin-bottom: 0.2rem;">Learning & Improving</h4>
+                                <p style="font-size: 0.75rem; color: var(--text-muted);">Continuously improving programming, database, software engineering and development skills.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="glass-card stat-card">
+                        <div class="stat-number">3+</div>
+                        <div class="stat-label">Semesters Completed</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-number">3+</div>
+                        <div class="stat-label">Main Projects</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-number">3.11</div>
+                        <div class="stat-label">Current CGPA</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-number">2028</div>
+                        <div class="stat-label">Expected Graduation</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: SKILLS & TECHNICAL STACK -->
+            <section id="skills" class="section-block">
+                <span class="section-tag"><i class="fa-solid fa-microchip"></i> Skills & Tools</span>
+                <h2 class="section-title">Technical Skills</h2>
+
+                <!-- Pure CSS Radio Inputs for Filter Tabs -->
+                <input type="radio" name="skill-filter" id="sf-all" class="skill-input-radio" checked>
+                <input type="radio" name="skill-filter" id="sf-frontend" class="skill-input-radio">
+                <input type="radio" name="skill-filter" id="sf-backend" class="skill-input-radio">
+                <input type="radio" name="skill-filter" id="sf-devops" class="skill-input-radio">
+
+                <!-- Filter Navigation Labels -->
+                <div class="skill-filter-nav">
+                    <label for="sf-all" class="skill-filter-label">All Skills</label>
+                    <label for="sf-frontend" class="skill-filter-label">Frontend UI</label>
+                    <label for="sf-backend" class="skill-filter-label">Backend & API</label>
+                    <label for="sf-devops" class="skill-filter-label">DevOps & Cloud</label>
+                </div>
+
+                <!-- Skills Card Grid -->
+                <div class="skills-grid">
+                    
+                    <!-- Skill 1: Flutter & Next.js -->
+                    <div class="glass-card skill-card" data-category="frontend">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <i class="fa-brands fa-react" style="font-size: 1.5rem; color: #38bdf8;"></i>
+                                <div>
+                                    <h4 style="font-size: 0.875rem; font-weight: 700;">Flutter & Dart</h4>
+                                    <span style="font-size: 0.6875rem; color: var(--text-muted);">Mobile app development</span>
+                                </div>
+                            </div>
+                            <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-cyan);">80%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" style="--skill-percent: 80%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Skill 2: Dart -->
+                    <div class="glass-card skill-card" data-category="frontend">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <i class="fa-solid fa-code" style="font-size: 1.25rem; color: #60a5fa;"></i>
+                                <div>
+                                    <h4 style="font-size: 0.875rem; font-weight: 700;">C++ & C#</h4>
+                                    <span style="font-size: 0.6875rem; color: var(--text-muted);">OOP, DSA and application development</span>
+                                </div>
+                            </div>
+                            <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-cyan);">80%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" style="--skill-percent: 80%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Skill 3: C# / MySQL -->
+                    <div class="glass-card skill-card" data-category="backend">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <i class="fa-brands fa-node-js" style="font-size: 1.5rem; color: #4ade80;"></i>
+                                <div>
+                                    <h4 style="font-size: 0.875rem; font-weight: 700;">Firebase & MongoDB</h4>
+                                    <span style="font-size: 0.6875rem; color: var(--text-muted);">Authentication, Firestore and data storage</span>
+                                </div>
+                            </div>
+                            <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-cyan);">75%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" style="--skill-percent: 75%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Skill 4: MySQL & SQLite -->
+                    <div class="glass-card skill-card" data-category="backend">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <i class="fa-brands fa-python" style="font-size: 1.5rem; color: #facc15;"></i>
+                                <div>
+                                    <h4 style="font-size: 0.875rem; font-weight: 700;">MySQL & SQLite</h4>
+                                    <span style="font-size: 0.6875rem; color: var(--text-muted);">Database design and local storage</span>
+                                </div>
+                            </div>
+                            <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-cyan);">70%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" style="--skill-percent: 70%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Skill 5: OpenStreetMap CSS & HTML5 -->
+                    <div class="skill-card glass-card" data-category="frontend">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <i class="fa-brands fa-html5" style="font-size: 1.5rem; color: #f97316;"></i>
+                                <div>
+                                    <h4 style="font-size: 0.875rem; font-weight: 700;">HTML, CSS & JavaScript</h4>
+                                    <span style="font-size: 0.6875rem; color: var(--text-muted);">Responsive web interfaces</span>
+                                </div>
+                            </div>
+                            <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-cyan);">85%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" style="--skill-percent: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Skill 6: Git & AWS -->
+                    <div class="skill-card glass-card" data-category="devops">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <i class="fa-brands fa-docker" style="font-size: 1.5rem; color: #3b82f6;"></i>
+                                <div>
+                                    <h4 style="font-size: 0.875rem; font-weight: 700;">Git & GitHub</h4>
+                                    <span style="font-size: 0.6875rem; color: var(--text-muted);">Version control and project management</span>
+                                </div>
+                            </div>
+                            <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-cyan);">80%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" style="--skill-percent: 80%;"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 3: FEATURED PROJECTS -->
+            <section id="projects" class="section-block">
+                <span class="section-tag"><i class="fa-solid fa-laptop-code"></i> Selected Work</span>
+                <h2 class="section-title">Featured Projects</h2>
+
+                <div class="projects-grid">
+
+                    <!-- PROJECT CARD 1 -->
+                    <div class="glass-card project-card">
+                        <div class="project-thumb">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Nexus Real-Time Analytics" class="project-img">
+                            <div class="project-overlay">
+                                <a href="#project-1-modal" class="cta-btn" style="width: auto; padding: 0.5rem 1rem; font-size: 0.75rem;">
+                                    View Details <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
+                            <div>
+                                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem;">SCAEN Emergency App</h3>
+                                <p style="font-size: 0.78125rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+                                    Emergency assistance application designed to help users report incidents and access nearby emergency support.
+                                </p>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+                                <span class="badge-pill">Flutter</span>
+                                <span class="badge-pill">Dart</span>
+                                <span class="badge-pill">OpenStreetMap</span>
+                                <span class="badge-pill">Firebase</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PROJECT CARD 2 -->
+                    <div class="glass-card project-card">
+                        <div class="project-thumb">
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="CognitiveAI Studio" class="project-img">
+                            <div class="project-overlay">
+                                <a href="#project-2-modal" class="cta-btn" style="width: auto; padding: 0.5rem 1rem; font-size: 0.75rem;">
+                                    View Details <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
+                            <div>
+                                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem;">Medicata Medication Tracker</h3>
+                                <p style="font-size: 0.78125rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+                                    Medication reminder and tracking application with authentication, reminders, medicine records and cloud storage.
+                                </p>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+                                <span class="badge-pill">Flutter</span>
+                                <span class="badge-pill">Firebase</span>
+                                <span class="badge-pill">SQLite</span>
+                                <span class="badge-pill">Dart</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PROJECT CARD 3 -->
+                    <div class="glass-card project-card">
+                        <div class="project-thumb">
+                            <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=800&q=80" alt="PayVault FinTech Gateway" class="project-img">
+                            <div class="project-overlay">
+                                <a href="#project-3-modal" class="cta-btn" style="width: auto; padding: 0.5rem 1rem; font-size: 0.75rem;">
+                                    View Details <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
+                            <div>
+                                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem;">Campus Pulse</h3>
+                                <p style="font-size: 0.78125rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+                                    A university-focused application concept for sharing campus information, updates and student activities.
+                                </p>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+                                <span class="badge-pill">C#</span>
+                                <span class="badge-pill">MySQL</span>
+                                <span class="badge-pill">Blazor</span>
+                                <span class="badge-pill">HTML/CSS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PROJECT CARD 4 -->
+                    <div class="glass-card project-card">
+                        <div class="project-thumb">
+                            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" alt="Vortex Cloud Manager" class="project-img">
+                            <div class="project-overlay">
+                                <a href="#project-4-modal" class="cta-btn" style="width: auto; padding: 0.5rem 1rem; font-size: 0.75rem;">
+                                    View Details <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
+                            <div>
+                                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem;">PTV Internship</h3>
+                                <p style="font-size: 0.78125rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+                                    Six-week internship experience at PTV involving application development, practical software work and learning in a professional environment.
+                                </p>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+                                <span class="badge-pill">C#</span>
+                                <span class="badge-pill">Git</span>
+                                <span class="badge-pill">Visual Studio</span>
+                                <span class="badge-pill">Blazor</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 4: EXPERIENCE & EDUCATION -->
+            <section id="experience" class="section-block">
+                <span class="section-tag"><i class="fa-solid fa-briefcase"></i> Academic & Professional Journey</span>
+                <h2 class="section-title">Experience & Education</h2>
+
+                <!-- Pure CSS Radio Inputs for Timeline Switching -->
+                <input type="radio" name="timeline-tab" id="tl-work" class="timeline-radio" checked>
+                <input type="radio" name="timeline-tab" id="tl-edu" class="timeline-radio">
+
+                <!-- Timeline Filter Navigation Labels -->
+                <div class="timeline-tab-nav">
+                    <label for="tl-work" class="timeline-tab-label">Work Experience</label>
+                    <label for="tl-edu" class="timeline-tab-label">Education & Certs</label>
+                </div>
+
+                <!-- Work Experience Timeline Content -->
+                <div class="timeline-container timeline-content-work">
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="glass-card" style="padding: 1.25rem;">
+                            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <h3 style="font-size: 1rem; font-weight: 700;">Intern</h3>
+                                <span class="badge-pill" style="color: var(--accent-cyan); font-weight: 700;">2026</span>
+                            </div>
+                            <p style="font-size: 0.75rem; font-weight: 600; color: var(--accent-emerald); margin-bottom: 0.5rem;">Apex Software Solutions · Islamabad, Pakistan</p>
+                            <ul style="font-size: 0.78125rem; color: var(--text-muted); padding-left: 1rem; line-height: 1.6;">
+                                <li>Spearheaded front-end migration to Flutter, improving Core Web Vitals score by 40%.</li>
+                                <li>Architected scalable microservices using C# and Redis serving over 1M active users.</li>
+                                <li>Learned professional development workflow, teamwork and project implementation.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="glass-card" style="padding: 1.25rem;">
+                            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <h3 style="font-size: 1rem; font-weight: 700;">BS Computer Science Student</h3>
+                                <span class="badge-pill" style="color: var(--accent-cyan); font-weight: 700;">2024 - Present</span>
+                            </div>
+                            <p style="font-size: 0.75rem; font-weight: 600; color: var(--accent-emerald); margin-bottom: 0.5rem;">Air University · Islamabad, Pakistan</p>
+                            <ul style="font-size: 0.78125rem; color: var(--text-muted); padding-left: 1rem; line-height: 1.6;">
+                                <li>Developed enterprise SaaS dashboards with Flutter, Redux Toolkit, and OpenStreetMap CSS.</li>
+                                <li>Expected graduation: 2028. Current CGPA: 3.11.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="glass-card" style="padding: 1.25rem;">
+                            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <h3 style="font-size: 1rem; font-weight: 700;">Academic Projects</h3>
+                                <span class="badge-pill" style="color: var(--accent-cyan); font-weight: 700;">2024 - Present</span>
+                            </div>
+                            <p style="font-size: 0.75rem; font-weight: 600; color: var(--accent-emerald); margin-bottom: 0.5rem;">Air University · Islamabad, Pakistan</p>
+                            <ul style="font-size: 0.78125rem; color: var(--text-muted); padding-left: 1rem; line-height: 1.6;">
+                                <li>Built over 20 responsive web portals and e-commerce platforms using C# and REST APIs.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Education Timeline Content -->
+                <div class="timeline-container timeline-content-edu">
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="glass-card" style="padding: 1.25rem;">
+                            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <h3 style="font-size: 1rem; font-weight: 700;">BS Computer Science</h3>
+                                <span class="badge-pill" style="color: var(--accent-cyan); font-weight: 700;">2024 - 2028</span>
+                            </div>
+                            <p style="font-size: 0.75rem; font-weight: 600; color: var(--accent-emerald); margin-bottom: 0.5rem;">Air University Islamabad</p>
+                            <p style="font-size: 0.78125rem; color: var(--text-muted);">Studying Computer Science with focus on programming, OOP, DSA, databases, computer networks, software engineering and application development.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="glass-card" style="padding: 1.25rem;">
+                            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <h3 style="font-size: 1rem; font-weight: 700;">Current Academic Status</h3>
+                                <span class="badge-pill" style="color: var(--accent-cyan); font-weight: 700;">2026</span>
+                            </div>
+                            <p style="font-size: 0.75rem; font-weight: 600; color: var(--accent-emerald); margin-bottom: 0.5rem;">Air University Islamabad</p>
+                            <p style="font-size: 0.78125rem; color: var(--text-muted);">Completed three semesters of BS Computer Science. Current CGPA: 3.11.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 5: CONTACT FORM -->
+            <section id="contact" class="section-block">
+                <span class="section-tag"><i class="fa-solid fa-paper-plane"></i> Let's Connect</span>
+                <h2 class="section-title">Get In Touch</h2>
+
+                <div class="glass-card" style="padding: 1.75rem;">
+                    <form action="mailto:talha-23" method="post" enctype="text/plain">
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+                            <div class="form-group">
+                                <label for="form-name" class="form-label">Your Name *</label>
+                                <input type="text" id="form-name" name="name" class="form-input" placeholder="Muhammad Talha" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="form-email" class="form-label">Email Address *</label>
+                                <input type="email" id="form-email" name="email" class="form-input" placeholder="your-email@example.com" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="form-subject" class="form-label">Inquiry Type</label>
+                            <select id="form-subject" name="subject" class="form-select">
+                                <option value="New Project">New Project Request</option>
+                                <option value="Full-Time Role">Full-Time Hire</option>
+                                <option value="Consulting">Technical Consulting</option>
+                                <option value="Other">General Inquiry</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="form-message" class="form-label">Your Message *</label>
+                            <textarea id="form-message" name="message" class="form-textarea" placeholder="Tell me about your project scope, goals, and timeline..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="cta-btn" style="width: 100%; border: none;">
+                            <i class="fa-solid fa-paper-plane"></i> Send Message
+                        </button>
+
+                    </form>
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <footer style="padding-top: 2rem; border-top: 1px solid var(--border-color); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; font-size: 0.75rem; color: var(--text-dim);">
+                <p>© 2026 Muhammad Talha. Crafted with pure HTML & CSS.</p>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="display: inline-flex; align-items: center; gap: 0.35rem;"><span class="status-dot" style="width: 6px; height: 6px;"></span> Pure CSS Powered</span>
+                    <a href="#about" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">Back to Top ↑</a>
+                </div>
+            </footer>
+
+        </main>
 
     </div>
 
-</body>
+    <!-- PROJECT 1 MODAL OVERLAY -->
+    <div id="project-1-modal" class="modal-wrapper">
+        <div class="modal-box">
+            <a href="#projects" class="modal-close-btn" title="Close Modal"><i class="fa-solid fa-xmark"></i></a>
+            <span class="badge-pill" style="color: var(--accent-cyan); margin-bottom: 0.5rem; display: inline-block;">SaaS Case Study</span>
+            <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem;">SCAEN Emergency App</h3>
+            
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80" style="width: 100%; height: 220px; object-fit: cover; border-radius: 1rem; margin-bottom: 1rem; border: 1px solid var(--border-color);">
+            
+            <h4 style="font-size: 0.875rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.35rem;">The Challenge:</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+                Legacy SQL databases caused over 8 seconds of latency when generating real-time dashboards for 5M+ daily streaming user events.
+            </p>
 
+            <h4 style="font-size: 0.875rem; font-weight: 700; color: var(--accent-emerald); margin-bottom: 0.35rem;">The Solution:</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
+                Architected a Flutter front-end connected to a Firebase columnar database via WebSockets, reducing query execution times to sub-400ms.
+            </p>
+
+            <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                <a href="#projects" class="cta-btn" style="background: rgba(255,255,255,0.08); color: var(--text-main); width: auto;">Close</a>
+                <a href="https://github.com/talha-23" target="_blank" class="cta-btn" style="width: auto;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Project</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROJECT 2 MODAL OVERLAY -->
+    <div id="project-2-modal" class="modal-wrapper">
+        <div class="modal-box">
+            <a href="#projects" class="modal-close-btn" title="Close Modal"><i class="fa-solid fa-xmark"></i></a>
+            <span class="badge-pill" style="color: var(--accent-cyan); margin-bottom: 0.5rem; display: inline-block;">AI / ML Platform</span>
+            <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem;">Medicata Medication Tracker</h3>
+            
+            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80" style="width: 100%; height: 220px; object-fit: cover; border-radius: 1rem; margin-bottom: 1rem; border: 1px solid var(--border-color);">
+            
+            <h4 style="font-size: 0.875rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.35rem;">The Challenge:</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+                Content creators needed a unified tool that orchestrates text generation, audio transcription, and brand voice matching.
+            </p>
+
+            <h4 style="font-size: 0.875rem; font-weight: 700; color: var(--accent-emerald); margin-bottom: 0.35rem;">The Solution:</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
+                Engineered a SQLite Firebase microservice layer communicating with Dart GPT-4 APIs, encapsulated in a high-speed Flutter dashboard.
+            </p>
+
+            <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                <a href="#projects" class="cta-btn" style="background: rgba(255,255,255,0.08); color: var(--text-main); width: auto;">Close</a>
+                <a href="https://github.com/talha-23" target="_blank" class="cta-btn" style="width: auto;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Project</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROJECT 3 MODAL OVERLAY -->
+    <div id="project-3-modal" class="modal-wrapper">
+        <div class="modal-box">
+            <a href="#projects" class="modal-close-btn" title="Close Modal"><i class="fa-solid fa-xmark"></i></a>
+            <span class="badge-pill" style="color: var(--accent-cyan); margin-bottom: 0.5rem; display: inline-block;">FinTech Infrastructure</span>
+            <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem;">Campus Pulse</h3>
+            
+            <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1000&q=80" style="width: 100%; height: 220px; object-fit: cover; border-radius: 1rem; margin-bottom: 1rem; border: 1px solid var(--border-color);">
+            
+            <h4 style="font-size: 0.875rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.35rem;">The Challenge:</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+                Processing cross-border payments required strict PCI-DSS compliance and automated escrow release mechanisms.
+            </p>
+
+            <h4 style="font-size: 0.875rem; font-weight: 700; color: var(--accent-emerald); margin-bottom: 0.35rem;">The Solution:</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
+                Built an encrypted C#/MySQL service with automated HTML/CSS webhooks, handling multi-currency conversions securely.
+            </p>
+
+            <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                <a href="#projects" class="cta-btn" style="background: rgba(255,255,255,0.08); color: var(--text-main); width: auto;">Close</a>
+                <a href="https://github.com/talha-23" target="_blank" class="cta-btn" style="width: auto;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Project</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROJECT 4 MODAL OVERLAY -->
+    <div id="project-4-modal" class="modal-wrapper">
+        <div class="modal-box">
+            <a href="#projects" class="modal-close-btn" title="Close Modal"><i class="fa-solid fa-xmark"></i></a>
+            <span class="badge-pill" style="color: var(--accent-cyan); margin-bottom: 0.5rem; display: inline-block;">DevOps Tooling</span>
+            <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem;">PTV Internship</h3>
+            
+            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80" style="width: 100%; height: 220px; object-fit: cover; border-radius: 1rem; margin-bottom: 1rem; border: 1px solid var(--border-color);">
+            
+            <h4 style="font-size: 0.875rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.35rem;">The Challenge:</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+                Engineers struggled with command-line log monitoring across multi-region Visual Studio clusters.
+            </p>
+
+            <h4 style="font-size: 0.875rem; font-weight: 700; color: var(--accent-emerald); margin-bottom: 0.35rem;">The Solution:</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
+                Created a lightweight web GUI in C# with streaming SSE logs and visual pod metrics.
+            </p>
+
+            <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                <a href="#projects" class="cta-btn" style="background: rgba(255,255,255,0.08); color: var(--text-main); width: auto;">Close</a>
+                <a href="https://github.com/talha-23" target="_blank" class="cta-btn" style="width: auto;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Project</a>
+            </div>
+        </div>
+    </div>
+
+</body>
 </html>
