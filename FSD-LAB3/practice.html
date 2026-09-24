@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 3 Practice</title>
+    <style>
+        @media (max-width: 300px) {
+            body {
+                background-color: lightblue;
+            }
+        }
+        @media (min-width: 1000px) {
+            body {
+                background-color: rgb(44, 70, 78);
+            }
+        }
+
+        .main {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-: center;
+            background-color: bisque;
+            flex-wrap: wrap;
+        }
+
+        .box1 {
+            width: 50%;
+            box-sizing: content-box;
+            border: 03px solid green;
+            padding: 30px;
+            text-align: center;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        .box2 {
+            z-index: 4;
+            width: 50%;
+            box-sizing: border-box;
+            margin-top: 30px;
+            border: 03px solid green;
+            padding: 30px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <p>hello world</p>
+    <div class="main">
+        <div class="box1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores quod tenetur dolore autem vel
+            obcaecati fuga totam a eius, cum, saepe hic iure pariatur consequuntur? Aspernatur eligendi mollitia
+            dignissimos atque?</div>
+        <div class="box2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores quod tenetur dolore autem vel
+            obcaecati fuga totam a eius, cum, saepe hic iure pariatur consequuntur? Aspernatur eligendi mollitia
+            dignissimos atque?</div>
+        <div class="box2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores quod tenetur dolore autem vel
+            obcaecati fuga totam a eius, cum, saepe hic iure pariatur consequuntur? Aspernatur eligendi mollitia
+            dignissimos atque?</div>
+        <div class="box2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores quod tenetur dolore autem vel
+            obcaecati fuga totam a eius, cum, saepe hic iure pariatur consequuntur? Aspernatur eligendi mollitia
+            dignissimos atque?</div>
+        <div class="box2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores quod tenetur dolore autem vel
+            obcaecati fuga totam a eius, cum, saepe hic iure pariatur consequuntur? Aspernatur eligendi mollitia
+            dignissimos atque?</div>
+
+
+
+    </div>
+</body>
+
+</html>

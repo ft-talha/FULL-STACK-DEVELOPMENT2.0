@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Side Nav Tutorial</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="d-flex">
+        <!-- Sidebar container built entirely with Bootstrap utilities -->
+        <nav class="d-flex flex-column p-3 vh-100 position-fixed top-0 start-0 text-white" 
+             style="width: 260px; background: linear-gradient(180deg, #ffc107 0%, #000000 100%); z-index: 1000;">
+            
+            <!-- Brand / Logo -->
+            <a href="#" class="d-flex align-items-center text-dark text-decoration-none fw-bold fs-4 mb-4 justify-content-center">
+                <i class="fas fa-code me-2"></i>
+                Bootstrap Tutorial
+            </a>
+
+            <!-- Vertical Navigation List -->
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item mb-1">
+                    <a href="#grid" class="nav-link active bg-dark text-warning fw-bold" aria-current="page">
+                        Grid System
+                    </a>
+                </li>
+                <li class="nav-item mb-1">
+                    <a href="#flexbox" class="nav-link text-dark fw-semibold">
+                        Flexbox
+                    </a>
+                </li>
+                <li class="nav-item mb-1">
+                    <a href="#components" class="nav-link text-white">
+                        Components
+                    </a>
+                </li>
+                
+                <!-- Dropdown Item -->
+                <li class="nav-item dropdown mb-1">
+                    <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                        More
+                    </a>
+                    <ul class="dropdown-menu bg-dark border-0 shadow">
+                        <li><a class="dropdown-item text-white" href="#buttons">Buttons</a></li>
+                        <li><a class="dropdown-item text-white text-hover-dark" href="#cards">Cards</a></li>
+                        <li><hr class="dropdown-divider border-secondary"></li>
+                        <li><a class="dropdown-item text-white" href="#media-queries">Media Queries</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area offset from sidebar -->
+        <main class="w-100 p-4" style="margin-left: 260px;">
+            <h1>Main Content</h1>
+            <p>The sidebar alignment on the left is controlled via Bootstrap utility classes.</p>
+        </main>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
