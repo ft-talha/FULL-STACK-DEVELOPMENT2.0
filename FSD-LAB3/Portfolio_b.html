@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+
+<html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Muhammad Talha | BS Computer Science Student & Flutter Developer</title>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --bg-body: #090d16;
+        --bg-card: #111827;
+        --bg-card-hover: #1f2937;
+        --border-color: rgba(255,255,255,0.08);
+        --border-highlight: rgba(6,182,212,0.3);
+        --accent-cyan: #06b6d4;
+        --accent-indigo: #6366f1;
+        --accent-emerald: #10b981;
+        --text-main: #f3f4f6;
+        --text-muted: #9ca3af;
+        --text-dim: #6b7280;
+        --glow-cyan: rgba(6,182,212,0.15);
+        --glow-emerald: rgba(16,185,129,0.15);
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background: var(--bg-body);
+        color: var(--text-main);
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+
+    .text-main {
+        color: var(--text-main);
+    }
+
+    .text-muted-custom {
+        color: var(--text-muted);
+    }
+
+    .text-cyan {
+        color: var(--accent-cyan);
+    }
+
+    .text-emerald {
+        color: var(--accent-emerald);
+    }
+
+    .glass-card {
+        background: rgba(17,24,39,0.75);
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 1.25rem;
+        transition: 0.3s ease;
+    }
+
+    .glass-card:hover {
+        border-color: var(--border-highlight);
+        box-shadow: 0 10px 30px -10px rgba(6,182,212,0.15);
+    }
+
+    .text-gradient {
+        background: linear-gradient(135deg,#38bdf8,#818cf8,#34d399);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .bg-gradient-accent {
+        background: linear-gradient(135deg,var(--accent-cyan),var(--accent-indigo));
+    }
+
+    .app-layout {
+        max-width: 1536px;
+        margin: auto;
+        min-height: 100vh;
+    }
+
+    .sidebar-column {
+        padding: 1.5rem;
+    }
+
+    .content-column {
+        padding: 2.5rem 2rem;
+    }
+
+    @media (min-width: 992px) {
+        .sidebar-column {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+    }
+
+    .avatar-frame {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 1.25rem;
+        border-radius: 2rem;
+        padding: 4px;
+        background: linear-gradient(
+            135deg,
+            var(--accent-cyan),
+            var(--accent-indigo),
+            var(--accent-emerald)
+        );
+        box-shadow: 0 0 25px rgba(6,182,212,0.3);
+    }
+
+    .avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 1.75rem;
+        display: block;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0.85rem;
+        background: rgba(16,185,129,0.12);
+        border: 1px solid rgba(16,185,129,0.3);
+        border-radius: 50px;
+        color: #34d399;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        background: #10b981;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #10b981;
+    }
+
+    .nav-link-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: 0.2s ease;
+    }
+
+    .nav-link-item:hover {
+        color: var(--text-main);
+        background: rgba(255,255,255,0.05);
+        padding-left: 1.25rem;
+    }
+
+    .nav-link-item i {
+        color: var(--accent-cyan);
+        width: 1.25rem;
+    }
+
+    .social-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 0.75rem;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: 0.25s ease;
+    }
+
+    .social-btn:hover {
+        color: white;
+        background: var(--accent-cyan);
+        border-color: var(--accent-cyan);
+        transform: translateY(-3px);
+    }
+
+    .cta-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.875rem 1.5rem;
+        border-radius: 0.875rem;
+        background: linear-gradient(135deg,var(--accent-cyan),var(--accent-indigo));
+        color: white;
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-decoration: none;
+        border: none;
+        transition: 0.25s ease;
+    }
+
+    .cta-btn:hover {
+        color: white;
+        transform: translateY(-2px);
+        filter: brightness(1.1);
+    }
+
+    .mobile-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: rgba(17,24,39,0.9);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .section-block {
+        margin-bottom: 4rem;
+        scroll-margin-top: 2rem;
+    }
+
+    .section-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--accent-cyan);
+        margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+        font-size: 1.875rem;
+        font-weight: 800;
+        color: var(--text-main);
+        margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 640px) {
+        .section-title {
+            font-size: 2.25rem;
+        }
+    }
+
+    .stat-card {
+        padding: 1.25rem 1rem;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--accent-cyan);
+        line-height: 1;
+        margin-bottom: 0.35rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .skill-card {
+        padding: 1.25rem;
+    }
+
+    .skill-bar-track {
+        width: 100%;
+        height: 8px;
+        background: #1f2937;
+        border-radius: 50px;
+        overflow: hidden;
+        margin-top: 0.75rem;
+    }
+
+    .skill-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg,var(--accent-cyan),var(--accent-indigo));
+        border-radius: 50px;
+    }
+
+    .project-card {
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .project-thumb {
+        position: relative;
+        height: 180px;
+        overflow: hidden;
+        background: #1f2937;
+    }
+
+    .project-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.5s ease;
+    }
+
+    .project-card:hover .project-img {
+        transform: scale(1.08);
+    }
+
+    .project-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(9,13,22,0.75);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: 0.3s ease;
+    }
+
+    .project-card:hover .project-overlay {
+        opacity: 1;
+    }
+
+    .badge-pill {
+        display: inline-block;
+        padding: 0.2rem 0.6rem;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid var(--border-color);
+        border-radius: 0.375rem;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+
+    .timeline-container {
+        position: relative;
+        padding-left: 2rem;
+        border-left: 2px solid #1f2937;
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+
+    .timeline-dot {
+        position: absolute;
+        left: -2.4rem;
+        top: 0.5rem;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent-cyan);
+        box-shadow: 0 0 10px var(--accent-cyan);
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        background: rgba(9,13,22,0.6);
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        color: var(--text-main);
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+        background: rgba(17,24,39,0.9);
+        border-color: var(--accent-cyan);
+        color: var(--text-main);
+        box-shadow: 0 0 0 3px rgba(6,182,212,0.15);
+    }
+
+    .form-select option {
+        background: var(--bg-card);
+    }
+
+    .modal-content {
+        background: var(--bg-card);
+        border: 1px solid var(--border-highlight);
+        border-radius: 1.5rem;
+        color: var(--text-main);
+    }
+
+    .modal-backdrop.show {
+        opacity: 0.85;
+    }
+
+    @media (max-width: 991px) {
+        .desktop-only-nav {
+            display: none;
+        }
+
+        .content-column {
+            padding: 2rem 1.25rem;
+        }
+
+        .sidebar-column {
+            padding: 1.25rem;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .mobile-header {
+            display: none;
+        }
+    }
+
+    @media (max-width: 575px) {
+        .section-title {
+            font-size: 1.6rem;
+        }
+
+        .content-column {
+            padding: 1.5rem 1rem;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<!-- MOBILE HEADER -->
+
+<header class="mobile-header d-lg-none"> <div class="container-fluid py-3 d-flex align-items-center justify-content-between">
+
+    <div class="d-flex align-items-center gap-3">
+        <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;border:2px solid var(--accent-cyan);">
+            <img src="https://via.placeholder.com/150x150.png?text=Talha"
+                 alt="Muhammad Talha"
+                 style="width:100%;height:100%;object-fit:cover;">
+        </div>
+
+        <div>
+            <h2 class="mb-0" style="font-size:0.875rem;font-weight:700;">
+                Muhammad Talha
+            </h2>
+            <p class="mb-0 text-cyan" style="font-size:0.6875rem;font-weight:600;">
+                CS Student & Flutter Developer
+            </p>
+        </div>
+    </div>
+
+    <button class="btn text-white fs-5"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#mobileMenu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+</div>
+
+</header>
+
+<!-- BOOTSTRAP MOBILE MENU -->
+
+<div class="offcanvas offcanvas-top text-bg-dark" tabindex="-1" id="mobileMenu" style="height:100vh;background:#090d16!important;">
+
+<div class="offcanvas-header border-bottom"
+     style="border-color:var(--border-color)!important;">
+
+    <div class="d-flex align-items-center gap-3">
+
+        <img src="https://via.placeholder.com/150x150.png?text=Talha"
+             style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid var(--accent-cyan);">
+
+        <div>
+            <h3 class="mb-0" style="font-size:1rem;font-weight:800;">
+                Muhammad Talha
+            </h3>
+
+            <span style="font-size:0.75rem;color:var(--text-muted);">
+                Islamabad, Pakistan
+            </span>
+        </div>
+
+    </div>
+
+    <button type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="offcanvas">
+    </button>
+
+</div>
+
+<div class="offcanvas-body d-flex flex-column justify-content-between">
+
+    <nav class="d-flex flex-column gap-2 mt-auto mb-auto">
+
+        <a href="#about"
+           class="nav-link-item"
+           data-bs-dismiss="offcanvas">
+            <span>
+                <i class="fa-solid fa-user"></i>
+                About Overview
+            </span>
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+
+        <a href="#skills"
+           class="nav-link-item"
+           data-bs-dismiss="offcanvas">
+            <span>
+                <i class="fa-solid fa-code"></i>
+                Skills & Stack
+            </span>
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+
+        <a href="#projects"
+           class="nav-link-item"
+           data-bs-dismiss="offcanvas">
+            <span>
+                <i class="fa-solid fa-laptop-code"></i>
+                Featured Projects
+            </span>
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+
+        <a href="#experience"
+           class="nav-link-item"
+           data-bs-dismiss="offcanvas">
+            <span>
+                <i class="fa-solid fa-briefcase"></i>
+                Experience
+            </span>
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+
+        <a href="#contact"
+           class="nav-link-item"
+           data-bs-dismiss="offcanvas">
+            <span>
+                <i class="fa-solid fa-paper-plane"></i>
+                Contact Me
+            </span>
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+
+    </nav>
+
+    <a href="#contact"
+       class="cta-btn"
+       data-bs-dismiss="offcanvas">
+        <i class="fa-solid fa-download"></i>
+        Download Resume CV
+    </a>
+
+</div>
+
+</div>
+
+<!-- MAIN BOOTSTRAP GRID -->
+
+<div class="container-fluid app-layout">
+
+<div class="row">
+
+    <!-- SIDEBAR -->
+    <aside class="col-lg-4 col-xl-3 sidebar-column">
+
+        <div class="glass-card p-4 text-center h-100 d-flex flex-column justify-content-between">
+
+            <div>
+
+                <div class="avatar-frame">
+                    <img src="https://images.unsplash.com/photo-1578863873955-40421002faa6?q=80&w=400&auto=format&fit=crop"
+                         alt="Muhammad Talha Profile"
+                         class="avatar-img">
+                </div>
+
+                <div class="status-badge mb-3">
+                    <span class="status-dot"></span>
+                    Available for Opportunities
+                </div>
+
+                <h1 style="font-size:1.5rem;font-weight:800;">
+                    Muhammad Talha
+                </h1>
+
+                <p class="text-cyan mb-3"
+                   style="font-size:0.8125rem;font-weight:600;">
+                    BS Computer Science Student & Flutter Developer
+                </p>
+
+                <p class="text-muted-custom mb-4"
+                   style="font-size:0.8125rem;line-height:1.5;">
+                    BS Computer Science student at Air University Islamabad, building mobile and web applications with Flutter, C++, C#, JavaScript, Firebase, and databases.
+                </p>
+
+                <div class="p-3 mb-4 text-start"
+                     style="background:rgba(9,13,22,0.4);border:1px solid var(--border-color);border-radius:0.875rem;font-size:0.75rem;">
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span style="color:var(--text-dim);">
+                            <i class="fa-solid fa-envelope text-cyan me-1"></i>
+                            Email:
+                        </span>
+
+                        <span class="fw-semibold">
+                            talha-23
+                        </span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span style="color:var(--text-dim);">
+                            <i class="fa-solid fa-location-dot text-cyan me-1"></i>
+                            Location:
+                        </span>
+
+                        <span class="fw-semibold">
+                            Islamabad, Pakistan
+                        </span>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <span style="color:var(--text-dim);">
+                            <i class="fa-solid fa-award text-cyan me-1"></i>
+                            Experience:
+                        </span>
+
+                        <span class="fw-semibold text-emerald">
+                            3+ Semesters
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <!-- DESKTOP NAV -->
+                <nav class="desktop-only-nav d-flex flex-column gap-1 mb-4">
+
+                    <a href="#about" class="nav-link-item">
+                        <span>
+                            <i class="fa-solid fa-user"></i>
+                            About Overview
+                        </span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a href="#skills" class="nav-link-item">
+                        <span>
+                            <i class="fa-solid fa-code"></i>
+                            Technical Stack
+                        </span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a href="#projects" class="nav-link-item">
+                        <span>
+                            <i class="fa-solid fa-layer-group"></i>
+                            Featured Projects
+                        </span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a href="#experience" class="nav-link-item">
+                        <span>
+                            <i class="fa-solid fa-briefcase"></i>
+                            Experience & Edu
+                        </span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a href="#contact" class="nav-link-item">
+                        <span>
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Get In Touch
+                        </span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                </nav>
+
+            </div>
+
+
+            <div>
+
+                <div class="d-flex justify-content-center gap-2 mb-3">
+
+                    <a href="https://github.com/talha-23"
+                       target="_blank"
+                       class="social-btn">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+
+                    <a href="https://linkedin.com/in/muhammad-talha-cs"
+                       target="_blank"
+                       class="social-btn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+
+                    <a href="#"
+                       class="social-btn">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </a>
+
+                    <a href="#"
+                       class="social-btn">
+                        <i class="fa-brands fa-dribbble"></i>
+                    </a>
+
+                </div>
+
+                <a href="#contact" class="cta-btn">
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                    Download Resume CV
+                </a>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="col-lg-8 col-xl-9 content-column">
+
+
+        <!-- ABOUT -->
+        <section id="about" class="section-block">
+
+            <div class="glass-card p-4 mb-4 position-relative overflow-hidden">
+
+                <span class="section-tag">
+                    <i class="fa-solid fa-sparkles"></i>
+                    Welcome to my space
+                </span>
+
+                <h2 class="section-title">
+                    Building Useful Applications &
+                    <span class="text-gradient">
+                        Practical Software Solutions.
+                    </span>
+                </h2>
+
+                <p class="text-muted-custom mb-4"
+                   style="font-size:0.95rem;line-height:1.75;">
+
+                    Hello! I am
+                    <strong class="text-main">
+                        Muhammad Talha
+                    </strong>,
+                    a passionate BS Computer Science Student with over 6 years of experience engineering modern web applications, microservices, and design systems. I bridge the gap between robust backend performance and slick, user-centric interfaces.
+
+                </p>
+
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+
+                        <div class="glass-card p-3 h-100"
+                             style="background:rgba(9,13,22,0.5);">
+
+                            <div class="d-flex align-items-start gap-3">
+
+                                <div class="rounded d-flex align-items-center justify-content-center flex-shrink-0"
+                                     style="width:40px;height:40px;background:var(--glow-cyan);color:var(--accent-cyan);">
+
+                                    <i class="fa-solid fa-bolt"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h4 style="font-size:0.875rem;font-weight:700;">
+                                        Practical Application Development
+                                    </h4>
+
+                                    <p class="text-muted-custom mb-0"
+                                       style="font-size:0.75rem;">
+                                        Building simple, responsive and user-friendly applications for real-world problems.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="glass-card p-3 h-100"
+                             style="background:rgba(9,13,22,0.5);">
+
+                            <div class="d-flex align-items-start gap-3">
+
+                                <div class="rounded d-flex align-items-center justify-content-center flex-shrink-0"
+                                     style="width:40px;height:40px;background:var(--glow-emerald);color:var(--accent-emerald);">
+
+                                    <i class="fa-solid fa-shield-halved"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h4 style="font-size:0.875rem;font-weight:700;">
+                                        Learning & Improving
+                                    </h4>
+
+                                    <p class="text-muted-custom mb-0"
+                                       style="font-size:0.75rem;">
+                                        Continuously improving programming, database, software engineering and development skills.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- STATS -->
+            <div class="row g-3">
+
+                <div class="col-6 col-md-3">
+                    <div class="glass-card stat-card">
+                        <div class="stat-number">3+</div>
+                        <div class="stat-label">Semesters Completed</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="glass-card stat-card">
+                        <div class="stat-number">3+</div>
+                        <div class="stat-label">Main Projects</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="glass-card stat-card">
+                        <div class="stat-number">3.11</div>
+                        <div class="stat-label">Current CGPA</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="glass-card stat-card">
+                        <div class="stat-number">2028</div>
+                        <div class="stat-label">Expected Graduation</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SKILLS -->
+        <section id="skills" class="section-block">
+
+            <span class="section-tag">
+                <i class="fa-solid fa-microchip"></i>
+                Skills & Tools
+            </span>
+
+            <h2 class="section-title">
+                Technical Skills
+            </h2>
+
+
+            <div class="btn-group mb-4"
+                 role="group">
+
+                <button class="btn btn-outline-info active"
+                        type="button">
+                    All Skills
+                </button>
+
+                <button class="btn btn-outline-info"
+                        type="button">
+                    Frontend UI
+                </button>
+
+                <button class="btn btn-outline-info"
+                        type="button">
+                    Backend & API
+                </button>
+
+                <button class="btn btn-outline-info"
+                        type="button">
+                    DevOps & Cloud
+                </button>
+
+            </div>
+
+
+            <div class="row g-3">
+
+
+                <!-- SKILL 1 -->
+                <div class="col-md-6">
+
+                    <div class="glass-card skill-card h-100">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <i class="fa-brands fa-react"
+                                   style="font-size:1.5rem;color:#38bdf8;">
+                                </i>
+
+                                <div>
+                                    <h4 style="font-size:0.875rem;font-weight:700;">
+                                        Flutter & Dart
+                                    </h4>
+
+                                    <span class="text-muted-custom"
+                                          style="font-size:0.6875rem;">
+                                        Mobile app development
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <span class="text-cyan fw-bold">
+                                80%
+                            </span>
+
+                        </div>
+
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill"
+                                 style="width:80%;">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SKILL 2 -->
+                <div class="col-md-6">
+
+                    <div class="glass-card skill-card h-100">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <i class="fa-solid fa-code"
+                                   style="font-size:1.25rem;color:#60a5fa;">
+                                </i>
+
+                                <div>
+                                    <h4 style="font-size:0.875rem;font-weight:700;">
+                                        C++ & C#
+                                    </h4>
+
+                                    <span class="text-muted-custom"
+                                          style="font-size:0.6875rem;">
+                                        OOP, DSA and application development
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <span class="text-cyan fw-bold">
+                                80%
+                            </span>
+
+                        </div>
+
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill"
+                                 style="width:80%;">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SKILL 3 -->
+                <div class="col-md-6">
+
+                    <div class="glass-card skill-card h-100">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <i class="fa-brands fa-node-js"
+                                   style="font-size:1.5rem;color:#4ade80;">
+                                </i>
+
+                                <div>
+                                    <h4 style="font-size:0.875rem;font-weight:700;">
+                                        Firebase & MongoDB
+                                    </h4>
+
+                                    <span class="text-muted-custom"
+                                          style="font-size:0.6875rem;">
+                                        Authentication, Firestore and data storage
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <span class="text-cyan fw-bold">
+                                75%
+                            </span>
+
+                        </div>
+
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill"
+                                 style="width:75%;">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SKILL 4 -->
+                <div class="col-md-6">
+
+                    <div class="glass-card skill-card h-100">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <i class="fa-brands fa-python"
+                                   style="font-size:1.5rem;color:#facc15;">
+                                </i>
+
+                                <div>
+                                    <h4 style="font-size:0.875rem;font-weight:700;">
+                                        MySQL & SQLite
+                                    </h4>
+
+                                    <span class="text-muted-custom"
+                                          style="font-size:0.6875rem;">
+                                        Database design and local storage
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <span class="text-cyan fw-bold">
+                                70%
+                            </span>
+
+                        </div>
+
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill"
+                                 style="width:70%;">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SKILL 5 -->
+                <div class="col-md-6">
+
+                    <div class="glass-card skill-card h-100">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <i class="fa-brands fa-html5"
+                                   style="font-size:1.5rem;color:#f97316;">
+                                </i>
+
+                                <div>
+                                    <h4 style="font-size:0.875rem;font-weight:700;">
+                                        HTML, CSS & JavaScript
+                                    </h4>
+
+                                    <span class="text-muted-custom"
+                                          style="font-size:0.6875rem;">
+                                        Responsive web interfaces
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <span class="text-cyan fw-bold">
+                                85%
+                            </span>
+
+                        </div>
+
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill"
+                                 style="width:85%;">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SKILL 6 -->
+                <div class="col-md-6">
+
+                    <div class="glass-card skill-card h-100">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <i class="fa-brands fa-docker"
+                                   style="font-size:1.5rem;color:#3b82f6;">
+                                </i>
+
+                                <div>
+                                    <h4 style="font-size:0.875rem;font-weight:700;">
+                                        Git & GitHub
+                                    </h4>
+
+                                    <span class="text-muted-custom"
+                                          style="font-size:0.6875rem;">
+                                        Version control and project management
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <span class="text-cyan fw-bold">
+                                80%
+                            </span>
+
+                        </div>
+
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill"
+                                 style="width:80%;">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROJECTS -->
+        <section id="projects" class="section-block">
+
+            <span class="section-tag">
+                <i class="fa-solid fa-laptop-code"></i>
+                Selected Work
+            </span>
+
+            <h2 class="section-title">
+                Featured Projects
+            </h2>
+
+
+            <div class="row g-4">
+
+
+                <!-- PROJECT 1 -->
+                <div class="col-md-6">
+
+                    <div class="glass-card project-card">
+
+                        <div class="project-thumb">
+
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"
+                                 class="project-img"
+                                 alt="SCAEN Emergency App">
+
+                            <div class="project-overlay">
+
+                                <button class="cta-btn"
+                                        style="width:auto;padding:0.5rem 1rem;font-size:0.75rem;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#project1Modal">
+                                    View Details
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="p-4">
+
+                            <h3 style="font-size:1.1rem;font-weight:700;">
+                                SCAEN Emergency App
+                            </h3>
+
+                            <p class="text-muted-custom"
+                               style="font-size:0.78125rem;">
+                                Emergency assistance application designed to help users report incidents and access nearby emergency support.
+                            </p>
+
+                            <span class="badge-pill">Flutter</span>
+                            <span class="badge-pill">Dart</span>
+                            <span class="badge-pill">OpenStreetMap</span>
+                            <span class="badge-pill">Firebase</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PROJECT 2 -->
+                <div class="col-md-6">
+
+                    <div class="glass-card project-card">
+
+                        <div class="project-thumb">
+
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80"
+                                 class="project-img"
+                                 alt="Medicata Medication Tracker">
+
+                            <div class="project-overlay">
+
+                                <button class="cta-btn"
+                                        style="width:auto;padding:0.5rem 1rem;font-size:0.75rem;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#project2Modal">
+                                    View Details
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="p-4">
+
+                            <h3 style="font-size:1.1rem;font-weight:700;">
+                                Medicata Medication Tracker
+                            </h3>
+
+                            <p class="text-muted-custom"
+                               style="font-size:0.78125rem;">
+                                Medication reminder and tracking application with authentication, reminders, medicine records and cloud storage.
+                            </p>
+
+                            <span class="badge-pill">Flutter</span>
+                            <span class="badge-pill">Firebase</span>
+                            <span class="badge-pill">SQLite</span>
+                            <span class="badge-pill">Dart</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PROJECT 3 -->
+                <div class="col-md-6">
+
+                    <div class="glass-card project-card">
+
+                        <div class="project-thumb">
+
+                            <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=800&q=80"
+                                 class="project-img"
+                                 alt="Campus Pulse">
+
+                            <div class="project-overlay">
+
+                                <button class="cta-btn"
+                                        style="width:auto;padding:0.5rem 1rem;font-size:0.75rem;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#project3Modal">
+                                    View Details
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="p-4">
+
+                            <h3 style="font-size:1.1rem;font-weight:700;">
+                                Campus Pulse
+                            </h3>
+
+                            <p class="text-muted-custom"
+                               style="font-size:0.78125rem;">
+                                A university-focused application concept for sharing campus information, updates and student activities.
+                            </p>
+
+                            <span class="badge-pill">C#</span>
+                            <span class="badge-pill">MySQL</span>
+                            <span class="badge-pill">Blazor</span>
+                            <span class="badge-pill">HTML/CSS</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PROJECT 4 -->
+                <div class="col-md-6">
+
+                    <div class="glass-card project-card">
+
+                        <div class="project-thumb">
+
+                            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80"
+                                 class="project-img"
+                                 alt="PTV Internship">
+
+                            <div class="project-overlay">
+
+                                <button class="cta-btn"
+                                        style="width:auto;padding:0.5rem 1rem;font-size:0.75rem;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#project4Modal">
+                                    View Details
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="p-4">
+
+                            <h3 style="font-size:1.1rem;font-weight:700;">
+                                PTV Internship
+                            </h3>
+
+                            <p class="text-muted-custom"
+                               style="font-size:0.78125rem;">
+                                Six-week internship experience at PTV involving application development, practical software work and learning in a professional environment.
+                            </p>
+
+                            <span class="badge-pill">C#</span>
+                            <span class="badge-pill">Git</span>
+                            <span class="badge-pill">Visual Studio</span>
+                            <span class="badge-pill">Blazor</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- EXPERIENCE -->
+        <section id="experience" class="section-block">
+
+            <span class="section-tag">
+                <i class="fa-solid fa-briefcase"></i>
+                Academic & Professional Journey
+            </span>
+
+            <h2 class="section-title">
+                Experience & Education
+            </h2>
+
+
+            <ul class="nav nav-pills mb-4"
+                id="experienceTabs"
+                role="tablist">
+
+                <li class="nav-item">
+                    <button class="nav-link active"
+                            data-bs-toggle="pill"
+                            data-bs-target="#work"
+                            type="button">
+                        Work Experience
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link"
+                            data-bs-toggle="pill"
+                            data-bs-target="#education"
+                            type="button">
+                        Education & Certs
+                    </button>
+                </li>
+
+            </ul>
+
+
+            <div class="tab-content">
+
+                <!-- WORK -->
+                <div class="tab-pane fade show active"
+                     id="work">
+
+                    <div class="timeline-container">
+
+                        <div class="timeline-item">
+
+                            <div class="timeline-dot"></div>
+
+                            <div class="glass-card p-4">
+
+                                <div class="d-flex justify-content-between flex-wrap mb-2">
+
+                                    <h3 style="font-size:1rem;font-weight:700;">
+                                        Intern
+                                    </h3>
+
+                                    <span class="badge-pill text-cyan">
+                                        2026
+                                    </span>
+
+                                </div>
+
+                                <p class="text-emerald fw-semibold"
+                                   style="font-size:0.75rem;">
+                                    Apex Software Solutions · Islamabad, Pakistan
+                                </p>
+
+                                <ul class="text-muted-custom"
+                                    style="font-size:0.78125rem;">
+
+                                    <li>
+                                        Spearheaded front-end migration to Flutter, improving Core Web Vitals score by 40%.
+                                    </li>
+
+                                    <li>
+                                        Architected scalable microservices using C# and Redis serving over 1M active users.
+                                    </li>
+
+                                    <li>
+                                        Learned professional development workflow, teamwork and project implementation.
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="timeline-item">
+
+                            <div class="timeline-dot"></div>
+
+                            <div class="glass-card p-4">
+
+                                <div class="d-flex justify-content-between flex-wrap mb-2">
+
+                                    <h3 style="font-size:1rem;font-weight:700;">
+                                        BS Computer Science Student
+                                    </h3>
+
+                                    <span class="badge-pill text-cyan">
+                                        2024 - Present
+                                    </span>
+
+                                </div>
+
+                                <p class="text-emerald fw-semibold"
+                                   style="font-size:0.75rem;">
+                                    Air University · Islamabad, Pakistan
+                                </p>
+
+                                <ul class="text-muted-custom"
+                                    style="font-size:0.78125rem;">
+
+                                    <li>
+                                        Developed enterprise SaaS dashboards with Flutter, Redux Toolkit, and OpenStreetMap CSS.
+                                    </li>
+
+                                    <li>
+                                        Expected graduation: 2028. Current CGPA: 3.11.
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="timeline-item">
+
+                            <div class="timeline-dot"></div>
+
+                            <div class="glass-card p-4">
+
+                                <div class="d-flex justify-content-between flex-wrap mb-2">
+
+                                    <h3 style="font-size:1rem;font-weight:700;">
+                                        Academic Projects
+                                    </h3>
+
+                                    <span class="badge-pill text-cyan">
+                                        2024 - Present
+                                    </span>
+
+                                </div>
+
+                                <p class="text-emerald fw-semibold"
+                                   style="font-size:0.75rem;">
+                                    Air University · Islamabad, Pakistan
+                                </p>
+
+                                <ul class="text-muted-custom"
+                                    style="font-size:0.78125rem;">
+
+                                    <li>
+                                        Built over 20 responsive web portals and e-commerce platforms using C# and REST APIs.
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EDUCATION -->
+                <div class="tab-pane fade"
+                     id="education">
+
+                    <div class="timeline-container">
+
+                        <div class="timeline-item">
+
+                            <div class="timeline-dot"></div>
+
+                            <div class="glass-card p-4">
+
+                                <div class="d-flex justify-content-between flex-wrap mb-2">
+
+                                    <h3 style="font-size:1rem;font-weight:700;">
+                                        BS Computer Science
+                                    </h3>
+
+                                    <span class="badge-pill text-cyan">
+                                        2024 - 2028
+                                    </span>
+
+                                </div>
+
+                                <p class="text-emerald fw-semibold"
+                                   style="font-size:0.75rem;">
+                                    Air University Islamabad
+                                </p>
+
+                                <p class="text-muted-custom"
+                                   style="font-size:0.78125rem;">
+
+                                    Studying Computer Science with focus on programming, OOP, DSA, databases, computer networks, software engineering and application development.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="timeline-item">
+
+                            <div class="timeline-dot"></div>
+
+                            <div class="glass-card p-4">
+
+                                <div class="d-flex justify-content-between flex-wrap mb-2">
+
+                                    <h3 style="font-size:1rem;font-weight:700;">
+                                        Current Academic Status
+                                    </h3>
+
+                                    <span class="badge-pill text-cyan">
+                                        2026
+                                    </span>
+
+                                </div>
+
+                                <p class="text-emerald fw-semibold"
+                                   style="font-size:0.75rem;">
+                                    Air University Islamabad
+                                </p>
+
+                                <p class="text-muted-custom"
+                                   style="font-size:0.78125rem;">
+
+                                    Completed three semesters of BS Computer Science. Current CGPA: 3.11.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CONTACT -->
+        <section id="contact" class="section-block">
+
+            <span class="section-tag">
+                <i class="fa-solid fa-paper-plane"></i>
+                Let's Connect
+            </span>
+
+            <h2 class="section-title">
+                Get In Touch
+            </h2>
+
+
+            <div class="glass-card p-4">
+
+                <form action="mailto:talha-23"
+                      method="post"
+                      enctype="text/plain">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-muted-custom">
+                                Your Name *
+                            </label>
+
+                            <input type="text"
+                                   name="name"
+                                   class="form-control form-input"
+                                   placeholder="Muhammad Talha"
+                                   required>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-muted-custom">
+                                Email Address *
+                            </label>
+
+                            <input type="email"
+                                   name="email"
+                                   class="form-control form-input"
+                                   placeholder="your-email@example.com"
+                                   required>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mt-3">
+
+                        <label class="form-label text-muted-custom">
+                            Inquiry Type
+                        </label>
+
+                        <select name="subject"
+                                class="form-select form-input">
+
+                            <option value="New Project">
+                                New Project Request
+                            </option>
+
+                            <option value="Full-Time Role">
+                                Full-Time Hire
+                            </option>
+
+                            <option value="Consulting">
+                                Technical Consulting
+                            </option>
+
+                            <option value="Other">
+                                General Inquiry
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="mt-3">
+
+                        <label class="form-label text-muted-custom">
+                            Your Message *
+                        </label>
+
+                        <textarea name="message"
+                                  class="form-control form-textarea"
+                                  placeholder="Tell me about your project scope, goals, and timeline..."
+                                  required></textarea>
+
+                    </div>
+
+
+                    <button type="submit"
+                            class="cta-btn mt-3">
+
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Send Message
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="pt-4 border-top d-flex flex-wrap justify-content-between align-items-center gap-3"
+                style="border-color:var(--border-color)!important;font-size:0.75rem;color:var(--text-dim);">
+
+            <p class="mb-0">
+                © 2026 Muhammad Talha. Crafted with pure HTML & CSS.
+            </p>
+
+            <div class="d-flex align-items-center gap-3">
+
+                <span>
+                    <span class="status-dot d-inline-block"
+                          style="width:6px;height:6px;">
+                    </span>
+                    Pure CSS Powered
+                </span>
+
+                <a href="#about"
+                   class="text-cyan text-decoration-none fw-semibold">
+                    Back to Top ↑
+                </a>
+
+            </div>
+
+        </footer>
+
+    </main>
+
+</div>
+
+</div>
+
+<!-- PROJECT 1 MODAL -->
+
+<div class="modal fade" id="project1Modal" tabindex="-1">
+
+<div class="modal-dialog modal-lg modal-dialog-centered">
+
+    <div class="modal-content p-4">
+
+        <div class="modal-header border-0">
+
+            <div>
+
+                <span class="badge-pill text-cyan">
+                    SaaS Case Study
+                </span>
+
+                <h3 class="mt-2"
+                    style="font-size:1.5rem;font-weight:800;">
+                    SCAEN Emergency App
+                </h3>
+
+            </div>
+
+            <button type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80"
+                 class="img-fluid rounded mb-3"
+                 style="height:220px;width:100%;object-fit:cover;">
+
+            <h4 class="text-cyan"
+                style="font-size:0.875rem;">
+                The Challenge:
+            </h4>
+
+            <p class="text-muted-custom"
+               style="font-size:0.8125rem;">
+                Legacy SQL databases caused over 8 seconds of latency when generating real-time dashboards for 5M+ daily streaming user events.
+            </p>
+
+            <h4 class="text-emerald"
+                style="font-size:0.875rem;">
+                The Solution:
+            </h4>
+
+            <p class="text-muted-custom"
+               style="font-size:0.8125rem;">
+                Architected a Flutter front-end connected to a Firebase columnar database via WebSockets, reducing query execution times to sub-400ms.
+            </p>
+
+        </div>
+
+
+        <div class="modal-footer border-0">
+
+            <button class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+                Close
+            </button>
+
+            <a href="https://github.com/talha-23"
+               target="_blank"
+               class="cta-btn"
+               style="width:auto;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                Visit Project
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- PROJECT 2 MODAL -->
+
+<div class="modal fade" id="project2Modal" tabindex="-1">
+
+<div class="modal-dialog modal-lg modal-dialog-centered">
+
+    <div class="modal-content p-4">
+
+        <div class="modal-header border-0">
+
+            <div>
+
+                <span class="badge-pill text-cyan">
+                    AI / ML Platform
+                </span>
+
+                <h3 class="mt-2"
+                    style="font-size:1.5rem;font-weight:800;">
+                    Medicata Medication Tracker
+                </h3>
+
+            </div>
+
+            <button type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80"
+                 class="img-fluid rounded mb-3"
+                 style="height:220px;width:100%;object-fit:cover;">
+
+            <h4 class="text-cyan"
+                style="font-size:0.875rem;">
+                The Challenge:
+            </h4>
+
+            <p class="text-muted-custom"
+               style="font-size:0.8125rem;">
+                Content creators needed a unified tool that orchestrates text generation, audio transcription, and brand voice matching.
+            </p>
+
+            <h4 class="text-emerald"
+                style="font-size:0.875rem;">
+                The Solution:
+            </h4>
+
+            <p class="text-muted-custom"
+               style="font-size:0.8125rem;">
+                Engineered a SQLite Firebase microservice layer communicating with Dart GPT-4 APIs, encapsulated in a high-speed Flutter dashboard.
+            </p>
+
+        </div>
+
+
+        <div class="modal-footer border-0">
+
+            <button class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+                Close
+            </button>
+
+            <a href="https://github.com/talha-23"
+               target="_blank"
+               class="cta-btn"
+               style="width:auto;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                Visit Project
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- PROJECT 3 MODAL -->
+
+<div class="modal fade" id="project3Modal" tabindex="-1">
+
+<div class="modal-dialog modal-lg modal-dialog-centered">
+
+    <div class="modal-content p-4">
+
+        <div class="modal-header border-0">
+
+            <div>
+
+                <span class="badge-pill text-cyan">
+                    FinTech Infrastructure
+                </span>
+
+                <h3 class="mt-2"
+                    style="font-size:1.5rem;font-weight:800;">
+                    Campus Pulse
+                </h3>
+
+            </div>
+
+            <button type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1000&q=80"
+                 class="img-fluid rounded mb-3"
+                 style="height:220px;width:100%;object-fit:cover;">
+
+            <h4 class="text-cyan"
+                style="font-size:0.875rem;">
+                The Challenge:
+            </h4>
+
+            <p class="text-muted-custom"
+               style="font-size:0.8125rem;">
+                Processing cross-border payments required strict PCI-DSS compliance and automated escrow release mechanisms.
+            </p>
+
+            <h4 class="text-emerald"
+                style="font-size:0.875rem;">
+                The Solution:
+            </h4>
+
+            <p class="text-muted-custom"
+               style="font-size:0.8125rem;">
+                Built an encrypted C#/MySQL service with automated HTML/CSS webhooks, handling multi-currency conversions securely.
+            </p>
+
+        </div>
+
+
+        <div class="modal-footer border-0">
+
+            <button class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+                Close
+            </button>
+
+            <a href="https://github.com/talha-23"
+               target="_blank"
+               class="cta-btn"
+               style="width:auto;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                Visit Project
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- PROJECT 4 MODAL -->
+
+<div class="modal fade" id="project4Modal" tabindex="-1">
+
+<div class="modal-dialog modal-lg modal-dialog-centered">
+
+    <div class="modal-content p-4">
+
+        <div class="modal-header border-0">
+
+            <div>
+
+                <span class="badge-pill text-cyan">
+                    DevOps Tooling
+                </span>
+
+                <h3 class="mt-2"
+                    style="font-size:1.5rem;font-weight:800;">
+                    PTV Internship
+                </h3>
+
+            </div>
+
+            <button type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80"
+                 class="img-fluid rounded mb-3"
+                 style="height:220px;width:100%;object-fit:cover;">
+
+            <h4 class="text-cyan"
+                style="font-size:0.875rem;">
+                The Challenge:
+            </h4>
+
+            <p class="text-muted-custom"
+               style="font-size:0.8125rem;">
+                Engineers struggled with command-line log monitoring across multi-region Visual Studio clusters.
+            </p>
+
+            <h4 class="text-emerald"
+                style="font-size:0.875rem;">
+                The Solution:
+            </h4>
+
+            <p class="text-muted-custom"
+               style="font-size:0.8125rem;">
+                Created a lightweight web GUI in C# with streaming SSE logs and visual pod metrics.
+            </p>
+
+        </div>
+
+
+        <div class="modal-footer border-0">
+
+            <button class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+                Close
+            </button>
+
+            <a href="https://github.com/talha-23"
+               target="_blank"
+               class="cta-btn"
+               style="width:auto;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                Visit Project
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body> </html>

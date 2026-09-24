@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en" class="light" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook - Responsive Home UI (Bootstrap)</title>
+
+    <!-- Bootstrap 5.3 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 CDN for authentic icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* CSS Variables for seamless Light / Dark theme transitions */
+        :root, .light {
+            --bg-main: #f0f2f5;
+            --bg-card: #ffffff;
+            --bg-hover: #e4e6eb;
+            --bg-active: #e7f3ff;
+            --bg-input: #f0f2f5;
+            --border-color: #ced0d4;
+            --text-main: #050505;
+            --text-sub: #65676b;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --fb-blue: #1877f2;
+            --fb-blue-hover: #166fe5;
+            --bs-body-bg: var(--bg-main);
+            --bs-body-color: var(--text-main);
+            --bs-border-color: var(--border-color);
+        }
+
+        .dark {
+            --bg-main: #18191a;
+            --bg-card: #242526;
+            --bg-hover: #3a3b3c;
+            --bg-active: #263951;
+            --bg-input: #3a3b3c;
+            --border-color: #393a3b;
+            --text-main: #e4e6eb;
+            --text-sub: #b0b3b8;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --bs-body-bg: var(--bg-main);
+            --bs-body-color: var(--text-main);
+            --bs-border-color: var(--border-color);
+        }
+
+        body {
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        /* Utility classes referencing variables */
+        .theme-bg-main { background-color: var(--bg-main); }
+        .theme-bg-card { background-color: var(--bg-card); }
+        .theme-bg-hover:hover { background-color: var(--bg-hover); }
+        .theme-bg-input { background-color: var(--bg-input); }
+        .theme-border { border-color: var(--border-color) !important; }
+        .theme-text-main { color: var(--text-main); }
+        .theme-text-sub { color: var(--text-sub); }
+
+        /* Custom scrollbars */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #bcc0c4; border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #4e4f50; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9fa4a9; }
+
+        /* Hide scrollbars for horizontal carousel */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Animated Hover Reaction Bar Popup */
+        @keyframes popUp {
+            0% { transform: translateY(10px) scale(0.8); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .reactions-popup { animation: popUp 0.2s ease-out forwards; }
+
+        .reaction-icon { transition: transform 0.15s ease, margin 0.15s ease; }
+        .reaction-icon:hover { transform: scale(1.35) translateY(-4px); }
+
+        /* Fade modal overlay */
+        .modal-fade-in { animation: fadeIn 0.2s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Layout & height fixes */
+        .h-56px { height: 56px; }
+        .main-container { height: calc(100vh - 56px); }
+        .sidebar-scroll { overflow-y: auto; height: 100%; }
+        .feed-scroll { overflow-y: auto; height: 100%; }
+
+        /* Story card sizes */
+        .story-card { width: 110px; height: 190px; }
+        @media (min-width: 576px) {
+            .story-card { width: 130px; height: 210px; }
+        }
+
+        /* Like button & reaction state */
+        .like-btn .like-text { transition: color 0.1s; }
+        .reactions-menu { pointer-events: auto; }
+
+        /* Fix for text truncation in sidebars */
+        .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* Override bootstrap primary to fb blue */
+        .btn-fb { background-color: var(--fb-blue); border-color: var(--fb-blue); color: #fff; }
+        .btn-fb:hover { background-color: var(--fb-blue-hover); border-color: var(--fb-blue-hover); color: #fff; }
+        .text-fb { color: var(--fb-blue) !important; }
+        .border-fb { border-color: var(--fb-blue) !important; }
+
+        /* Header active tab border */
+        .nav-tab-active { border-bottom: 3px solid var(--fb-blue) !important; }
+        .nav-tab-active i { color: var(--fb-blue) !important; }
+        .nav-tab-inactive { border-bottom: 3px solid transparent !important; }
+        .nav-tab-inactive i { color: var(--text-sub) !important; }
+        .nav-tab-inactive:hover i { color: var(--fb-blue) !important; }
+
+        /* Rounded pill inputs */
+        .pill-input { border-radius: 50rem; }
+
+        /* Fix comment section display */
+        .comment-section { display: none; }
+        .comment-section.show { display: flex; }
+
+        /* Fix mobile bottom nav spacing */
+        .pb-mobile-nav { padding-bottom: 70px; }
+        @media (min-width: 768px) { .pb-mobile-nav { padding-bottom: 0; } }
+
+        /* Avatar sizes */
+        .avatar-sm { width: 32px; height: 32px; }
+        .avatar-md { width: 36px; height: 36px; }
+        .avatar-lg { width: 40px; height: 40px; }
+        .avatar-xl { width: 44px; height: 44px; }
+    </style>
+</head>
+<body class="d-flex flex-column h-100 w-100 overflow-hidden user-select-none">
+
+    <!-- TOP NAVIGATION HEADER (Fixed Height 56px) -->
+    <header class="h-56px w-100 theme-bg-card border-bottom theme-border z-3 d-flex align-items-center justify-content-between px-2 px-sm-3 shadow-sm flex-shrink-0">
+        <!-- HEADER LEFT: Logo & Search -->
+        <div class="d-flex align-items-center gap-2" style="min-width: 180px;">
+            <a href="#" class="d-flex align-items-center justify-content-center text-fb text-decoration-none flex-shrink-0" title="Facebook Home">
+                <i class="fa-brands fa-facebook" style="font-size: 40px;"></i>
+            </a>
+            <div class="position-relative d-flex align-items-center theme-bg-input rounded-pill px-3 py-2 theme-text-sub w-100" style="max-width: 240px; cursor: pointer;">
+                <i class="fa-solid fa-magnifying-glass theme-text-sub" style="font-size: 0.875rem;"></i>
+                <input type="text" placeholder="Search Facebook" class="bg-transparent border-0 outline-none theme-text-main w-100 ms-2 d-none d-sm-block" style="font-size: 0.875rem; outline: none; box-shadow: none;">
+            </div>
+        </div>
+
+        <!-- HEADER CENTER: Primary Nav Tabs -->
+        <div class="d-none d-md-flex align-items-center justify-content-center h-100 w-100 px-2" style="max-width: 600px;">
+            <!-- Home (Active) -->
+            <a href="#" title="Home" class="flex-fill d-flex align-items-center justify-content-center h-100 text-decoration-none nav-tab-active">
+                <div class="w-100 d-flex align-items-center justify-content-center rounded-3" style="max-width: 100px; height: 48px;">
+                    <i class="fa-solid fa-house fs-4 text-fb"></i>
+                </div>
+            </a>
+            <!-- Video -->
+            <a href="#" title="Video" class="flex-fill d-flex align-items-center justify-content-center h-100 text-decoration-none nav-tab-inactive">
+                <div class="w-100 d-flex align-items-center justify-content-center rounded-3 position-relative" style="max-width: 100px; height: 48px;">
+                    <i class="fa-solid fa-tv fs-5 theme-text-sub"></i>
+                    <span class="position-absolute bg-danger rounded-circle border border-2 border-white dark:border-secondary" style="width: 10px; height: 10px; top: 8px; right: 24px;"></span>
+                </div>
+            </a>
+            <!-- Marketplace -->
+            <a href="#" title="Marketplace" class="flex-fill d-flex align-items-center justify-content-center h-100 text-decoration-none nav-tab-inactive">
+                <div class="w-100 d-flex align-items-center justify-content-center rounded-3" style="max-width: 100px; height: 48px;">
+                    <i class="fa-solid fa-store fs-5 theme-text-sub"></i>
+                </div>
+            </a>
+            <!-- Groups -->
+            <a href="#" title="Groups" class="flex-fill d-flex align-items-center justify-content-center h-100 text-decoration-none nav-tab-inactive">
+                <div class="w-100 d-flex align-items-center justify-content-center rounded-3" style="max-width: 100px; height: 48px;">
+                    <i class="fa-solid fa-users fs-5 theme-text-sub"></i>
+                </div>
+            </a>
+            <!-- Gaming -->
+            <a href="#" title="Gaming" class="flex-fill d-none d-lg-flex align-items-center justify-content-center h-100 text-decoration-none nav-tab-inactive">
+                <div class="w-100 d-flex align-items-center justify-content-center rounded-3" style="max-width: 100px; height: 48px;">
+                    <i class="fa-solid fa-gamepad fs-5 theme-text-sub"></i>
+                </div>
+            </a>
+        </div>
+
+        <!-- HEADER RIGHT: Dark Mode Toggle & Quick Utilities -->
+        <div class="d-flex align-items-center justify-content-end gap-1 gap-sm-2" style="min-width: 180px;">
+            <!-- Dark / Light Theme Toggle Button -->
+            <button id="themeToggleBtn" class="btn rounded-circle theme-bg-input d-flex align-items-center justify-content-center theme-text-main" style="width: 40px; height: 40px;" title="Toggle Light / Dark Mode">
+                <i id="themeIcon" class="fa-solid fa-moon fs-5"></i>
+            </button>
+            <!-- Menu Grid -->
+            <button class="btn rounded-circle theme-bg-input d-none d-sm-flex align-items-center justify-content-center theme-text-main" style="width: 40px; height: 40px;" title="Menu">
+                <i class="fa-solid fa-grip fs-5"></i>
+            </button>
+            <!-- Messenger -->
+            <button class="btn rounded-circle theme-bg-input d-flex align-items-center justify-content-center theme-text-main position-relative" style="width: 40px; height: 40px;" title="Messenger">
+                <i class="fa-brands fa-facebook-messenger fs-5"></i>
+                <span class="position-absolute badge rounded-pill bg-danger text-white border border-2 border-white dark:border-secondary" style="font-size: 11px; top: -4px; right: -4px;">3</span>
+            </button>
+            <!-- Notifications -->
+            <button class="btn rounded-circle theme-bg-input d-flex align-items-center justify-content-center theme-text-main position-relative" style="width: 40px; height: 40px;" title="Notifications">
+                <i class="fa-solid fa-bell fs-5"></i>
+                <span class="position-absolute badge rounded-pill bg-danger text-white border border-2 border-white dark:border-secondary" style="font-size: 11px; top: -4px; right: -4px;">7</span>
+            </button>
+            <!-- Profile Avatar -->
+            <button class="btn rounded-circle overflow-hidden border theme-border p-0 position-relative flex-shrink-0" style="width: 40px; height: 40px;" title="Account">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Alex Morgan" class="w-100 h-100 object-fit-cover">
+                <span class="position-absolute bg-success border border-2 border-white dark:border-secondary rounded-circle" style="width: 12px; height: 12px; bottom: 0; right: 0;"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <div class="d-flex flex-fill w-100 mx-auto overflow-hidden main-container" style="max-width: 1920px;">
+
+        <!-- LEFT SIDEBAR -->
+        <aside class="d-none d-md-flex flex-column h-100 p-2 sidebar-scroll custom-scrollbar flex-shrink-0 theme-border border-end" style="width: 280px;">
+            <!-- User Profile Link -->
+            <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 36px; height: 36px;" alt="Alex Avatar">
+                <span class="fw-semibold theme-text-main" style="font-size: 15px;">Alex Morgan</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="d-flex flex-column gap-0 mt-1 border-bottom theme-border pb-3">
+                <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                    <i class="fa-solid fa-user-group fs-4 text-center text-info" style="width: 36px;"></i>
+                    <span class="fw-medium theme-text-main" style="font-size: 15px;">Friends</span>
+                </a>
+                <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                    <i class="fa-solid fa-clock-rotate-left fs-4 text-center text-primary" style="width: 36px;"></i>
+                    <span class="fw-medium theme-text-main" style="font-size: 15px;">Memories</span>
+                </a>
+                <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                    <i class="fa-solid fa-bookmark fs-4 text-center text-purple" style="width: 36px; color: #8b5cf6;"></i>
+                    <span class="fw-medium theme-text-main" style="font-size: 15px;">Saved</span>
+                </a>
+                <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                    <i class="fa-solid fa-people-group fs-4 text-center text-fb" style="width: 36px;"></i>
+                    <span class="fw-medium theme-text-main" style="font-size: 15px;">Groups</span>
+                </a>
+                <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                    <i class="fa-solid fa-circle-play fs-4 text-center text-info" style="width: 36px;"></i>
+                    <span class="fw-medium theme-text-main" style="font-size: 15px;">Video</span>
+                </a>
+                <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                    <i class="fa-solid fa-shop fs-4 text-center text-teal" style="width: 36px; color: #14b8a6;"></i>
+                    <span class="fw-medium theme-text-main" style="font-size: 15px;">Marketplace</span>
+                </a>
+                <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                    <i class="fa-solid fa-newspaper fs-4 text-center text-primary" style="width: 36px; color: #60a5fa;"></i>
+                    <span class="fw-medium theme-text-main" style="font-size: 15px;">Feeds</span>
+                </a>
+                <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                    <i class="fa-solid fa-calendar-day fs-4 text-center text-danger" style="width: 36px;"></i>
+                    <span class="fw-medium theme-text-main" style="font-size: 15px;">Events</span>
+                </a>
+                <button class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors border-0 bg-transparent text-start w-100">
+                    <div class="rounded-circle theme-bg-input d-flex align-items-center justify-content-center theme-text-main" style="width: 36px; height: 36px;">
+                        <i class="fa-solid fa-chevron-down" style="font-size: 0.875rem;"></i>
+                    </div>
+                    <span class="fw-medium theme-text-main" style="font-size: 15px;">See more</span>
+                </button>
+            </nav>
+
+            <!-- Shortcuts Section -->
+            <div class="mt-3 pt-1">
+                <div class="d-flex align-items-center justify-content-between px-2 mb-2">
+                    <span class="fw-semibold theme-text-sub" style="font-size: 16px;">Your shortcuts</span>
+                </div>
+                <nav class="d-flex flex-column gap-0">
+                    <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=100&q=80" class="rounded-3 object-fit-cover" style="width: 36px; height: 36px;" alt="Group Icon">
+                        <span class="fw-medium theme-text-main truncate" style="font-size: 15px;">Web Developers Worldwide</span>
+                    </a>
+                    <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=100&q=80" class="rounded-3 object-fit-cover" style="width: 36px; height: 36px;" alt="Group Icon">
+                        <span class="fw-medium theme-text-main truncate" style="font-size: 15px;">UI/UX Design Community</span>
+                    </a>
+                    <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=100&q=80" class="rounded-3 object-fit-cover" style="width: 36px; height: 36px;" alt="Group Icon">
+                        <span class="fw-medium theme-text-main truncate" style="font-size: 15px;">Indie Game Developers</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Footer Meta Text -->
+            <footer class="mt-auto pt-4 px-2 theme-text-sub" style="font-size: 13px; line-height: 1.3;">
+                <span class="text-decoration-underline cursor-pointer">Privacy</span> · 
+                <span class="text-decoration-underline cursor-pointer">Terms</span> · 
+                <span class="text-decoration-underline cursor-pointer">Advertising</span> · 
+                <span class="text-decoration-underline cursor-pointer">Cookies</span> · 
+                <span class="text-decoration-underline cursor-pointer">Meta © 2026</span>
+            </footer>
+        </aside>
+
+        <!-- CENTER MAIN FEED -->
+        <main class="flex-fill h-100 feed-scroll custom-scrollbar px-2 px-sm-4 py-4 d-flex flex-column gap-4 pb-mobile-nav">
+            <div class="w-100 mx-auto d-flex flex-column gap-4" style="max-width: 680px;">
+
+                <!-- STORIES / REELS CAROUSEL -->
+                <section class="theme-bg-card rounded-4 p-3 shadow-sm border theme-border">
+                    <!-- Stories / Reels Switch Header Tabs -->
+                    <div class="d-flex border-bottom theme-border pb-2 mb-3">
+                        <button id="tabStoriesBtn" onclick="switchStoryTab('stories')" class="flex-fill d-flex align-items-center justify-content-center gap-2 py-2 border-0 bg-transparent fw-semibold text-fb" style="font-size: 0.875rem; border-bottom: 4px solid var(--fb-blue) !important;">
+                            <i class="fa-solid fa-book-open" style="font-size: 1rem;"></i>
+                            <span>Stories</span>
+                        </button>
+                        <button id="tabReelsBtn" onclick="switchStoryTab('reels')" class="flex-fill d-flex align-items-center justify-content-center gap-2 py-2 theme-text-sub border-0 bg-transparent fw-semibold rounded-3" style="font-size: 0.875rem;">
+                            <i class="fa-solid fa-clapperboard" style="font-size: 1rem;"></i>
+                            <span>Reels</span>
+                        </button>
+                    </div>
+
+                    <!-- Story Tray Container -->
+                    <div id="storyTray" class="d-flex gap-2 overflow-auto no-scrollbar pb-1">
+                        <!-- Create Story Card -->
+                        <div onclick="openPostModal()" class="story-card rounded-4 overflow-hidden position-relative border theme-border flex-shrink-0 cursor-pointer shadow-sm story-card" style="transition: all 0.2s;">
+                            <div class="h-75 w-100 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" class="w-100 h-100 object-fit-cover" alt="Your avatar">
+                            </div>
+                            <div class="h-25 theme-bg-card position-relative d-flex flex-column align-items-center justify-content-end pb-2 px-1">
+                                <div class="position-absolute rounded-circle bg-fb border border-4 border-white dark:border-secondary d-flex align-items-center justify-content-center text-white fw-bold shadow" style="width: 32px; height: 32px; top: -16px; left: 50%; transform: translateX(-50%); background-color: var(--fb-blue); font-size: 1rem;">
+                                    <i class="fa-solid fa-plus"></i>
+                                </div>
+                                <span class="fw-semibold theme-text-main text-center lh-1" style="font-size: 0.75rem;">Create story</span>
+                            </div>
+                        </div>
+
+                        <!-- Friend Story 1 -->
+                        <div class="story-card rounded-4 overflow-hidden position-relative flex-shrink-0 cursor-pointer shadow-sm" style="transition: all 0.2s;">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80" class="w-100 h-100 object-fit-cover" alt="Story preview">
+                            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent 40%, rgba(0,0,0,0.6));"></div>
+                            <div class="position-absolute rounded-circle border border-2 border-fb overflow-hidden shadow" style="width: 36px; height: 36px; top: 8px; left: 8px;">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" class="w-100 h-100 object-fit-cover" alt="User avatar">
+                            </div>
+                            <span class="position-absolute text-white fw-semibold lh-1" style="bottom: 8px; left: 8px; right: 8px; font-size: 0.75rem; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">Sarah Jenkins</span>
+                        </div>
+
+                        <!-- Friend Story 2 -->
+                        <div class="story-card rounded-4 overflow-hidden position-relative flex-shrink-0 cursor-pointer shadow-sm" style="transition: all 0.2s;">
+                            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=80" class="w-100 h-100 object-fit-cover" alt="Story preview">
+                            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent 40%, rgba(0,0,0,0.6));"></div>
+                            <div class="position-absolute rounded-circle border border-2 border-fb overflow-hidden shadow" style="width: 36px; height: 36px; top: 8px; left: 8px;">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" class="w-100 h-100 object-fit-cover" alt="User avatar">
+                            </div>
+                            <span class="position-absolute text-white fw-semibold lh-1" style="bottom: 8px; left: 8px; right: 8px; font-size: 0.75rem; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">David Chen</span>
+                        </div>
+
+                        <!-- Friend Story 3 -->
+                        <div class="story-card rounded-4 overflow-hidden position-relative flex-shrink-0 cursor-pointer shadow-sm" style="transition: all 0.2s;">
+                            <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=400&q=80" class="w-100 h-100 object-fit-cover" alt="Story preview">
+                            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent 40%, rgba(0,0,0,0.6));"></div>
+                            <div class="position-absolute rounded-circle border border-2 border-fb overflow-hidden shadow" style="width: 36px; height: 36px; top: 8px; left: 8px;">
+                                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=150&q=80" class="w-100 h-100 object-fit-cover" alt="User avatar">
+                            </div>
+                            <span class="position-absolute text-white fw-semibold lh-1" style="bottom: 8px; left: 8px; right: 8px; font-size: 0.75rem; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">Emily Watson</span>
+                        </div>
+
+                        <!-- Friend Story 4 -->
+                        <div class="story-card rounded-4 overflow-hidden position-relative flex-shrink-0 cursor-pointer shadow-sm d-none d-sm-block" style="transition: all 0.2s;">
+                            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=400&q=80" class="w-100 h-100 object-fit-cover" alt="Story preview">
+                            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent 40%, rgba(0,0,0,0.6));"></div>
+                            <div class="position-absolute rounded-circle border border-2 border-fb overflow-hidden shadow" style="width: 36px; height: 36px; top: 8px; left: 8px;">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" class="w-100 h-100 object-fit-cover" alt="User avatar">
+                            </div>
+                            <span class="position-absolute text-white fw-semibold lh-1" style="bottom: 8px; left: 8px; right: 8px; font-size: 0.75rem; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">Michael Scott</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CREATE POST WIDGET CARD -->
+                <section class="theme-bg-card rounded-4 p-3 p-sm-4 shadow-sm border theme-border">
+                    <div class="d-flex align-items-center gap-3 pb-3 border-bottom theme-border">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" class="rounded-circle object-fit-cover border theme-border flex-shrink-0" style="width: 40px; height: 40px;" alt="Alex Avatar">
+                        <button onclick="openPostModal()" class="theme-bg-input theme-bg-hover theme-text-sub text-start rounded-pill px-4 py-2 w-100 border-0 transition-colors cursor-pointer" style="font-size: 15px;">
+                            What's on your mind, Alex?
+                        </button>
+                    </div>
+                    
+                    <div class="d-flex align-items-center justify-content-between pt-2">
+                        <button onclick="openPostModal()" class="flex-fill d-flex align-items-center justify-content-center gap-2 py-2 theme-bg-hover rounded-3 border-0 bg-transparent transition-colors">
+                            <i class="fa-solid fa-video text-danger fs-5"></i>
+                            <span class="fw-semibold theme-text-sub" style="font-size: 0.75rem;">Live video</span>
+                        </button>
+                        <button onclick="openPostModal()" class="flex-fill d-flex align-items-center justify-content-center gap-2 py-2 theme-bg-hover rounded-3 border-0 bg-transparent transition-colors">
+                            <i class="fa-solid fa-images text-success fs-5"></i>
+                            <span class="fw-semibold theme-text-sub" style="font-size: 0.75rem;">Photo/video</span>
+                        </button>
+                        <button onclick="openPostModal()" class="flex-fill d-flex align-items-center justify-content-center gap-2 py-2 theme-bg-hover rounded-3 border-0 bg-transparent transition-colors">
+                            <i class="fa-solid fa-face-smile text-warning fs-5"></i>
+                            <span class="fw-semibold theme-text-sub" style="font-size: 0.75rem;">Feeling/activity</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- FEED POST CONTAINER FOR DYNAMIC POSTS -->
+                <div id="postsFeed" class="d-flex flex-column gap-4">
+
+                    <!-- POST CARD 1 -->
+                    <article class="theme-bg-card rounded-4 shadow-sm border theme-border overflow-hidden">
+                        <div class="p-3 p-sm-4 d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="position-relative">
+                                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=150&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 40px; height: 40px;" alt="Author avatar">
+                                    <span class="position-absolute bg-fb text-white rounded-circle d-flex align-items-center justify-content-center border border-white dark:border-secondary" style="width: 16px; height: 16px; bottom: -4px; right: -4px; font-size: 10px; background-color: var(--fb-blue);">
+                                        <i class="fa-solid fa-check"></i>
+                                    </span>
+                                </div>
+                                <div>
+                                    <div class="d-flex align-items-center gap-1">
+                                        <h3 class="fw-semibold lh-1 theme-text-main text-decoration-none cursor-pointer" style="font-size: 15px;">Meta AI Labs</h3>
+                                        <i class="fa-solid fa-circle-check text-fb" style="font-size: 0.75rem;" title="Verified Page"></i>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-1 theme-text-sub" style="font-size: 0.75rem;">
+                                        <span>2 hours ago</span>
+                                        <span>·</span>
+                                        <i class="fa-solid fa-earth-americas" style="font-size: 11px;" title="Public"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center gap-1 theme-text-sub">
+                                <button class="btn rounded-circle theme-bg-hover d-flex align-items-center justify-content-center border-0 transition-colors" style="width: 36px; height: 36px;">
+                                    <i class="fa-solid fa-ellipsis fs-5"></i>
+                                </button>
+                                <button class="btn rounded-circle theme-bg-hover d-flex align-items-center justify-content-center border-0 transition-colors" style="width: 36px; height: 36px;">
+                                    <i class="fa-solid fa-xmark fs-5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="px-3 px-sm-4 pb-3 theme-text-main" style="font-size: 15px; line-height: 1.6;">
+                            🚀 Excited to announce our latest breakthrough in generative AI architecture! Today we are open-sourcing our next-gen multimodal foundation models with real-time audio and vision processing capabilities. Check out the documentation and developer benchmarks below! 👇
+                            <p class="mt-2 text-fb fw-medium text-decoration-underline cursor-pointer">#MetaAI #OpenSource #TechInnovation #AI2026</p>
+                        </div>
+
+                        <div class="w-100 bg-black bg-opacity-10 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" class="w-100 h-auto object-fit-cover cursor-pointer" style="max-height: 480px;" alt="AI tech post artwork">
+                        </div>
+
+                        <!-- Post Reaction Stats Row -->
+                        <div class="px-4 py-2 d-flex align-items-center justify-content-between theme-text-sub border-bottom theme-border" style="font-size: 0.75rem;">
+                            <div class="d-flex align-items-center gap-1 cursor-pointer">
+                                <div class="d-flex" style="margin-right: -4px;">
+                                    <span class="rounded-circle bg-fb text-white d-flex align-items-center justify-content-center border border-white dark:border-secondary" style="width: 16px; height: 16px; font-size: 9px; background-color: var(--fb-blue);">
+                                        <i class="fa-solid fa-thumbs-up"></i>
+                                    </span>
+                                    <span class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center border border-white dark:border-secondary" style="width: 16px; height: 16px; font-size: 9px;">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </span>
+                                    <span class="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center border border-white dark:border-secondary" style="width: 16px; height: 16px; font-size: 9px;">
+                                        <i class="fa-solid fa-face-laugh-squint"></i>
+                                    </span>
+                                </div>
+                                <span class="text-decoration-underline fw-medium">1.4K</span>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3">
+                                <span onclick="toggleComments('comment-section-1')" class="text-decoration-underline cursor-pointer">342 Comments</span>
+                                <span>·</span>
+                                <span class="text-decoration-underline cursor-pointer">189 Shares</span>
+                            </div>
+                        </div>
+
+                        <!-- Post Action Buttons -->
+                        <div class="px-2 py-1 d-flex align-items-center justify-content-between theme-text-sub border-bottom theme-border position-relative">
+                            
+                            <!-- LIKE BUTTON WITH REACTION POPUP HOVER -->
+                            <div class="position-relative flex-fill group" onmouseleave="hideReactionMenu(this)">
+                                <div class="reactions-menu d-none group-hover:flex position-absolute bg-white dark:bg-secondary rounded-pill px-2 py-1 shadow border theme-border gap-2 z-3 reactions-popup" style="top: -48px; left: 8px;">
+                                    <span onclick="setReaction(this, '👍 Like', '#1877f2', 'fa-solid fa-thumbs-up')" class="reaction-icon fs-4 cursor-pointer" title="Like">👍</span>
+                                    <span onclick="setReaction(this, '❤️ Love', '#f33e58', 'fa-solid fa-heart')" class="reaction-icon fs-4 cursor-pointer" title="Love">❤️</span>
+                                    <span onclick="setReaction(this, '🥰 Care', '#f7b125', 'fa-solid fa-face-smile-beam')" class="reaction-icon fs-4 cursor-pointer" title="Care">🥰</span>
+                                    <span onclick="setReaction(this, '😆 Haha', '#f7b125', 'fa-solid fa-face-laugh-squint')" class="reaction-icon fs-4 cursor-pointer" title="Haha">😆</span>
+                                    <span onclick="setReaction(this, '😮 Wow', '#f7b125', 'fa-solid fa-face-surprise')" class="reaction-icon fs-4 cursor-pointer" title="Wow">😮</span>
+                                    <span onclick="setReaction(this, '😢 Sad', '#f7b125', 'fa-solid fa-face-sad-tear')" class="reaction-icon fs-4 cursor-pointer" title="Sad">😢</span>
+                                    <span onclick="setReaction(this, '😡 Angry', '#e9710f', 'fa-solid fa-face-angry')" class="reaction-icon fs-4 cursor-pointer" title="Angry">😡</span>
+                                </div>
+
+                                <button onclick="toggleLike(this)" class="like-btn w-100 d-flex align-items-center justify-content-center gap-2 py-2 theme-bg-hover rounded-3 border-0 bg-transparent transition-colors">
+                                    <i class="like-icon fa-regular fa-thumbs-up fs-5"></i>
+                                    <span class="like-text fw-semibold" style="font-size: 0.875rem;">Like</span>
+                                </button>
+                            </div>
+
+                            <button onclick="toggleComments('comment-section-1')" class="flex-fill d-flex align-items-center justify-content-center gap-2 py-2 theme-bg-hover rounded-3 border-0 bg-transparent transition-colors">
+                                <i class="fa-regular fa-comment fs-5"></i>
+                                <span class="fw-semibold" style="font-size: 0.875rem;">Comment</span>
+                            </button>
+
+                            <button class="flex-fill d-none d-sm-flex align-items-center justify-content-center gap-2 py-2 theme-bg-hover rounded-3 border-0 bg-transparent transition-colors">
+                                <i class="fa-brands fa-whatsapp fs-5"></i>
+                                <span class="fw-semibold" style="font-size: 0.875rem;">Send</span>
+                            </button>
+
+                            <button class="flex-fill d-flex align-items-center justify-content-center gap-2 py-2 theme-bg-hover rounded-3 border-0 bg-transparent transition-colors">
+                                <i class="fa-solid fa-share fs-5"></i>
+                                <span class="fw-semibold" style="font-size: 0.875rem;">Share</span>
+                            </button>
+                        </div>
+
+                        <!-- Comment Section Drawer -->
+                        <div id="comment-section-1" class="comment-section p-3 p-sm-4 theme-bg-input flex-column gap-3">
+                            <div class="d-flex align-items-start gap-2">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" class="rounded-circle object-fit-cover border theme-border mt-1" style="width: 32px; height: 32px;" alt="Alex Avatar">
+                                <div class="flex-fill theme-bg-card rounded-4 px-3 py-2 d-flex align-items-center border theme-border">
+                                    <input type="text" onkeydown="handleCommentSubmit(event, 'comments-list-1')" placeholder="Write a comment..." class="bg-transparent border-0 outline-none theme-text-main w-100" style="font-size: 0.875rem; box-shadow: none;">
+                                    <div class="d-flex align-items-center gap-2 theme-text-sub ms-2 flex-shrink-0" style="font-size: 0.875rem;">
+                                        <i class="fa-regular fa-face-smile cursor-pointer"></i>
+                                        <i class="fa-solid fa-camera cursor-pointer"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="comments-list-1" class="d-flex flex-column gap-3 mt-1">
+                                <div class="d-flex align-items-start gap-3">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 32px; height: 32px;" alt="Commenter Avatar">
+                                    <div class="flex-fill">
+                                        <div class="theme-bg-card rounded-4 p-2 d-inline-block border theme-border" style="max-width: 90%;">
+                                            <a href="#" class="fw-semibold theme-text-main text-decoration-none d-block" style="font-size: 0.75rem;">Marcus Vance</a>
+                                            <p class="theme-text-main mt-1 mb-0" style="font-size: 0.75rem;">This benchmark result is incredible! Can't wait to test the fine-tuning tools on our server clusters.</p>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3 theme-text-sub fw-semibold ms-3 mt-1" style="font-size: 11px;">
+                                            <button class="border-0 bg-transparent text-decoration-underline p-0" style="font-size: 11px;">Like</button>
+                                            <button class="border-0 bg-transparent text-decoration-underline p-0" style="font-size: 11px;">Reply</button>
+                                            <span>1h</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- POST CARD 2 -->
+                    <article class="theme-bg-card rounded-4 shadow-sm border theme-border overflow-hidden">
+                        <div class="p-3 p-sm-4 d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 40px; height: 40px;" alt="Sarah Jenkins">
+                                <div>
+                                    <h3 class="fw-semibold lh-1 theme-text-main text-decoration-none cursor-pointer" style="font-size: 15px;">Sarah Jenkins</h3>
+                                    <div class="d-flex align-items-center gap-1 theme-text-sub" style="font-size: 0.75rem;">
+                                        <span>5 hours ago</span>
+                                        <span>·</span>
+                                        <i class="fa-solid fa-user-group" style="font-size: 10px;" title="Friends"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center gap-1 theme-text-sub">
+                                <button class="btn rounded-circle theme-bg-hover d-flex align-items-center justify-content-center border-0 transition-colors" style="width: 36px; height: 36px;">
+                                    <i class="fa-solid fa-ellipsis fs-5"></i>
+                                </button>
+                                <button class="btn rounded-circle theme-bg-hover d-flex align-items-center justify-content-center border-0 transition-colors" style="width: 36px; height: 36px;">
+                                    <i class="fa-solid fa-xmark fs-5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="px-3 px-sm-4 pb-3 theme-text-main" style="font-size: 15px; line-height: 1.6;">
+                            Weekend getaway to the mountains! 🏔️ Fresh crisp air, sunrise hikes, and endless coffee. Nothing beats disconnecting from the digital world for a few days. 
+                        </div>
+
+                        <div class="row g-1 bg-secondary bg-opacity-25">
+                            <div class="col-6">
+                                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80" class="w-100 object-fit-cover cursor-pointer" style="height: 240px;" alt="Mountain landscape">
+                            </div>
+                            <div class="col-6">
+                                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" class="w-100 object-fit-cover cursor-pointer" style="height: 240px;" alt="Sunset beach">
+                            </div>
+                        </div>
+
+                        <div class="px-4 py-2 d-flex align-items-center justify-content-between theme-text-sub border-bottom theme-border" style="font-size: 0.75rem;">
+                            <div class="d-flex align-items-center gap-1 cursor-pointer">
+                                <div class="d-flex" style="margin-right: -4px;">
+                                    <span class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center border border-white dark:border-secondary" style="width: 16px; height: 16px; font-size: 9px;">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </span>
+                                    <span class="rounded-circle bg-fb text-white d-flex align-items-center justify-content-center border border-white dark:border-secondary" style="width: 16px; height: 16px; font-size: 9px; background-color: var(--fb-blue);">
+                                        <i class="fa-solid fa-thumbs-up"></i>
+                                    </span>
+                                </div>
+                                <span class="text-decoration-underline fw-medium">89</span>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3">
+                                <span onclick="toggleComments('comment-section-2')" class="text-decoration-underline cursor-pointer">18 Comments</span>
+                                <span>·</span>
+                                <span class="text-decoration-underline cursor-pointer">2 Shares</span>
+                            </div>
+                        </div>
+
+                        <div class="px-2 py-1 d-flex align-items-center justify-content-between theme-text-sub position-relative">
+                            <div class="position-relative flex-fill group" onmouseleave="hideReactionMenu(this)">
+                                <div class="reactions-menu d-none group-hover:flex position-absolute bg-white dark:bg-secondary rounded-pill px-2 py-1 shadow border theme-border gap-2 z-3 reactions-popup" style="top: -48px; left: 8px;">
+                                    <span onclick="setReaction(this, '👍 Like', '#1877f2', 'fa-solid fa-thumbs-up')" class="reaction-icon fs-4 cursor-pointer" title="Like">👍</span>
+                                    <span onclick="setReaction(this, '❤️ Love', '#f33e58', 'fa-solid fa-heart')" class="reaction-icon fs-4 cursor-pointer" title="Love">❤️</span>
+                                    <span onclick="setReaction(this, '🥰 Care', '#f7b125', 'fa-solid fa-face-smile-beam')" class="reaction-icon fs-4 cursor-pointer" title="Care">🥰</span>
+                                    <span onclick="setReaction(this, '😆 Haha', '#f7b125', 'fa-solid fa-face-laugh-squint')" class="reaction-icon fs-4 cursor-pointer" title="Haha">😆</span>
+                                    <span onclick="setReaction(this, '😮 Wow', '#f7b125', 'fa-solid fa-face-surprise')" class="reaction-icon fs-4 cursor-pointer" title="Wow">😮</span>
+                                    <span onclick="setReaction(this, '😢 Sad', '#f7b125', 'fa-solid fa-face-sad-tear')" class="reaction-icon fs-4 cursor-pointer" title="Sad">😢</span>
+                                    <span onclick="setReaction(this, '😡 Angry', '#e9710f', 'fa-solid fa-face-angry')" class="reaction-icon fs-4 cursor-pointer" title="Angry">😡</span>
+                                </div>
+
+                                <button onclick="toggleLike(this)" class="like-btn w-100 d-flex align-items-center justify-content-center gap-2 py-2 theme-bg-hover rounded-3 border-0 bg-transparent transition-colors">
+                                    <i class="like-icon fa-regular fa-thumbs-up fs-5"></i>
+                                    <span class="like-text fw-semibold" style="font-size: 0.875rem;">Like</span>
+                                </button>
+                            </div>
+
+                            <button onclick="toggleComments('comment-section-2')" class="flex-fill d-flex align-items-center justify-content-center gap-2 py-2 theme-bg-hover rounded-3 border-0 bg-transparent transition-colors">
+                                <i class="fa-regular fa-comment fs-5"></i>
+                                <span class="fw-semibold" style="font-size: 0.875rem;">Comment</span>
+                            </button>
+
+                            <button class="flex-fill d-flex align-items-center justify-content-center gap-2 py-2 theme-bg-hover rounded-3 border-0 bg-transparent transition-colors">
+                                <i class="fa-solid fa-share fs-5"></i>
+                                <span class="fw-semibold" style="font-size: 0.875rem;">Share</span>
+                            </button>
+                        </div>
+
+                        <div id="comment-section-2" class="comment-section p-3 p-sm-4 theme-bg-input flex-column gap-3">
+                            <div class="d-flex align-items-start gap-2">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" class="rounded-circle object-fit-cover border theme-border mt-1" style="width: 32px; height: 32px;" alt="Alex Avatar">
+                                <div class="flex-fill theme-bg-card rounded-4 px-3 py-2 d-flex align-items-center border theme-border">
+                                    <input type="text" onkeydown="handleCommentSubmit(event, 'comments-list-2')" placeholder="Write a comment..." class="bg-transparent border-0 outline-none theme-text-main w-100" style="font-size: 0.875rem; box-shadow: none;">
+                                </div>
+                            </div>
+                            <div id="comments-list-2" class="d-flex flex-column gap-3"></div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </main>
+
+        <!-- RIGHT SIDEBAR -->
+        <aside class="d-none d-lg-flex flex-column h-100 p-2 sidebar-scroll custom-scrollbar flex-shrink-0 theme-border border-start" style="width: 280px;">
+            
+            <!-- SPONSORED ADS -->
+            <div class="pb-3 border-bottom theme-border">
+                <span class="fw-semibold theme-text-sub d-block mb-3" style="font-size: 16px;">Sponsored</span>
+                
+                <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors group">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=200&q=80" class="rounded-3 object-fit-cover border theme-border flex-shrink-0" style="width: 96px; height: 96px;" alt="Ad image">
+                    <div class="d-flex flex-column justify-content-center">
+                        <h4 class="fw-semibold theme-text-main lh-1 text-decoration-underline" style="font-size: 0.875rem;">Smart Watch Series X</h4>
+                        <span class="theme-text-sub mt-1" style="font-size: 0.75rem;">techgadgets.com</span>
+                        <p class="theme-text-sub mt-1 lh-1" style="font-size: 11px;">Elevate your fitness tracking with advanced wellness sensors.</p>
+                    </div>
+                </a>
+
+                <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors group mt-1">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=200&q=80" class="rounded-3 object-fit-cover border theme-border flex-shrink-0" style="width: 96px; height: 96px;" alt="Ad image">
+                    <div class="d-flex flex-column justify-content-center">
+                        <h4 class="fw-semibold theme-text-main lh-1 text-decoration-underline" style="font-size: 0.875rem;">Studio Wireless Pro</h4>
+                        <span class="theme-text-sub mt-1" style="font-size: 0.75rem;">audiophiles.io</span>
+                        <p class="theme-text-sub mt-1 lh-1" style="font-size: 11px;">Active noise canceling headphones with 40-hour battery life.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- PAGES & PROFILES -->
+            <div class="py-3 border-bottom theme-border">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="fw-semibold theme-text-sub" style="font-size: 16px;">Your Pages and profiles</span>
+                    <button class="btn theme-text-sub theme-bg-hover rounded-circle d-flex align-items-center justify-content-center border-0" style="width: 32px; height: 32px;">
+                        <i class="fa-solid fa-ellipsis" style="font-size: 0.875rem;"></i>
+                    </button>
+                </div>
+                <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                    <img src="https://images.unsplash.com/photo-1572021335469-31706a17aaef?auto=format&fit=crop&w=100&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 36px; height: 36px;" alt="Page icon">
+                    <span class="fw-medium theme-text-main" style="font-size: 15px;">Apex Creative Studio</span>
+                </a>
+            </div>
+
+            <!-- BIRTHDAYS WIDGET -->
+            <div class="py-3 border-bottom theme-border">
+                <span class="fw-semibold theme-text-sub d-block mb-2" style="font-size: 16px;">Birthdays</span>
+                <a href="#" class="d-flex align-items-start gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                    <i class="fa-solid fa-gift fs-4 text-fb mt-1"></i>
+                    <p class="theme-text-main lh-1 mb-0" style="font-size: 0.875rem;">
+                        <span class="fw-semibold">Jessica Taylor</span> and <span class="fw-semibold">2 others</span> have birthdays today.
+                    </p>
+                </a>
+            </div>
+
+            <!-- CONTACTS (ONLINE FRIENDS) -->
+            <div class="pt-3">
+                <div class="d-flex align-items-center justify-content-between mb-2 px-1">
+                    <span class="fw-semibold theme-text-sub" style="font-size: 16px;">Contacts</span>
+                    <div class="d-flex align-items-center gap-1 theme-text-sub">
+                        <button class="btn rounded-circle theme-bg-hover d-flex align-items-center justify-content-center border-0 transition-colors" style="width: 32px; height: 32px;" title="Search contacts">
+                            <i class="fa-solid fa-magnifying-glass" style="font-size: 0.75rem;"></i>
+                        </button>
+                        <button class="btn rounded-circle theme-bg-hover d-flex align-items-center justify-content-center border-0 transition-colors" style="width: 32px; height: 32px;" title="Options">
+                            <i class="fa-solid fa-ellipsis" style="font-size: 0.75rem;"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <nav class="d-flex flex-column gap-0">
+                    <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 36px; height: 36px;" alt="Friend avatar">
+                            <span class="position-absolute bg-success border border-2 border-white dark:border-secondary rounded-circle" style="width: 12px; height: 12px; bottom: 0; right: 0;"></span>
+                        </div>
+                        <span class="fw-medium theme-text-main" style="font-size: 15px;">David Chen</span>
+                    </a>
+
+                    <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=100&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 36px; height: 36px;" alt="Friend avatar">
+                            <span class="position-absolute bg-success border border-2 border-white dark:border-secondary rounded-circle" style="width: 12px; height: 12px; bottom: 0; right: 0;"></span>
+                        </div>
+                        <span class="fw-medium theme-text-main" style="font-size: 15px;">Emily Watson</span>
+                    </a>
+
+                    <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 36px; height: 36px;" alt="Friend avatar">
+                            <span class="position-absolute bg-success border border-2 border-white dark:border-secondary rounded-circle" style="width: 12px; height: 12px; bottom: 0; right: 0;"></span>
+                        </div>
+                        <span class="fw-medium theme-text-main" style="font-size: 15px;">Sarah Jenkins</span>
+                    </a>
+
+                    <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 36px; height: 36px;" alt="Friend avatar">
+                            <span class="position-absolute bg-success border border-2 border-white dark:border-secondary rounded-circle" style="width: 12px; height: 12px; bottom: 0; right: 0;"></span>
+                        </div>
+                        <span class="fw-medium theme-text-main" style="font-size: 15px;">Michael Scott</span>
+                    </a>
+
+                    <a href="#" class="d-flex align-items-center gap-3 p-2 rounded-3 theme-bg-hover text-decoration-none transition-colors">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 36px; height: 36px;" alt="Friend avatar">
+                            <span class="position-absolute bg-success border border-2 border-white dark:border-secondary rounded-circle" style="width: 12px; height: 12px; bottom: 0; right: 0;"></span>
+                        </div>
+                        <span class="fw-medium theme-text-main" style="font-size: 15px;">Rachel Green</span>
+                    </a>
+                </nav>
+            </div>
+
+        </aside>
+
+    </div>
+
+    <!-- MOBILE BOTTOM NAVIGATION BAR -->
+    <nav class="d-md-none fixed-bottom h-14 theme-bg-card border-top theme-border d-flex align-items-center justify-content-around z-3" style="height: 56px;">
+        <a href="#" class="text-fb d-flex flex-column align-items-center justify-content-center w-100 h-100 text-decoration-none">
+            <i class="fa-solid fa-house fs-5"></i>
+        </a>
+        <a href="#" class="theme-text-sub d-flex flex-column align-items-center justify-content-center w-100 h-100 text-decoration-none">
+            <i class="fa-solid fa-tv fs-5"></i>
+        </a>
+        <a href="#" class="theme-text-sub d-flex flex-column align-items-center justify-content-center w-100 h-100 text-decoration-none">
+            <i class="fa-solid fa-store fs-5"></i>
+        </a>
+        <a href="#" class="theme-text-sub d-flex flex-column align-items-center justify-content-center w-100 h-100 text-decoration-none">
+            <i class="fa-solid fa-users fs-5"></i>
+        </a>
+        <a href="#" class="theme-text-sub d-flex flex-column align-items-center justify-content-center w-100 h-100 text-decoration-none position-relative">
+            <i class="fa-solid fa-bell fs-5"></i>
+            <span class="position-absolute badge rounded-pill bg-danger text-white" style="font-size: 10px; top: 8px; right: 24px;">7</span>
+        </a>
+    </nav>
+
+    <!-- CREATE POST MODAL DIALOG -->
+    <div id="postModal" class="d-none position-fixed top-0 start-0 w-100 h-100 bg-black bg-opacity-75 backdrop-blur z-5 d-flex align-items-center justify-content-center p-4">
+        <div class="theme-bg-card rounded-4 w-100 border theme-border shadow-lg overflow-hidden modal-fade-in d-flex flex-column" style="max-width: 500px;">
+            
+            <div class="p-4 border-bottom theme-border d-flex align-items-center justify-content-center position-relative">
+                <h3 class="fw-bold theme-text-main w-100 text-center mb-0" style="font-size: 1.25rem;">Create post</h3>
+                <button onclick="closePostModal()" class="btn rounded-circle theme-bg-input d-flex align-items-center justify-content-center theme-text-main position-absolute border-0" style="width: 36px; height: 36px; right: 12px; top: 12px;">
+                    <i class="fa-solid fa-xmark fs-5"></i>
+                </button>
+            </div>
+
+            <div class="p-4 d-flex align-items-center gap-3">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 44px; height: 44px;" alt="Avatar">
+                <div>
+                    <h4 class="fw-semibold theme-text-main mb-0" style="font-size: 0.875rem;">Alex Morgan</h4>
+                    <button class="d-flex align-items-center gap-1 theme-bg-input px-3 py-1 rounded-2 border-0 fw-semibold theme-text-sub mt-1" style="font-size: 0.75rem;">
+                        <i class="fa-solid fa-earth-americas"></i>
+                        <span>Public</span>
+                        <i class="fa-solid fa-caret-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="px-4 pb-2">
+                <textarea id="modalPostText" rows="4" placeholder="What's on your mind, Alex?" class="w-100 bg-transparent border-0 outline-none theme-text-main resize-none" style="font-size: 1.125rem; box-shadow: none; outline: none;"></textarea>
+            </div>
+
+            <div class="px-4 py-2 mx-4 border theme-border rounded-3 d-flex align-items-center justify-content-between shadow-sm">
+                <span class="fw-semibold theme-text-main" style="font-size: 0.875rem;">Add to your post</span>
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn rounded-circle d-flex align-items-center justify-content-center border-0 text-success" style="width: 36px; height: 36px; font-size: 1.125rem;">
+                        <i class="fa-solid fa-images"></i>
+                    </button>
+                    <button class="btn rounded-circle d-flex align-items-center justify-content-center border-0 text-primary" style="width: 36px; height: 36px; font-size: 1.125rem;">
+                        <i class="fa-solid fa-user-tag"></i>
+                    </button>
+                    <button class="btn rounded-circle d-flex align-items-center justify-content-center border-0 text-warning" style="width: 36px; height: 36px; font-size: 1.125rem;">
+                        <i class="fa-solid fa-face-smile"></i>
+                    </button>
+                    <button class="btn rounded-circle d-flex align-items-center justify-content-center border-0 text-danger" style="width: 36px; height: 36px; font-size: 1.125rem;">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="p-4">
+                <button onclick="submitNewPost()" class="btn btn-fb w-100 fw-semibold py-2 rounded-3 shadow-sm" style="font-size: 1rem;">
+                    Post
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (optional, for any bootstrap components) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // --- 1. DARK / LIGHT MODE TOGGLE LOGIC ---
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const htmlElement = document.documentElement;
+
+        function setTheme(isDark) {
+            if (isDark) {
+                htmlElement.classList.add('dark');
+                htmlElement.classList.remove('light');
+                htmlElement.setAttribute('data-bs-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun fs-5 text-warning';
+                localStorage.setItem('fbTheme', 'dark');
+            } else {
+                htmlElement.classList.remove('dark');
+                htmlElement.classList.add('light');
+                htmlElement.setAttribute('data-bs-theme', 'light');
+                themeIcon.className = 'fa-solid fa-moon fs-5';
+                localStorage.setItem('fbTheme', 'light');
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = htmlElement.classList.contains('dark');
+            setTheme(!isDark);
+        });
+
+        // Initialize saved theme preference
+        const savedTheme = localStorage.getItem('fbTheme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setTheme(true);
+        } else {
+            setTheme(false);
+        }
+
+        // --- 2. STORY / REELS TAB SWITCHER ---
+        function switchStoryTab(tab) {
+            const storiesBtn = document.getElementById('tabStoriesBtn');
+            const reelsBtn = document.getElementById('tabReelsBtn');
+
+            if (tab === 'stories') {
+                storiesBtn.className = 'flex-fill d-flex align-items-center justify-content-center gap-2 py-2 border-0 bg-transparent fw-semibold text-fb';
+                storiesBtn.style.borderBottom = '4px solid var(--fb-blue) !important';
+                reelsBtn.className = 'flex-fill d-flex align-items-center justify-content-center gap-2 py-2 theme-text-sub border-0 bg-transparent fw-semibold rounded-3';
+                reelsBtn.style.borderBottom = 'none';
+            } else {
+                reelsBtn.className = 'flex-fill d-flex align-items-center justify-content-center gap-2 py-2 border-0 bg-transparent fw-semibold text-fb';
+                reelsBtn.style.borderBottom = '4px solid var(--fb-blue) !important';
+                storiesBtn.className = 'flex-fill d-flex align-items-center justify-content-center gap-2 py-2 theme-text-sub border-0 bg-transparent fw-semibold rounded-3';
+                storiesBtn.style.borderBottom = 'none';
+            }
+        }
+
+        // --- 3. REACTION BAR POPUP LOGIC ---
+        function setReaction(element, label, color, iconClass) {
+            const container = element.closest('.group');
+            const likeBtn = container.querySelector('.like-btn');
+            const likeIcon = container.querySelector('.like-icon');
+            const likeText = container.querySelector('.like-text');
+
+            likeText.innerText = label;
+            likeText.style.color = color;
+            likeIcon.className = `${iconClass} fs-5`;
+            likeIcon.style.color = color;
+
+            const menu = container.querySelector('.reactions-menu');
+            if (menu) menu.classList.add('d-none');
+        }
+
+        function toggleLike(btn) {
+            const likeIcon = btn.querySelector('.like-icon');
+            const likeText = btn.querySelector('.like-text');
+
+            if (likeText.innerText === 'Like' && !likeText.style.color) {
+                likeText.innerText = 'Like';
+                likeText.style.color = '#1877f2';
+                likeIcon.className = 'fa-solid fa-thumbs-up fs-5';
+                likeIcon.style.color = '#1877f2';
+            } else {
+                likeText.innerText = 'Like';
+                likeText.style.color = '';
+                likeIcon.className = 'fa-regular fa-thumbs-up fs-5';
+                likeIcon.style.color = '';
+            }
+        }
+
+        function hideReactionMenu(container) {
+            const menu = container.querySelector('.reactions-menu');
+            if (menu) menu.classList.add('d-none');
+        }
+
+        // --- 4. COMMENTS EXPANSION & SUBMISSION ---
+        function toggleComments(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                if (section.classList.contains('show')) {
+                    section.classList.remove('show');
+                } else {
+                    section.classList.add('show');
+                }
+            }
+        }
+
+        function handleCommentSubmit(event, listId) {
+            if (event.key === 'Enter' && event.target.value.trim() !== '') {
+                const commentText = event.target.value.trim();
+                const list = document.getElementById(listId);
+
+                const newCommentHtml = `
+                    <div class="d-flex align-items-start gap-3 modal-fade-in">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 32px; height: 32px;" alt="Avatar">
+                        <div class="flex-fill">
+                            <div class="theme-bg-card rounded-4 p-2 d-inline-block border theme-border" style="max-width: 90%;">
+                                <a href="#" class="fw-semibold theme-text-main text-decoration-none d-block" style="font-size: 0.75rem;">Alex Morgan</a>
+                                <p class="theme-text-main mt-1 mb-0" style="font-size: 0.75rem;">${escapeHtml(commentText)}</p>
+                            </div>
+                            <div class="d-flex align-items-center gap-3 theme-text-sub fw-semibold ms-3 mt-1" style="font-size: 11px;">
+                                <button class="border-0 bg-transparent text-decoration-underline p-0" style="font-size: 11px;">Like</button>
+                                <button class="border-0 bg-transparent text-decoration-underline p-0" style="font-size: 11px;">Reply</button>
+                                <span>Just now</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                list.insertAdjacentHTML('beforeend', newCommentHtml);
+                event.target.value = '';
+            }
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+
+        // --- 5. CREATE POST MODAL LOGIC ---
+        function openPostModal() {
+            const modal = document.getElementById('postModal');
+            modal.classList.remove('d-none');
+            modal.classList.add('d-flex');
+            document.getElementById('modalPostText').focus();
+        }
+
+        function closePostModal() {
+            const modal = document.getElementById('postModal');
+            modal.classList.add('d-none');
+            modal.classList.remove('d-flex');
+            document.getElementById('modalPostText').value = '';
+        }
+
+        function submitNewPost() {
+            const textarea = document.getElementById('modalPostText');
+            const postContent = textarea.value.trim();
+
+            if (postContent !== '') {
+                const postsFeed = document.getElementById('postsFeed');
+                const postId = 'post-' + Date.now();
+                const commentSectionId = 'comment-section-' + Date.now();
+                const commentsListId = 'comments-list-' + Date.now();
+
+                const newPostCard = `
+                    <article class="theme-bg-card rounded-4 shadow-sm border theme-border overflow-hidden modal-fade-in">
+                        <div class="p-3 p-sm-4 d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" class="rounded-circle object-fit-cover border theme-border" style="width: 40px; height: 40px;" alt="Alex Morgan">
+                                <div>
+                                    <h3 class="fw-semibold lh-1 theme-text-main text-decoration-none cursor-pointer" style="font-size: 15px;">Alex Morgan</h3>
+                                    <div class="d-flex align-items-center gap-1 theme-text-sub" style="font-size: 0.75rem;">
+                                        <span>Just now</span>
+                                        <span>·</span>
+                                        <i class="fa-solid fa-earth-americas" style="font-size: 11px;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn rounded-circle theme-bg-hover d-flex align-items-center justify-content-center border-0 theme-text-sub" style="width: 36px; height: 36px;">
+                                <i class="fa-solid fa-ellipsis fs-5"></i>
+                            </button>
+                        </div>
+
+                        <div class="px-3 px-sm-4 pb-3 theme-text-main" style="font-size: 15px; line-height: 1.6;">
+                            ${escapeHtml(postContent)}
+                        </div>
+
+                        <div class="px-4 py-2 d-flex align-items-center justify-content-between theme-text-sub border-bottom theme-border" style="font-size: 0.75rem;">
+                            <div class="d-flex align-items-center gap-1">
+                                <span class="rounded-circle bg-fb text-white d-flex align-items-center justify-content-center" style="width: 16px; height: 16px; font-size: 9px; background-color: var(--fb-blue);">
+                                    <i class="fa-solid fa-thumbs-up"></i>
+                                </span>
+                                <span class="fw-medium">1</span>
+                            </div>
+                            <span onclick="toggleComments('${commentSectionId}')" class="text-decoration-underline cursor-pointer">0 Comments</span>
+                        </div>
+
+                        <div class="px-2 py-1 d-flex align-items-center justify-content-between theme-text-sub position-relative">
+                            <div class="position-relative flex-fill group" onmouseleave="hideReactionMenu(this)">
+                                <div class="reactions-menu d-none group-hover:flex position-absolute bg-white dark:bg-secondary rounded-pill px-2 py-1 shadow border theme-border gap-2 z-3 reactions-popup" style="top: -48px; left: 8px;">
+                                    <span onclick="setReaction(this, '👍 Like', '#1877f2', 'fa-solid fa-thumbs-up')" class="reaction-icon fs-4 cursor-pointer">👍</span>
+                                    <span onclick="setReaction(this, '❤️ Love', '#f33e58', 'fa-solid fa-heart')" class="reaction-icon fs-4 cursor-pointer">❤️</span>
+                                    <span onclick="setReaction(this, '🥰 Care', '#f7b125', 'fa-solid fa-face-smile-beam')" class="reaction-icon fs-4 cursor-pointer">🥰</span>
+                                    <span onclick="setReaction(this, '😆 Haha', '#f7b125', 'fa-solid fa-face-laugh-squint')" class="reaction-icon fs-4 cursor-pointer">😆</span>
+                                </div>
+                                <button onclick="toggleLike(this)" class="like-btn w-100 d-flex align-items-center justify-content-center gap-2 py-2 theme-bg-hover rounded-3 border-0 bg-transparent">
+                                    <i class="like-icon fa-regular fa-thumbs-up fs-5"></i>
+                                    <span class="like-text fw-semibold" style="font-size: 0.875rem;">Like</span>
+                                </button>
+                            </div>
+                            <button onclick="toggleComments('${commentSectionId}')" class="flex-fill d-flex align-items-center justify-content-center gap-2 py-2 theme-bg-hover rounded-3 border-0 bg-transparent">
+                                <i class="fa-regular fa-comment fs-5"></i>
+                                <span class="fw-semibold" style="font-size: 0.875rem;">Comment</span>
+                            </button>
+                        </div>
+
+                        <div id="${commentSectionId}" class="comment-section p-3 p-sm-4 theme-bg-input flex-column gap-3">
+                            <div class="d-flex align-items-start gap-2">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" class="rounded-circle object-fit-cover border theme-border mt-1" style="width: 32px; height: 32px;">
+                                <div class="flex-fill theme-bg-card rounded-4 px-3 py-2 d-flex align-items-center border theme-border">
+                                    <input type="text" onkeydown="handleCommentSubmit(event, '${commentsListId}')" placeholder="Write a comment..." class="bg-transparent border-0 outline-none theme-text-main w-100" style="font-size: 0.875rem; box-shadow: none;">
+                                </div>
+                            </div>
+                            <div id="${commentsListId}" class="d-flex flex-column gap-3"></div>
+                        </div>
+                    </article>
+                `;
+
+                postsFeed.insertAdjacentHTML('afterbegin', newPostCard);
+                closePostModal();
+            }
+        }
+    </script>
+</body>
+</html>
