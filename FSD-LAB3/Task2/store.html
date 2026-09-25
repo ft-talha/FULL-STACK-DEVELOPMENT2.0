@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store | VERDANT & CO.</title>
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           DESIGN TOKENS
+           ========================================== */
+        :root {
+            --emerald-dark: #1C2D27;
+            --sage-warm: #2D4A3E;
+            --eucalyptus-soft: #8CAE96;
+            --eucalyptus-light: #E2ECE5;
+            --bg-warm: #FAF8F3;
+            --surface-card: #F1EFEA;
+            --surface-white: #F7F5F0;
+            --gold-amber: #C8963E;
+            --gold-hover: #B08232;
+            --text-dark: #1C2D27;
+            --text-muted: #5A6B62;
+            --border-soft: #D9D4C7;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --shadow-subtle: 0 10px 30px rgba(28, 45, 39, 0.06);
+            --shadow-hover: 0 16px 35px rgba(28, 45, 39, 0.14);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-warm);
+            color: var(--text-dark);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .brand-font {
+            font-family: var(--font-heading);
+            letter-spacing: -0.02em;
+        }
+
+        /* ==========================================
+           TOP SWITCHER BAR
+           ========================================== */
+        .switcher-bar {
+            background-color: var(--emerald-dark);
+            border-bottom: 1px solid rgba(200, 150, 62, 0.25);
+            padding: 8px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1050;
+        }
+
+        .switcher-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--eucalyptus-soft);
+            background-color: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            text-decoration: none;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .switcher-pill:hover,
+        .switcher-pill.active {
+            background-color: var(--gold-amber);
+            color: var(--emerald-dark);
+            border-color: var(--gold-amber);
+            box-shadow: 0 3px 10px rgba(200, 150, 62, 0.3);
+        }
+
+        /* ==========================================
+           MAIN NAVBAR
+           ========================================== */
+        .navbar-custom {
+            background-color: var(--sage-warm);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 0.9rem 0;
+        }
+
+        .navbar-brand-logo {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #FFFFFF !important;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .navbar-brand-logo span {
+            color: var(--gold-amber);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .search-input {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #fff;
+            border-radius: 8px 0 0 8px;
+            font-size: 0.9rem;
+            padding: 0.55rem 0.9rem;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .search-input:focus {
+            background-color: rgba(255, 255, 255, 0.14);
+            color: #fff;
+            border-color: var(--gold-amber);
+            box-shadow: none;
+            outline: none;
+        }
+
+        .search-btn {
+            background-color: var(--gold-amber);
+            border: none;
+            color: var(--emerald-dark);
+            font-weight: 700;
+            border-radius: 0 8px 8px 0;
+            padding: 0 1rem;
+        }
+
+        .search-btn:hover {
+            background-color: var(--gold-hover);
+            color: #fff;
+        }
+
+        .nav-link-custom {
+            color: #E2ECE5 !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 0.85rem !important;
+            border-radius: 6px;
+            transition: all 0.25s ease;
+            text-decoration: none;
+        }
+
+        .nav-link-custom:hover,
+        .nav-link-custom.active {
+            color: var(--gold-amber) !important;
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* ==========================================
+           BUTTONS
+           ========================================== */
+        .btn-gold {
+            background-color: var(--gold-amber);
+            color: var(--emerald-dark);
+            font-weight: 700;
+            border: none;
+            padding: 0.65rem 1.4rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-gold:hover {
+            background-color: var(--gold-hover);
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(200, 150, 62, 0.35);
+        }
+
+        .btn-sage {
+            background-color: var(--sage-warm);
+            color: #FFFFFF;
+            font-weight: 600;
+            border: none;
+            padding: 0.55rem 1.1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-sage:hover {
+            background-color: var(--emerald-dark);
+            color: var(--eucalyptus-soft);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-sage {
+            border: 2px solid var(--sage-warm);
+            color: var(--sage-warm);
+            font-weight: 600;
+            background: transparent;
+            padding: 0.5rem 1.1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.85rem;
+        }
+
+        .btn-outline-sage:hover {
+            background-color: var(--sage-warm);
+            color: #FFFFFF;
+        }
+
+        .btn-outline-light {
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            color: #fff;
+            font-weight: 600;
+            background: transparent;
+            padding: 0.65rem 1.4rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-outline-light:hover {
+            background-color: #fff;
+            color: var(--emerald-dark);
+            border-color: #fff;
+        }
+
+        .badge-gold {
+            background-color: var(--gold-amber);
+            color: var(--emerald-dark);
+            font-weight: 700;
+        }
+
+        /* ==========================================
+           HERO SECTION
+           ========================================== */
+        .hero-card {
+            background: linear-gradient(135deg, var(--emerald-dark) 0%, var(--sage-warm) 100%);
+            border-radius: 24px;
+            color: #fff;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(28, 45, 39, 0.25);
+            position: relative;
+        }
+
+        .hero-card::before {
+            content: "";
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(200, 150, 62, 0.22), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-card h1 {
+            color: #fff;
+            font-weight: 700;
+            line-height: 1.15;
+        }
+
+        .hero-img {
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            max-height: 360px;
+            object-fit: cover;
+            width: 100%;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-features div {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* ==========================================
+           CATEGORY FILTERS (Pure CSS radio trick)
+           ========================================== */
+        .cat-radios {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .cat-btn {
+            display: inline-block;
+            border: 2px solid var(--sage-warm);
+            color: var(--sage-warm);
+            font-weight: 600;
+            background: transparent;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .cat-btn:hover {
+            background-color: var(--sage-warm);
+            color: #fff;
+        }
+
+        /* Active category styling */
+        #cat-all:checked~.filter-bar label[for="cat-all"],
+        #cat-ceramics:checked~.filter-bar label[for="cat-ceramics"],
+        #cat-aroma:checked~.filter-bar label[for="cat-aroma"],
+        #cat-textiles:checked~.filter-bar label[for="cat-textiles"],
+        #cat-botanicals:checked~.filter-bar label[for="cat-botanicals"] {
+            background-color: var(--sage-warm);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(45, 74, 62, 0.28);
+        }
+
+        /* Filtering logic — hide non-matching cards */
+        #cat-ceramics:checked~.product-grid .p-card:not([data-cat="Ceramics"]) {
+            display: none;
+        }
+
+        #cat-aroma:checked~.product-grid .p-card:not([data-cat="Aromatherapy"]) {
+            display: none;
+        }
+
+        #cat-textiles:checked~.product-grid .p-card:not([data-cat="Textiles"]) {
+            display: none;
+        }
+
+        #cat-botanicals:checked~.product-grid .p-card:not([data-cat="Botanicals"]) {
+            display: none;
+        }
+
+        /* ==========================================
+           PRODUCT CARDS
+           ========================================== */
+        .product-card {
+            background-color: var(--surface-white);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.35s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--eucalyptus-soft);
+        }
+
+        .product-img-box {
+            position: relative;
+            height: 220px;
+            background-color: var(--surface-card);
+            overflow: hidden;
+        }
+
+        .product-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-img-box img {
+            transform: scale(1.08);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            z-index: 2;
+            letter-spacing: 0.5px;
+        }
+
+        .rating-stars {
+            color: var(--gold-amber);
+            font-size: 0.82rem;
+        }
+
+        /* Wishlist heart toggle (visual only) */
+        .wish-toggle {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #B6BDB8;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .wish-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .wish-check {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .wish-check:checked+.wish-toggle {
+            color: #E63946;
+        }
+
+        .wish-check:checked+.wish-toggle i::before {
+            content: "\f004";
+            /* solid heart */
+            font-weight: 900;
+        }
+
+        /* ==========================================
+           TESTIMONIALS
+           ========================================== */
+        .testimonial-card {
+            background-color: var(--surface-white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: 100%;
+            box-shadow: var(--shadow-subtle);
+            border: 1px solid var(--border-soft);
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .avatar-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--eucalyptus-light);
+            color: var(--sage-warm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border: 1px solid var(--border-soft);
+        }
+
+        /* ==========================================
+           FOOTER
+           ========================================== */
+        footer {
+            background-color: var(--emerald-dark);
+            color: #C2D1C8;
+            border-top: 3px solid var(--gold-amber);
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        footer h5 {
+            color: #FFFFFF;
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        footer a {
+            color: var(--eucalyptus-soft);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            font-size: 0.88rem;
+        }
+
+        footer a:hover {
+            color: var(--gold-amber);
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-brand {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #fff;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .footer-brand span {
+            color: var(--gold-amber);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        /* ==========================================
+           UTILITIES
+           ========================================== */
+        .section-anchor {
+            scroll-margin-top: 120px;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            transform: translate(40%, -40%);
+            background: var(--gold-amber);
+            color: var(--emerald-dark);
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 3px 7px;
+            border-radius: 20px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 576px) {
+            .hero-card h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-features {
+                font-size: 0.78rem;
+            }
+
+            .navbar-brand-logo {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ==========================================
+         TOP SWITCHER BAR
+         ========================================== -->
+    <div class="switcher-bar">
+        <div class="container d-flex align-items-center justify-content-between overflow-auto py-1 gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-white opacity-75 small fw-bold me-2 d-none d-sm-inline">
+                    <i class="fa-solid fa-layer-group text-warning me-1"></i> SCREEN:
+                </span>
+                <a href="auth.html" class="switcher-pill">
+                    <i class="fa-solid fa-lock"></i> 1. Auth / Login
+                </a>
+                <a href="store.html" class="switcher-pill active">
+                    <i class="fa-solid fa-store"></i> 2. Main Store
+                </a>
+                <a href="add-product.html" class="switcher-pill">
+                    <i class="fa-solid fa-plus-circle"></i> 3. Add Product
+                </a>
+                <a href="cart.html" class="switcher-pill">
+                    <i class="fa-solid fa-bag-shopping"></i> 4. Cart (2)
+                </a>
+                <a href="checkout.html" class="switcher-pill">
+                    <i class="fa-solid fa-credit-card"></i> 5. Checkout
+                </a>
+            </div>
+            <span class="text-warning small fw-semibold d-none d-lg-inline">
+                <i class="fa-solid fa-shield-halved me-1"></i> VERDANT & CO. Engine
+            </span>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         NAVBAR
+         ========================================== -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+
+            <!-- Brand -->
+            <a href="store.html" class="navbar-brand-logo mb-0">
+                <i class="fa-solid fa-seedling text-warning me-2"></i>VERDANT <span>& Co.</span>
+            </a>
+
+            <!-- Search -->
+            <div class="d-none d-lg-block mx-auto" style="width: 340px;">
+                <div class="input-group">
+                    <input type="text" class="form-control search-input"
+                        placeholder="Search organic pots, linen, candles...">
+                    <button class="search-btn" type="button">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right actions -->
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="d-none d-md-flex align-items-center gap-2">
+                    <a href="store.html" class="nav-link-custom active">Store</a>
+                    <a href="add-product.html" class="nav-link-custom">
+                        <i class="fa-solid fa-plus me-1"></i> Add Item
+                    </a>
+                </div>
+
+                <!-- Cart -->
+                <a href="cart.html"
+                    class="btn btn-outline-light rounded-circle position-relative d-flex align-items-center justify-content-center"
+                    style="width:42px; height:42px; padding:0;">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-badge">2</span>
+                </a>
+
+                <!-- Account -->
+                <div class="dropdown">
+                    <button class="btn btn-gold d-inline-flex align-items-center gap-2" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-regular fa-user"></i>
+                        <span class="d-none d-sm-inline">curator</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                        <li><a class="dropdown-item fw-semibold" href="add-product.html">
+                                <i class="fa-solid fa-boxes-packing me-2 text-success"></i> Seller Portal</a></li>
+                        <li><a class="dropdown-item fw-semibold" href="cart.html">
+                                <i class="fa-solid fa-receipt me-2 text-warning"></i> Active Orders</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger fw-semibold" href="auth.html">
+                                <i class="fa-solid fa-right-from-bracket me-2"></i> Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+
+        <!-- ==========================================
+             HERO SECTION
+             ========================================== -->
+        <section class="hero-card p-4 p-md-5 mb-5">
+            <div class="row align-items-center gy-4 position-relative">
+                <div class="col-lg-7">
+                    <span class="badge badge-gold px-3 py-2 rounded-pill mb-3 text-uppercase"
+                        style="letter-spacing:1px; font-size:0.72rem;">
+                        <i class="fa-solid fa-award me-1"></i> Sustainable Collection 2026
+                    </span>
+                    <h1 class="display-5 fw-bold mb-3">
+                        Elevate Your Space with Organic Living
+                    </h1>
+                    <p class="lead mb-4 text-light opacity-90" style="max-width: 520px;">
+                        Ethically crafted ceramics, botanical soy scents, and pure linen textiles
+                        tailored for tranquil modern sanctuaries.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="#products-anchor" class="btn-gold btn-lg px-4">
+                            Shop Collection <i class="fa-solid fa-arrow-down ms-2"></i>
+                        </a>
+                        <a href="add-product.html" class="btn-outline-light btn-lg px-4">
+                            <i class="fa-solid fa-plus me-1"></i> List New Product
+                        </a>
+                    </div>
+
+                    <div class="d-flex flex-wrap align-items-center gap-4 mt-4 pt-2 hero-features">
+                        <div><i class="fa-solid fa-truck-fast text-warning me-1"></i> Free Shipping Over $75</div>
+                        <div><i class="fa-solid fa-leaf text-success me-1"></i> 100% Eco-Certified</div>
+                        <div><i class="fa-solid fa-rotate-left text-info me-1"></i> 30-Day Returns</div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5 text-center d-none d-lg-block">
+                    <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=700&q=80"
+                        alt="Luxe living space" class="hero-img">
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PRODUCT LISTING HEADER + FILTERS
+             ========================================== -->
+        <section class="section-anchor" id="products-anchor">
+
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+                <div>
+                    <h2 class="fw-bold mb-1" style="color: var(--emerald-dark);">Handcrafted Essentials</h2>
+                    <p class="text-muted mb-0">Discover top organic creations curated for your home.</p>
+                </div>
+            </div>
+
+            <!-- Hidden radio inputs drive the filter logic -->
+            <input type="radio" name="cat" id="cat-all" class="cat-radios" checked>
+            <input type="radio" name="cat" id="cat-ceramics" class="cat-radios">
+            <input type="radio" name="cat" id="cat-aroma" class="cat-radios">
+            <input type="radio" name="cat" id="cat-textiles" class="cat-radios">
+            <input type="radio" name="cat" id="cat-botanicals" class="cat-radios">
+
+            <div class="filter-bar d-flex gap-2 overflow-auto pb-2 mb-4">
+                <label for="cat-all" class="cat-btn">All Items</label>
+                <label for="cat-ceramics" class="cat-btn">Ceramics</label>
+                <label for="cat-aroma" class="cat-btn">Aromatherapy</label>
+                <label for="cat-textiles" class="cat-btn">Textiles</label>
+                <label for="cat-botanicals" class="cat-btn">Botanicals</label>
+            </div>
+
+            <!-- ==========================================
+                 PRODUCT GRID
+                 ========================================== -->
+            <div class="row g-4 product-grid mb-5">
+
+                <!-- Product 1 -->
+                <div class="col-6 col-md-4 col-lg-3 p-card" data-cat="Aromatherapy">
+                    <article class="product-card">
+                        <div class="product-img-box">
+                            <span class="product-badge badge-gold">BESTSELLER</span>
+                            <input type="checkbox" id="wish1" class="wish-check">
+                            <label for="wish1" class="wish-toggle" title="Add to wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </label>
+                            <img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80"
+                                alt="Wild Lavender Soy Candle">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <div class="text-muted small mb-1">Aromatherapy</div>
+                            <h6 class="fw-bold mb-1" style="color: var(--emerald-dark);">Wild Lavender Soy Candle</h6>
+                            <div class="rating-stars mb-2">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="text-dark fw-bold small ms-1">4.8</span>
+                                <span class="text-muted small">(48)</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+                                <div>
+                                    <span class="fw-bold fs-6" style="color: var(--sage-warm);">$28.00</span>
+                                    <span class="text-muted text-decoration-line-through small ms-1">$35.00</span>
+                                </div>
+                                <a href="cart.html" class="btn-sage btn-sm rounded-3">
+                                    <i class="fa-solid fa-plus me-1"></i> Add
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="col-6 col-md-4 col-lg-3 p-card" data-cat="Ceramics">
+                    <article class="product-card">
+                        <div class="product-img-box">
+                            <span class="product-badge badge-gold">NEW</span>
+                            <input type="checkbox" id="wish2" class="wish-check">
+                            <label for="wish2" class="wish-toggle" title="Add to wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </label>
+                            <img src="https://images.unsplash.com/photo-1612196808214-b7e239e5f6b7?auto=format&fit=crop&w=600&q=80"
+                                alt="Artisan Earth Ceramic Vase">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <div class="text-muted small mb-1">Ceramics</div>
+                            <h6 class="fw-bold mb-1" style="color: var(--emerald-dark);">Artisan Earth Ceramic Vase</h6>
+                            <div class="rating-stars mb-2">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="text-dark fw-bold small ms-1">5.0</span>
+                                <span class="text-muted small">(92)</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+                                <span class="fw-bold fs-6" style="color: var(--sage-warm);">$52.00</span>
+                                <a href="cart.html" class="btn-sage btn-sm rounded-3">
+                                    <i class="fa-solid fa-plus me-1"></i> Add
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="col-6 col-md-4 col-lg-3 p-card" data-cat="Textiles">
+                    <article class="product-card">
+                        <div class="product-img-box">
+                            <span class="product-badge badge-gold">20% OFF</span>
+                            <input type="checkbox" id="wish3" class="wish-check">
+                            <label for="wish3" class="wish-toggle" title="Add to wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </label>
+                            <img src="https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=600&q=80"
+                                alt="Sage Organic Linen Blanket">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <div class="text-muted small mb-1">Textiles</div>
+                            <h6 class="fw-bold mb-1" style="color: var(--emerald-dark);">Sage Organic Linen Blanket</h6>
+                            <div class="rating-stars mb-2">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="text-dark fw-bold small ms-1">4.7</span>
+                                <span class="text-muted small">(31)</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+                                <div>
+                                    <span class="fw-bold fs-6" style="color: var(--sage-warm);">$64.00</span>
+                                    <span class="text-muted text-decoration-line-through small ms-1">$80.00</span>
+                                </div>
+                                <a href="cart.html" class="btn-sage btn-sm rounded-3">
+                                    <i class="fa-solid fa-plus me-1"></i> Add
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="col-6 col-md-4 col-lg-3 p-card" data-cat="Botanicals">
+                    <article class="product-card">
+                        <div class="product-img-box">
+                            <input type="checkbox" id="wish4" class="wish-check">
+                            <label for="wish4" class="wish-toggle" title="Add to wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </label>
+                            <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80"
+                                alt="Handcrafted Terracotta Pot">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <div class="text-muted small mb-1">Botanicals</div>
+                            <h6 class="fw-bold mb-1" style="color: var(--emerald-dark);">Handcrafted Terracotta Pot</h6>
+                            <div class="rating-stars mb-2">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="text-dark fw-bold small ms-1">4.9</span>
+                                <span class="text-muted small">(115)</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+                                <span class="fw-bold fs-6" style="color: var(--sage-warm);">$38.00</span>
+                                <a href="cart.html" class="btn-sage btn-sm rounded-3">
+                                    <i class="fa-solid fa-plus me-1"></i> Add
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="col-6 col-md-4 col-lg-3 p-card" data-cat="Ceramics">
+                    <article class="product-card">
+                        <div class="product-img-box">
+                            <span class="product-badge badge-gold">NEW</span>
+                            <input type="checkbox" id="wish5" class="wish-check">
+                            <label for="wish5" class="wish-toggle" title="Add to wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </label>
+                            <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80"
+                                alt="Rustic Stoneware Mug Set">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <div class="text-muted small mb-1">Ceramics</div>
+                            <h6 class="fw-bold mb-1" style="color: var(--emerald-dark);">Rustic Stoneware Mug Set</h6>
+                            <div class="rating-stars mb-2">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="text-dark fw-bold small ms-1">4.6</span>
+                                <span class="text-muted small">(22)</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+                                <span class="fw-bold fs-6" style="color: var(--sage-warm);">$42.00</span>
+                                <a href="cart.html" class="btn-sage btn-sm rounded-3">
+                                    <i class="fa-solid fa-plus me-1"></i> Add
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="col-6 col-md-4 col-lg-3 p-card" data-cat="Aromatherapy">
+                    <article class="product-card">
+                        <div class="product-img-box">
+                            <input type="checkbox" id="wish6" class="wish-check">
+                            <label for="wish6" class="wish-toggle" title="Add to wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </label>
+                            <img src="https://images.unsplash.com/photo-1602928321679-560bb453f190?auto=format&fit=crop&w=600&q=80"
+                                alt="Eucalyptus Essential Oil Diffuser">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <div class="text-muted small mb-1">Aromatherapy</div>
+                            <h6 class="fw-bold mb-1" style="color: var(--emerald-dark);">Eucalyptus Oil Diffuser</h6>
+                            <div class="rating-stars mb-2">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="text-dark fw-bold small ms-1">4.8</span>
+                                <span class="text-muted small">(57)</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+                                <span class="fw-bold fs-6" style="color: var(--sage-warm);">$46.00</span>
+                                <a href="cart.html" class="btn-sage btn-sm rounded-3">
+                                    <i class="fa-solid fa-plus me-1"></i> Add
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="col-6 col-md-4 col-lg-3 p-card" data-cat="Textiles">
+                    <article class="product-card">
+                        <div class="product-img-box">
+                            <input type="checkbox" id="wish7" class="wish-check">
+                            <label for="wish7" class="wish-toggle" title="Add to wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </label>
+                            <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80"
+                                alt="Organic Cotton Throw Pillow">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <div class="text-muted small mb-1">Textiles</div>
+                            <h6 class="fw-bold mb-1" style="color: var(--emerald-dark);">Organic Cotton Throw Pillow
+                            </h6>
+                            <div class="rating-stars mb-2">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="text-dark fw-bold small ms-1">4.5</span>
+                                <span class="text-muted small">(18)</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+                                <span class="fw-bold fs-6" style="color: var(--sage-warm);">$34.00</span>
+                                <a href="cart.html" class="btn-sage btn-sm rounded-3">
+                                    <i class="fa-solid fa-plus me-1"></i> Add
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="col-6 col-md-4 col-lg-3 p-card" data-cat="Botanicals">
+                    <article class="product-card">
+                        <div class="product-img-box">
+                            <span class="product-badge badge-gold">NEW</span>
+                            <input type="checkbox" id="wish8" class="wish-check">
+                            <label for="wish8" class="wish-toggle" title="Add to wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </label>
+                            <img src="https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?auto=format&fit=crop&w=600&q=80"
+                                alt="Monstera Deliciosa Potted Plant">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <div class="text-muted small mb-1">Botanicals</div>
+                            <h6 class="fw-bold mb-1" style="color: var(--emerald-dark);">Monstera Deliciosa Plant</h6>
+                            <div class="rating-stars mb-2">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="text-dark fw-bold small ms-1">4.9</span>
+                                <span class="text-muted small">(64)</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between pt-2 border-top">
+                                <span class="fw-bold fs-6" style="color: var(--sage-warm);">$29.00</span>
+                                <a href="cart.html" class="btn-sage btn-sm rounded-3">
+                                    <i class="fa-solid fa-plus me-1"></i> Add
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================
+             TESTIMONIALS
+             ========================================== -->
+        <section class="my-5 pt-4">
+            <div class="text-center mb-5">
+                <span class="badge badge-gold px-3 py-2 rounded-pill mb-2">LOVED BY 10,000+ HOMES</span>
+                <h2 class="fw-bold" style="color: var(--emerald-dark);">Customer Impressions</h2>
+                <p class="text-muted">Authentic feedback from verified buyers of Verdant &amp; Co.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="rating-stars">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                                    class="fa-solid fa-star"></i>
+                            </div>
+                            <span class="badge bg-success-subtle text-success border rounded-pill">
+                                <i class="fa-solid fa-circle-check me-1"></i> Verified
+                            </span>
+                        </div>
+                        <p class="fst-italic text-secondary mb-4">
+                            "The Lavender Soy Candle turned my home into a spa. The ceramic jar was packaged in 100%
+                            plastic-free materials."
+                        </p>
+                        <div class="d-flex align-items-center gap-3 mt-auto pt-3 border-top">
+                            <div class="avatar-circle">EM</div>
+                            <div>
+                                <h6 class="fw-bold mb-0" style="color: var(--emerald-dark);">Elena Martinez</h6>
+                                <small class="text-muted">Verified Buyer</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="rating-stars">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                                    class="fa-solid fa-star"></i>
+                            </div>
+                            <span class="badge bg-success-subtle text-success border rounded-pill">
+                                <i class="fa-solid fa-circle-check me-1"></i> Verified
+                            </span>
+                        </div>
+                        <p class="fst-italic text-secondary mb-4">
+                            "The Earth Ceramic Vase is breathtaking. Outstanding weight and texture. Will definitely buy
+                            again."
+                        </p>
+                        <div class="d-flex align-items-center gap-3 mt-auto pt-3 border-top">
+                            <div class="avatar-circle">DK</div>
+                            <div>
+                                <h6 class="fw-bold mb-0" style="color: var(--emerald-dark);">David K.</h6>
+                                <small class="text-muted">Verified Buyer</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="rating-stars">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                                    class="fa-solid fa-star-half-stroke"></i>
+                            </div>
+                            <span class="badge bg-success-subtle text-success border rounded-pill">
+                                <i class="fa-solid fa-circle-check me-1"></i> Verified
+                            </span>
+                        </div>
+                        <p class="fst-italic text-secondary mb-4">
+                            "Extremely soft organic linen blanket. Prompt delivery and supreme texture that elevated my
+                            living room."
+                        </p>
+                        <div class="d-flex align-items-center gap-3 mt-auto pt-3 border-top">
+                            <div class="avatar-circle">SH</div>
+                            <div>
+                                <h6 class="fw-bold mb-0" style="color: var(--emerald-dark);">Sophia Harness</h6>
+                                <small class="text-muted">Verified Buyer</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer>
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand mb-3">
+                        <i class="fa-solid fa-seedling text-warning me-2"></i>VERDANT <span>& Co.</span>
+                    </div>
+                    <p class="small opacity-75 pe-lg-4">
+                        Ethically crafted organic decor, artisan pottery, and sustainable
+                        home accessories made to enrich modern life.
+                    </p>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h5>Explore</h5>
+                    <ul>
+                        <li><a href="store.html">Store Showcase</a></li>
+                        <li><a href="add-product.html">Admin Portal</a></li>
+                        <li><a href="cart.html">Active Cart</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h5>Help</h5>
+                    <ul>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Returns &amp; Care</a></li>
+                        <li><a href="#">Eco Certification</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Newsletter</h5>
+                    <p class="small opacity-75">Subscribe for early releases and sustainable living guides.</p>
+                    <form class="input-group" onsubmit="return false;">
+                        <input type="email" class="form-control" placeholder="Enter your email..."
+                            style="border-radius:8px 0 0 8px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.08); color:#fff;">
+                        <button class="btn-gold" type="submit" style="border-radius:0 8px 8px 0;">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div
+                class="pt-3 border-top border-secondary border-opacity-25 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small opacity-75">
+                <p class="mb-0">&copy; 2026 VERDANT &amp; CO. Luxury Organic Retail. All rights reserved.</p>
+                <div class="d-flex gap-3 fs-5">
+                    <i class="fa-brands fa-cc-visa"></i>
+                    <i class="fa-brands fa-cc-mastercard"></i>
+                    <i class="fa-brands fa-stripe"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS (needed for dropdown menu only) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

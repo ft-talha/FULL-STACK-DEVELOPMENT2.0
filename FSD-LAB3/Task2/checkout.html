@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | VERDANT & CO.</title>
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           DESIGN TOKENS
+           ========================================== */
+        :root {
+            --emerald-dark:    #1C2D27;
+            --sage-warm:       #2D4A3E;
+            --eucalyptus-soft: #8CAE96;
+            --eucalyptus-light:#E2ECE5;
+            --bg-warm:         #FAF8F3;
+            --surface-card:    #F1EFEA;
+            --surface-white:   #F7F5F0;
+            --gold-amber:      #C8963E;
+            --gold-hover:      #B08232;
+            --text-dark:       #1C2D27;
+            --text-muted:      #5A6B62;
+            --border-soft:     #D9D4C7;
+            --font-heading:    'Playfair Display', serif;
+            --font-body:       'Plus Jakarta Sans', sans-serif;
+            --shadow-subtle:   0 10px 30px rgba(28, 45, 39, 0.06);
+            --shadow-hover:    0 16px 35px rgba(28, 45, 39, 0.14);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-warm);
+            color: var(--text-dark);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3, h4, .brand-font {
+            font-family: var(--font-heading);
+            letter-spacing: -0.02em;
+        }
+
+        main { flex: 1; }
+
+        /* ==========================================
+           TOP SWITCHER BAR
+           ========================================== */
+        .switcher-bar {
+            background-color: var(--emerald-dark);
+            border-bottom: 1px solid rgba(200, 150, 62, 0.25);
+            padding: 8px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1050;
+        }
+
+        .switcher-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--eucalyptus-soft);
+            background-color: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            text-decoration: none;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .switcher-pill:hover,
+        .switcher-pill.active {
+            background-color: var(--gold-amber);
+            color: var(--emerald-dark);
+            border-color: var(--gold-amber);
+            box-shadow: 0 3px 10px rgba(200, 150, 62, 0.3);
+        }
+
+        /* ==========================================
+           NAVBAR
+           ========================================== */
+        .navbar-custom {
+            background-color: var(--sage-warm);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 0.9rem 0;
+        }
+
+        .navbar-brand-logo {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #FFFFFF !important;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .navbar-brand-logo span {
+            color: var(--gold-amber);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .secure-pill {
+            color: #E2ECE5;
+            font-size: 0.82rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .secure-pill i { color: #7ED957; }
+
+        /* ==========================================
+           BUTTONS
+           ========================================== */
+        .btn-gold {
+            background-color: var(--gold-amber);
+            color: var(--emerald-dark);
+            font-weight: 700;
+            border: none;
+            padding: 0.85rem 1.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.95rem;
+        }
+
+        .btn-gold:hover {
+            background-color: var(--gold-hover);
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(200, 150, 62, 0.35);
+        }
+
+        .btn-outline-sage {
+            border: 2px solid var(--sage-warm);
+            color: var(--sage-warm);
+            font-weight: 600;
+            background: transparent;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.88rem;
+        }
+
+        .btn-outline-sage:hover {
+            background-color: var(--sage-warm);
+            color: #FFFFFF;
+        }
+
+        /* ==========================================
+           FORM CONTROLS
+           ========================================== */
+        .form-label-custom {
+            font-weight: 600;
+            color: var(--emerald-dark);
+            margin-bottom: 0.4rem;
+            font-size: 0.82rem;
+            letter-spacing: 0.2px;
+            display: block;
+        }
+
+        .form-control-custom {
+            background-color: var(--bg-warm);
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 0.7rem 1rem;
+            color: var(--text-dark);
+            transition: all 0.25s ease;
+            font-size: 0.92rem;
+            width: 100%;
+        }
+
+        .form-control-custom::placeholder { color: #A8B2AB; }
+
+        .form-control-custom:focus {
+            border-color: var(--sage-warm);
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(45, 74, 62, 0.12);
+            outline: none;
+        }
+
+        .form-control-custom:invalid:not(:placeholder-shown) {
+            border-color: #D9534F;
+        }
+
+        /* ==========================================
+           CARDS
+           ========================================== */
+        .checkout-card {
+            background-color: var(--surface-white);
+            border: 1px solid var(--border-soft);
+            border-radius: 18px;
+            padding: 1.6rem;
+            box-shadow: var(--shadow-subtle);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-weight: 700;
+            color: var(--emerald-dark);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 0.85rem;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px dashed var(--border-soft);
+        }
+
+        .section-title .step-num {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--gold-amber);
+            color: var(--emerald-dark);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        /* ==========================================
+           PAYMENT METHOD (radio-driven)
+           ========================================== */
+        .pay-radio {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .pay-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            border: 2px solid var(--border-soft);
+            border-radius: 14px;
+            padding: 1rem 1.15rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            background: var(--surface-white);
+            margin-bottom: 0.75rem;
+        }
+
+        .pay-option:hover {
+            border-color: var(--eucalyptus-soft);
+            transform: translateY(-1px);
+        }
+
+        .pay-option .pay-left {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        /* Faux radio circle */
+        .pay-radio-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border-soft);
+            position: relative;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+        }
+
+        .pay-radio-circle::after {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background: var(--gold-amber);
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.25s ease;
+        }
+
+        .pay-option .pay-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .pay-option .pay-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        .pay-option .pay-icons {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 1.4rem;
+        }
+
+        /* Checked state */
+        #pay-card:checked ~ .pay-options .pay-option[for="pay-card"],
+        #pay-cod:checked  ~ .pay-options .pay-option[for="pay-cod"] {
+            border-color: var(--sage-warm);
+            background: var(--eucalyptus-light);
+            box-shadow: 0 4px 14px rgba(45, 74, 62, 0.12);
+        }
+
+        #pay-card:checked ~ .pay-options .pay-option[for="pay-card"] .pay-radio-circle,
+        #pay-cod:checked  ~ .pay-options .pay-option[for="pay-cod"] .pay-radio-circle {
+            border-color: var(--sage-warm);
+        }
+
+        #pay-card:checked ~ .pay-options .pay-option[for="pay-card"] .pay-radio-circle::after,
+        #pay-cod:checked  ~ .pay-options .pay-option[for="pay-cod"] .pay-radio-circle::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Card details panel — only visible when Card is selected */
+        .card-details {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.35s ease, opacity 0.3s ease, margin 0.3s ease;
+            margin-top: 0;
+        }
+
+        #pay-card:checked ~ .card-details {
+            max-height: 320px;
+            opacity: 1;
+            margin-top: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-details-inner {
+            background: var(--bg-warm);
+            border: 1px solid var(--border-soft);
+            border-radius: 14px;
+            padding: 1.1rem;
+        }
+
+        /* ==========================================
+           ORDER REVIEW SIDEBAR
+           ========================================== */
+        .review-card {
+            background-color: var(--surface-white);
+            border: 1px solid var(--border-soft);
+            border-radius: 18px;
+            padding: 1.6rem;
+            box-shadow: var(--shadow-subtle);
+            position: sticky;
+            top: 100px;
+        }
+
+        .review-title {
+            color: var(--emerald-dark);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1.1rem;
+            padding-bottom: 0.85rem;
+            border-bottom: 1px dashed var(--border-soft);
+        }
+
+        .review-item {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .review-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .review-thumb {
+            width: 52px;
+            height: 52px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: var(--surface-card);
+            flex-shrink: 0;
+        }
+
+        .review-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .review-item-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .review-item-qty {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .review-item-price {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--sage-warm);
+            flex-shrink: 0;
+        }
+
+        .review-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .review-row .label { color: var(--text-muted); }
+        .review-row .value { font-weight: 600; color: var(--text-dark); }
+        .review-row.discount .value { color: #2E7D32; }
+        .review-row.free .value { color: #2E7D32; font-weight: 700; }
+
+        .review-divider {
+            border: 0;
+            border-top: 1px dashed var(--border-soft);
+            margin: 0.9rem 0;
+        }
+
+        .review-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--emerald-dark);
+            margin-bottom: 1.3rem;
+        }
+
+        .review-total .amount {
+            color: var(--sage-warm);
+            font-size: 1.35rem;
+        }
+
+        .trust-badge {
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .trust-badge i { color: #2E7D32; }
+
+        /* ==========================================
+           SUCCESS MODAL (checkbox-driven)
+           ========================================== */
+        .success-trigger {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .success-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(28, 45, 39, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #order-success:checked ~ .success-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .success-modal-card {
+            background: var(--surface-white);
+            border-radius: 22px;
+            max-width: 460px;
+            width: 100%;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.3);
+            transform: scale(0.85);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #order-success:checked ~ .success-overlay .success-modal-card {
+            transform: scale(1);
+        }
+
+        .success-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7ED957, #4CAF50);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 15px 35px rgba(76, 175, 80, 0.35);
+            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+        }
+
+        @keyframes popIn {
+            0%   { transform: scale(0.4); opacity: 0; }
+            100% { transform: scale(1);   opacity: 1; }
+        }
+
+        .success-modal-card h3 {
+            color: var(--emerald-dark);
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+
+        .success-modal-card p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .order-id-chip {
+            display: inline-block;
+            background: var(--eucalyptus-light);
+            color: var(--sage-warm);
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* ==========================================
+           FOOTER
+           ========================================== */
+        footer {
+            background-color: var(--emerald-dark);
+            color: #C2D1C8;
+            border-top: 3px solid var(--gold-amber);
+            padding: 1.5rem 0;
+            text-align: center;
+            font-size: 0.82rem;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: var(--gold-amber);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover { text-decoration: underline; }
+
+        /* ==========================================
+           RESPONSIVE
+           ========================================== */
+        @media (max-width: 991px) {
+            .review-card { position: static; }
+            .checkout-card { padding: 1.3rem; }
+        }
+
+        @media (max-width: 576px) {
+            .pay-option .pay-icons { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+         TOP SWITCHER BAR
+         ========================================== -->
+    <div class="switcher-bar">
+        <div class="container d-flex align-items-center justify-content-between overflow-auto py-1 gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-white opacity-75 small fw-bold me-2 d-none d-sm-inline">
+                    <i class="fa-solid fa-layer-group text-warning me-1"></i> SCREEN:
+                </span>
+                <a href="auth.html" class="switcher-pill">
+                    <i class="fa-solid fa-lock"></i> 1. Auth / Login
+                </a>
+                <a href="store.html" class="switcher-pill">
+                    <i class="fa-solid fa-store"></i> 2. Main Store
+                </a>
+                <a href="add-product.html" class="switcher-pill">
+                    <i class="fa-solid fa-plus-circle"></i> 3. Add Product
+                </a>
+                <a href="cart.html" class="switcher-pill">
+                    <i class="fa-solid fa-bag-shopping"></i> 4. Cart (2)
+                </a>
+                <a href="checkout.html" class="switcher-pill active">
+                    <i class="fa-solid fa-credit-card"></i> 5. Checkout
+                </a>
+            </div>
+            <span class="text-warning small fw-semibold d-none d-lg-inline">
+                <i class="fa-solid fa-shield-halved me-1"></i> VERDANT & CO. Engine
+            </span>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         NAVBAR
+         ========================================== -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a href="store.html" class="navbar-brand-logo mb-0">
+                <i class="fa-solid fa-seedling text-warning me-2"></i>VERDANT <span>& Co.</span>
+            </a>
+            <div class="d-flex align-items-center gap-3 ms-auto">
+                <span class="secure-pill d-none d-sm-inline-flex">
+                    <i class="fa-solid fa-lock"></i> Secure Checkout
+                </span>
+                <a href="cart.html" class="btn-outline-sage" style="padding:0.5rem 1rem;">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Back to Cart
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+
+        <!-- ==========================================
+             HEADER
+             ========================================== -->
+        <div class="text-center mb-4">
+            <h3 class="fw-bold mb-2" style="color: var(--emerald-dark);">
+                <i class="fa-solid fa-lock text-success me-2"></i>
+                Secure Express Checkout
+            </h3>
+            <p class="text-muted mb-0">
+                Complete your details to finalize your sustainable order.
+            </p>
+        </div>
+
+        <!-- ==========================================
+             CHECKBOX FOR SUCCESS MODAL (global)
+             ========================================== -->
+        <input type="checkbox" id="order-success" class="success-trigger">
+
+        <!-- ==========================================
+             MAIN GRID
+             ========================================== -->
+        <div class="row g-4">
+
+            <!-- ==========================================
+                 LEFT: FORMS
+                 ========================================== -->
+            <div class="col-lg-7">
+
+                <!-- STEP 1: SHIPPING ADDRESS -->
+                <div class="checkout-card">
+                    <div class="section-title">
+                        <span class="step-num">1</span>
+                        <i class="fa-solid fa-truck-ramp-box text-warning"></i>
+                        Delivery Address
+                    </div>
+
+                    <form id="checkoutForm" action="store.html" method="get" novalidate>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="chkFirst" class="form-label-custom">First Name *</label>
+                                <input type="text"
+                                       id="chkFirst"
+                                       name="first_name"
+                                       class="form-control-custom"
+                                       placeholder="Aisha"
+                                       value="Aisha"
+                                       minlength="2"
+                                       required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="chkLast" class="form-label-custom">Last Name *</label>
+                                <input type="text"
+                                       id="chkLast"
+                                       name="last_name"
+                                       class="form-control-custom"
+                                       placeholder="Khan"
+                                       value="Khan"
+                                       minlength="2"
+                                       required>
+                            </div>
+                            <div class="col-12">
+                                <label for="chkEmail" class="form-label-custom">Email Address *</label>
+                                <input type="email"
+                                       id="chkEmail"
+                                       name="email"
+                                       class="form-control-custom"
+                                       placeholder="name@domain.com"
+                                       value="aisha.khan@domain.com"
+                                       required>
+                            </div>
+                            <div class="col-12">
+                                <label for="chkPhone" class="form-label-custom">Phone Number *</label>
+                                <input type="tel"
+                                       id="chkPhone"
+                                       name="phone"
+                                       class="form-control-custom"
+                                       placeholder="+92 300 1234567"
+                                       pattern="[0-9+\s\-()]{7,20}"
+                                       title="Please enter a valid phone number"
+                                       required>
+                            </div>
+                            <div class="col-12">
+                                <label for="chkAddress" class="form-label-custom">Street Address *</label>
+                                <input type="text"
+                                       id="chkAddress"
+                                       name="address"
+                                       class="form-control-custom"
+                                       placeholder="House 42, Block B, Organic Avenue"
+                                       value="House 42, Block B, Organic Avenue"
+                                       minlength="5"
+                                       required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="chkCity" class="form-label-custom">City *</label>
+                                <input type="text"
+                                       id="chkCity"
+                                       name="city"
+                                       class="form-control-custom"
+                                       placeholder="Islamabad"
+                                       value="Islamabad"
+                                       required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="chkPostal" class="form-label-custom">Postal Code *</label>
+                                <input type="text"
+                                       id="chkPostal"
+                                       name="postal"
+                                       class="form-control-custom"
+                                       placeholder="44000"
+                                       value="44000"
+                                       pattern="[0-9A-Za-z\s\-]{3,10}"
+                                       required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- STEP 2: PAYMENT METHOD -->
+                <div class="checkout-card">
+                    <div class="section-title">
+                        <span class="step-num">2</span>
+                        <i class="fa-solid fa-wallet text-warning"></i>
+                        Select Payment Method
+                    </div>
+
+                    <!-- Hidden radios driving the payment UI -->
+                    <input type="radio" name="payment" id="pay-card" class="pay-radio" checked>
+                    <input type="radio" name="payment" id="pay-cod"  class="pay-radio">
+
+                    <div class="pay-options">
+                        <!-- Card option -->
+                        <label for="pay-card" class="pay-option">
+                            <div class="pay-left">
+                                <span class="pay-radio-circle"></span>
+                                <span>
+                                    <span class="pay-title d-block">Credit or Debit Card</span>
+                                    <span class="pay-sub d-block">Visa, Mastercard, Stripe</span>
+                                </span>
+                            </div>
+                            <div class="pay-icons">
+                                <i class="fa-brands fa-cc-visa text-primary"></i>
+                                <i class="fa-brands fa-cc-mastercard text-danger"></i>
+                            </div>
+                        </label>
+
+                        <!-- COD option -->
+                        <label for="pay-cod" class="pay-option">
+                            <div class="pay-left">
+                                <span class="pay-radio-circle"></span>
+                                <span>
+                                    <span class="pay-title d-block">Cash on Delivery</span>
+                                    <span class="pay-sub d-block">Pay with cash upon delivery</span>
+                                </span>
+                            </div>
+                            <div class="pay-icons">
+                                <i class="fa-solid fa-money-bill-wave text-success"></i>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Card details panel (only shown when Card is selected) -->
+                    <div class="card-details">
+                        <div class="card-details-inner">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="cardNum" class="form-label-custom">Card Number</label>
+                                    <input type="text"
+                                           id="cardNum"
+                                           class="form-control-custom"
+                                           placeholder="1234 5678 9012 3456"
+                                           value="4242 4242 4242 4242"
+                                           maxlength="19">
+                                </div>
+                                <div class="col-6">
+                                    <label for="cardExp" class="form-label-custom">Expiry Date</label>
+                                    <input type="text"
+                                           id="cardExp"
+                                           class="form-control-custom"
+                                           placeholder="MM/YY"
+                                           value="12/28"
+                                           maxlength="5">
+                                </div>
+                                <div class="col-6">
+                                    <label for="cardCvv" class="form-label-custom">CVV</label>
+                                    <input type="password"
+                                           id="cardCvv"
+                                           class="form-control-custom"
+                                           placeholder="•••"
+                                           value="888"
+                                           maxlength="4">
+                                </div>
+                                <div class="col-12">
+                                    <label for="cardName" class="form-label-custom">Name on Card</label>
+                                    <input type="text"
+                                           id="cardName"
+                                           class="form-control-custom"
+                                           placeholder="AISHA KHAN"
+                                           value="AISHA KHAN">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trust-badge">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Your payment information is encrypted and secure.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ==========================================
+                 RIGHT: ORDER REVIEW (sticky)
+                 ========================================== -->
+            <div class="col-lg-5">
+                <div class="review-card">
+                    <h5 class="review-title">
+                        <i class="fa-solid fa-receipt me-2 text-warning"></i>
+                        Order Review
+                    </h5>
+
+                    <!-- Items -->
+                    <div class="review-item">
+                        <img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=120&q=80"
+                             alt="Wild Lavender Soy Candle"
+                             class="review-thumb">
+                        <div class="review-item-info">
+                            <div class="review-item-title">Wild Lavender Soy Candle</div>
+                            <div class="review-item-qty">Qty: 1</div>
+                        </div>
+                        <span class="review-item-price">$28.00</span>
+                    </div>
+
+                    <div class="review-item">
+                        <img src="https://images.unsplash.com/photo-1612196808214-b7e239e5f6b7?auto=format&fit=crop&w=120&q=80"
+                             alt="Artisan Earth Ceramic Vase"
+                             class="review-thumb">
+                        <div class="review-item-info">
+                            <div class="review-item-title">Artisan Earth Ceramic Vase</div>
+                            <div class="review-item-qty">Qty: 1</div>
+                        </div>
+                        <span class="review-item-price">$52.00</span>
+                    </div>
+
+                    <div class="review-item">
+                        <img src="https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=120&q=80"
+                             alt="Sage Organic Linen Blanket"
+                             class="review-thumb">
+                        <div class="review-item-info">
+                            <div class="review-item-title">Sage Organic Linen Blanket</div>
+                            <div class="review-item-qty">Qty: 2</div>
+                        </div>
+                        <span class="review-item-price">$128.00</span>
+                    </div>
+
+                    <hr class="review-divider">
+
+                    <!-- Totals -->
+                    <div class="review-row">
+                        <span class="label">Subtotal (4 items)</span>
+                        <span class="value">$208.00</span>
+                    </div>
+                    <div class="review-row discount">
+                        <span class="label">Promo (VERDANT10)</span>
+                        <span class="value">−$20.80</span>
+                    </div>
+                    <div class="review-row free">
+                        <span class="label">Shipping</span>
+                        <span class="value">FREE</span>
+                    </div>
+                    <div class="review-row">
+                        <span class="label">Estimated Tax (5%)</span>
+                        <span class="value">$9.36</span>
+                    </div>
+
+                    <hr class="review-divider">
+
+                    <div class="review-total">
+                        <span>Total Payable</span>
+                        <span class="amount">$196.56</span>
+                    </div>
+
+                    <!-- Trigger for success modal — this label toggles the checkbox -->
+                    <label for="order-success" class="btn-gold w-100 text-center d-block" style="cursor:pointer;">
+                        <i class="fa-solid fa-circle-check me-2"></i>
+                        Place Order Now
+                    </label>
+
+                    <div class="trust-badge">
+                        <i class="fa-solid fa-lock"></i>
+                        256-bit SSL Encrypted · Safe Payment
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==========================================
+             SUCCESS MODAL (shown when checkbox is :checked)
+             ========================================== -->
+        <div class="success-overlay">
+            <div class="success-modal-card">
+                <div class="success-icon">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3>Order Confirmed!</h3>
+                <p>
+                    Thank you, <strong>Aisha Khan</strong>! Your handcrafted order has been
+                    placed successfully and will arrive in 3–5 business days.
+                </p>
+                <div class="order-id-chip">
+                    <i class="fa-solid fa-hashtag me-1"></i>VERDANT-9912
+                </div>
+                <br>
+                <a href="store.html" class="btn-gold" style="text-decoration:none;">
+                    <i class="fa-solid fa-store me-2"></i> Back to Store
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer>
+        <div class="container">
+            &copy; 2026 <strong>VERDANT &amp; CO.</strong> — Secure Checkout.
+            <a href="store.html" class="ms-2">Back to Store <i class="fa-solid fa-arrow-right ms-1"></i></a>
+        </div>
+    </footer>
+
+</body>
+</html>

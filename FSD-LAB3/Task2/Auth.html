@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In / Create Account | VERDANT & CO.</title>
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           DESIGN TOKENS
+           ========================================== */
+        :root {
+            --emerald-dark: #1C2D27;
+            --sage-warm: #2D4A3E;
+            --eucalyptus-soft: #8CAE96;
+            --eucalyptus-light: #E2ECE5;
+            --bg-warm: #FAF8F3;
+            --surface-card: #F1EFEA;
+            --surface-white: #F7F5F0;
+            --gold-amber: #C8963E;
+            --gold-hover: #B08232;
+            --text-dark: #1C2D27;
+            --text-muted: #5A6B62;
+            --border-soft: #D9D4C7;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --shadow-subtle: 0 10px 30px rgba(28, 45, 39, 0.06);
+            --shadow-hover: 0 16px 35px rgba(28, 45, 39, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            background-color: var(--bg-warm);
+            background-image:
+                radial-gradient(circle at 15% 20%, rgba(140, 174, 150, 0.18) 0%, transparent 45%),
+                radial-gradient(circle at 85% 80%, rgba(200, 150, 62, 0.10) 0%, transparent 45%);
+            color: var(--text-dark);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .brand-font {
+            font-family: var(--font-heading);
+            letter-spacing: -0.02em;
+        }
+
+        /* ==========================================
+           TOP SWITCHER BAR (Back to Store link)
+           ========================================== */
+        .switcher-bar {
+            background-color: var(--emerald-dark);
+            border-bottom: 1px solid rgba(200, 150, 62, 0.25);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1050;
+        }
+
+        .switcher-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--eucalyptus-soft);
+            background-color: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            text-decoration: none;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .switcher-pill:hover,
+        .switcher-pill.active {
+            background-color: var(--gold-amber);
+            color: var(--emerald-dark);
+            border-color: var(--gold-amber);
+            box-shadow: 0 3px 10px rgba(200, 150, 62, 0.3);
+        }
+
+        /* ==========================================
+           AUTH LAYOUT
+           ========================================== */
+        .auth-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 1rem;
+            animation: fadeUp 0.6s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-card {
+            background-color: var(--surface-white);
+            border: 1px solid var(--border-soft);
+            border-radius: 22px;
+            box-shadow: var(--shadow-subtle);
+            width: 100%;
+            max-width: 470px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ==========================================
+           TAB SWITCHER (Pure CSS - hidden radios)
+           ========================================== */
+        #tab-signin,
+        #tab-signup {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .auth-tabs {
+            display: flex;
+            position: relative;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 1.1rem 0.5rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            background-color: var(--surface-card);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-bottom: 3px solid transparent;
+            user-select: none;
+            margin-bottom: -1px;
+        }
+
+        .auth-tab:hover {
+            color: var(--sage-warm);
+        }
+
+        #tab-signin:checked~.auth-tabs .tab-signin-label,
+        #tab-signup:checked~.auth-tabs .tab-signup-label {
+            background-color: var(--surface-white);
+            color: var(--emerald-dark);
+            border-bottom-color: var(--gold-amber);
+        }
+
+        #tab-signin:focus-visible~.auth-tabs .tab-signin-label,
+        #tab-signup:focus-visible~.auth-tabs .tab-signup-label {
+            outline: 2px solid var(--gold-amber);
+            outline-offset: -4px;
+        }
+
+        /* Panel visibility */
+        .auth-panel {
+            display: none;
+            padding: 2.2rem 2rem;
+        }
+
+        #tab-signin:checked~.auth-panels .panel-signin {
+            display: block;
+        }
+
+        #tab-signup:checked~.auth-panels .panel-signup {
+            display: block;
+        }
+
+        /* ==========================================
+           FORM CONTROLS
+           ========================================== */
+        .form-label-custom {
+            font-weight: 600;
+            color: var(--emerald-dark);
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.2px;
+        }
+
+        .form-control-custom {
+            background-color: var(--bg-warm);
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 0.7rem 1rem;
+            color: var(--text-dark);
+            transition: all 0.25s ease;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+
+        .form-control-custom::placeholder {
+            color: #A8B2AB;
+        }
+
+        .form-control-custom:focus {
+            border-color: var(--sage-warm);
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(45, 74, 62, 0.12);
+            outline: none;
+        }
+
+        .form-control-custom:invalid:not(:placeholder-shown) {
+            border-color: #D9534F;
+        }
+
+        .form-control-custom:valid:not(:placeholder-shown) {
+            border-color: var(--eucalyptus-soft);
+        }
+
+        /* ==========================================
+           PASSWORD FIELD WITH TOGGLE (CSS-only)
+           ========================================== */
+        .password-wrap {
+            position: relative;
+        }
+
+        .password-wrap .form-control-custom {
+            padding-right: 3rem;
+        }
+
+        .pw-toggle-input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .pw-toggle-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.2s ease;
+            user-select: none;
+        }
+
+        .pw-toggle-btn:hover {
+            color: var(--sage-warm);
+        }
+
+        /* Swap icons when toggled */
+        .pw-toggle-btn .fa-eye-slash {
+            display: none;
+        }
+
+        .pw-toggle-input:checked~.pw-toggle-btn .fa-eye {
+            display: none;
+        }
+
+        .pw-toggle-input:checked~.pw-toggle-btn .fa-eye-slash {
+            display: inline;
+        }
+
+        /* Actually reveal the text (needs JS-free trick using content swap is not possible for input type) */
+        /* We'll use a CSS-only password reveal by swapping input type via :checked — NOT possible in pure CSS.
+           Instead, we simply show the typed password in a hint below when the toggle is on. */
+
+        .pw-reveal-hint {
+            display: none;
+            font-size: 0.75rem;
+            color: var(--sage-warm);
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .pw-toggle-input:checked~.pw-reveal-hint {
+            display: block;
+        }
+
+        /* ==========================================
+           BUTTONS
+           ========================================== */
+        .btn-gold {
+            background-color: var(--gold-amber);
+            color: var(--emerald-dark);
+            font-weight: 700;
+            border: none;
+            padding: 0.75rem 1.4rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+
+        .btn-gold:hover {
+            background-color: var(--gold-hover);
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(200, 150, 62, 0.35);
+        }
+
+        .btn-sage {
+            background-color: var(--sage-warm);
+            color: #FFFFFF;
+            font-weight: 600;
+            border: none;
+            padding: 0.75rem 1.4rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+
+        .btn-sage:hover {
+            background-color: var(--emerald-dark);
+            color: var(--eucalyptus-soft);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(28, 45, 39, 0.25);
+        }
+
+        .btn-outline-sage {
+            border: 2px solid var(--sage-warm);
+            color: var(--sage-warm);
+            font-weight: 600;
+            background: transparent;
+            padding: 0.7rem 1.3rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .btn-outline-sage:hover {
+            background-color: var(--sage-warm);
+            color: #FFFFFF;
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================
+           DIVIDER
+           ========================================== */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin: 1.4rem 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--border-soft);
+        }
+
+        /* ==========================================
+           PASSWORD STRENGTH (CSS-only feedback)
+           ========================================== */
+        .pw-strength {
+            display: flex;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        .pw-strength span {
+            flex: 1;
+            height: 5px;
+            border-radius: 3px;
+            background-color: var(--border-soft);
+            transition: background-color 0.3s ease;
+        }
+
+        /* When password field is :valid AND has minlength met, color the bars */
+        #regPassword:valid~.pw-strength span:nth-child(1),
+        #regPassword:valid~.pw-strength span:nth-child(2),
+        #regPassword:valid~.pw-strength span:nth-child(3) {
+            background-color: var(--eucalyptus-soft);
+        }
+
+        #regPassword:valid~.pw-strength span:nth-child(4) {
+            background-color: var(--gold-amber);
+        }
+
+        /* ==========================================
+           HEADER SECTION
+           ========================================== */
+        .auth-header {
+            text-align: center;
+            margin-bottom: 1.6rem;
+        }
+
+        .auth-header .leaf-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--eucalyptus-light), #FFFFFF);
+            border: 1px solid var(--border-soft);
+            margin-bottom: 0.9rem;
+            color: var(--sage-warm);
+            font-size: 1.6rem;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .auth-header h3 {
+            font-weight: 700;
+            color: var(--emerald-dark);
+            margin-bottom: 0.3rem;
+            font-size: 1.6rem;
+        }
+
+        .auth-header p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            margin: 0;
+        }
+
+        /* ==========================================
+           FOOTER
+           ========================================== */
+        footer.auth-footer {
+            background-color: var(--emerald-dark);
+            color: #C2D1C8;
+            border-top: 3px solid var(--gold-amber);
+            padding: 1.2rem 0;
+            text-align: center;
+            font-size: 0.82rem;
+        }
+
+        footer.auth-footer a {
+            color: var(--gold-amber);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer.auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ==========================================
+           RESPONSIVE
+           ========================================== */
+        @media (max-width: 480px) {
+            .auth-panel {
+                padding: 1.6rem 1.2rem;
+            }
+
+            .auth-tab {
+                font-size: 0.85rem;
+                padding: 0.9rem 0.3rem;
+            }
+
+            .auth-header h3 {
+                font-size: 1.35rem;
+            }
+
+            .switcher-bar .container {
+                justify-content: center !important;
+            }
+
+            .switcher-bar .brand-tag {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ==========================================
+         TOP SWITCHER BAR
+         ========================================== -->
+    <div class="switcher-bar">
+        <div class="container d-flex align-items-center justify-content-between overflow-auto py-1 gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-white opacity-75 small fw-bold me-2 d-none d-sm-inline">
+                    <i class="fa-solid fa-layer-group text-warning me-1"></i> SCREEN:
+                </span>
+                <a href="auth.html" class="switcher-pill active">
+                    <i class="fa-solid fa-lock"></i> 1. Auth / Login
+                </a>
+                <a href="store.html" class="switcher-pill">
+                    <i class="fa-solid fa-store"></i> 2. Main Store
+                </a>
+                <a href="add-product.html" class="switcher-pill">
+                    <i class="fa-solid fa-plus-circle"></i> 3. Add Product
+                </a>
+                <a href="cart.html" class="switcher-pill">
+                    <i class="fa-solid fa-bag-shopping"></i> 4. Cart
+                </a>
+                <a href="checkout.html" class="switcher-pill">
+                    <i class="fa-solid fa-credit-card"></i> 5. Checkout
+                </a>
+            </div>
+            <span class="text-warning small fw-semibold d-none d-lg-inline brand-tag">
+                <i class="fa-solid fa-shield-halved me-1"></i> VERDANT & CO. Engine
+            </span>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         AUTH CARD
+         ========================================== -->
+    <main class="auth-container">
+        <div class="auth-card">
+
+            <!-- Hidden radio controls for tab switching -->
+            <input type="radio" name="auth-tab" id="tab-signin" checked>
+            <input type="radio" name="auth-tab" id="tab-signup">
+
+            <!-- Tab Headers -->
+            <div class="auth-tabs" role="tablist">
+                <label for="tab-signin" class="auth-tab tab-signin-label" role="tab">
+                    <i class="fa-solid fa-right-to-bracket me-1"></i> Sign In
+                </label>
+                <label for="tab-signup" class="auth-tab tab-signup-label" role="tab">
+                    <i class="fa-solid fa-user-plus me-1"></i> Create Account
+                </label>
+            </div>
+
+            <!-- Tab Panels -->
+            <div class="auth-panels">
+
+                <!-- ==========================================
+                     SIGN IN PANEL
+                     ========================================== -->
+                <div class="auth-panel panel-signin" role="tabpanel">
+                    <div class="auth-header">
+                        <div class="leaf-icon">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <h3>Welcome Back</h3>
+                        <p>Sign in to access your curated store &amp; orders.</p>
+                    </div>
+
+                    <form action="store.html" method="get" novalidate>
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label-custom">
+                                Email Address
+                            </label>
+                            <input type="email" id="loginEmail" name="email" class="form-control-custom"
+                                placeholder="name@domain.com" value="curator@verdant.com" autocomplete="email" required>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label for="loginPassword" class="form-label-custom">Password</label>
+                                <a href="#" class="small text-decoration-none"
+                                    style="color: var(--gold-amber); font-weight:600;" onclick="return false;">
+                                    Forgot?
+                                </a>
+                            </div>
+                            <div class="password-wrap">
+                                <input type="password" id="loginPassword" name="password" class="form-control-custom"
+                                    placeholder="Enter your password" value="verdant123" autocomplete="current-password"
+                                    minlength="6" required>
+                                <input type="checkbox" id="toggleLoginPw" class="pw-toggle-input">
+                                <label for="toggleLoginPw" class="pw-toggle-btn" title="Show/Hide password">
+                                    <i class="fa-solid fa-eye"></i>
+                                    <i class="fa-solid fa-eye-slash"></i>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-4 mt-3">
+                            <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+                            <label class="form-check-label small" for="rememberMe">
+                                Remember my session
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold mb-3">
+                            Sign In to Store <i class="fa-solid fa-arrow-right ms-2"></i>
+                        </button>
+                    </form>
+
+                    <div class="divider">OR</div>
+
+                    <a href="store.html" class="btn btn-outline-sage d-block text-center text-decoration-none">
+                        <i class="fa-regular fa-compass me-2"></i> Continue as Guest
+                    </a>
+                </div>
+
+                <!-- ==========================================
+                     SIGN UP PANEL
+                     ========================================== -->
+                <div class="auth-panel panel-signup" role="tabpanel">
+                    <div class="auth-header">
+                        <div class="leaf-icon">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <h3>Join VERDANT &amp; CO.</h3>
+                        <p>Receive 15% off your first sustainable order.</p>
+                    </div>
+
+                    <form action="store.html" method="get" novalidate>
+                        <div class="mb-3">
+                            <label for="regName" class="form-label-custom">Full Name</label>
+                            <input type="text" id="regName" name="name" class="form-control-custom"
+                                placeholder="Aisha Khan" autocomplete="name" minlength="2" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="regEmail" class="form-label-custom">Email Address</label>
+                            <input type="email" id="regEmail" name="email" class="form-control-custom"
+                                placeholder="name@example.com" autocomplete="email" required>
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="regPassword" class="form-label-custom">Create Password</label>
+                            <div class="password-wrap">
+                                <input type="password" id="regPassword" name="password" class="form-control-custom"
+                                    placeholder="At least 8 characters" autocomplete="new-password" minlength="8"
+                                    pattern="(?=.*[A-Za-z])(?=.*\d).{8,}"
+                                    title="Must be at least 8 characters and include a letter and a number." required>
+                                <input type="checkbox" id="toggleRegPw" class="pw-toggle-input">
+                                <label for="toggleRegPw" class="pw-toggle-btn" title="Show/Hide password">
+                                    <i class="fa-solid fa-eye"></i>
+                                    <i class="fa-solid fa-eye-slash"></i>
+                                </label>
+                            </div>
+
+                            <!-- Password strength bar (CSS-only, based on :valid) -->
+                            <div class="pw-strength" aria-hidden="true">
+                                <span></span><span></span><span></span><span></span>
+                            </div>
+                            <small class="text-muted" style="font-size:0.75rem;">
+                                Use 8+ characters with a letter &amp; number.
+                            </small>
+                        </div>
+
+                        <div class="form-check mb-4 mt-3">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label small" for="terms">
+                                I agree to the
+                                <a href="#"
+                                    style="color: var(--gold-amber); font-weight:600; text-decoration:none;">Terms</a>
+                                &amp;
+                                <a href="#"
+                                    style="color: var(--gold-amber); font-weight:600; text-decoration:none;">Privacy
+                                    Policy</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-sage">
+                            Register Account <i class="fa-solid fa-user-plus ms-2"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer class="auth-footer">
+        <div class="container">
+            &copy; 2026 <strong>VERDANT &amp; CO.</strong> — Luxury Organic Retail.
+            <a href="store.html" class="ms-2">Back to Store <i class="fa-solid fa-arrow-right ms-1"></i></a>
+        </div>
+    </footer>
+
+</body>
+
+</html>

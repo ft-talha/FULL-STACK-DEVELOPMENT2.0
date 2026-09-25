@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart | VERDANT & CO.</title>
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           DESIGN TOKENS
+           ========================================== */
+        :root {
+            --emerald-dark: #1C2D27;
+            --sage-warm: #2D4A3E;
+            --eucalyptus-soft: #8CAE96;
+            --eucalyptus-light: #E2ECE5;
+            --bg-warm: #FAF8F3;
+            --surface-card: #F1EFEA;
+            --surface-white: #F7F5F0;
+            --gold-amber: #C8963E;
+            --gold-hover: #B08232;
+            --text-dark: #1C2D27;
+            --text-muted: #5A6B62;
+            --border-soft: #D9D4C7;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --shadow-subtle: 0 10px 30px rgba(28, 45, 39, 0.06);
+            --shadow-hover: 0 16px 35px rgba(28, 45, 39, 0.14);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-warm);
+            color: var(--text-dark);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .brand-font {
+            font-family: var(--font-heading);
+            letter-spacing: -0.02em;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        /* ==========================================
+           TOP SWITCHER BAR
+           ========================================== */
+        .switcher-bar {
+            background-color: var(--emerald-dark);
+            border-bottom: 1px solid rgba(200, 150, 62, 0.25);
+            padding: 8px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1050;
+        }
+
+        .switcher-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--eucalyptus-soft);
+            background-color: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            text-decoration: none;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .switcher-pill:hover,
+        .switcher-pill.active {
+            background-color: var(--gold-amber);
+            color: var(--emerald-dark);
+            border-color: var(--gold-amber);
+            box-shadow: 0 3px 10px rgba(200, 150, 62, 0.3);
+        }
+
+        /* ==========================================
+           NAVBAR
+           ========================================== */
+        .navbar-custom {
+            background-color: var(--sage-warm);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 0.9rem 0;
+        }
+
+        .navbar-brand-logo {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #FFFFFF !important;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .navbar-brand-logo span {
+            color: var(--gold-amber);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .nav-link-custom {
+            color: #E2ECE5 !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 0.85rem !important;
+            border-radius: 6px;
+            transition: all 0.25s ease;
+            text-decoration: none;
+        }
+
+        .nav-link-custom:hover,
+        .nav-link-custom.active {
+            color: var(--gold-amber) !important;
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* ==========================================
+           BUTTONS
+           ========================================== */
+        .btn-gold {
+            background-color: var(--gold-amber);
+            color: var(--emerald-dark);
+            font-weight: 700;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.95rem;
+        }
+
+        .btn-gold:hover {
+            background-color: var(--gold-hover);
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(200, 150, 62, 0.35);
+        }
+
+        .btn-sage {
+            background-color: var(--sage-warm);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            padding: 0.55rem 1.1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.88rem;
+        }
+
+        .btn-sage:hover {
+            background-color: var(--emerald-dark);
+            color: var(--eucalyptus-soft);
+        }
+
+        .btn-outline-sage {
+            border: 2px solid var(--sage-warm);
+            color: var(--sage-warm);
+            font-weight: 600;
+            background: transparent;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.88rem;
+        }
+
+        .btn-outline-sage:hover {
+            background-color: var(--sage-warm);
+            color: #FFFFFF;
+        }
+
+        /* ==========================================
+           FORM CONTROLS
+           ========================================== */
+        .form-control-custom {
+            background-color: var(--bg-warm);
+            border: 1.5px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 0.65rem 1rem;
+            color: var(--text-dark);
+            transition: all 0.25s ease;
+            font-size: 0.88rem;
+            width: 100%;
+        }
+
+        .form-control-custom::placeholder {
+            color: #A8B2AB;
+        }
+
+        .form-control-custom:focus {
+            border-color: var(--sage-warm);
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(45, 74, 62, 0.12);
+            outline: none;
+        }
+
+        .form-label-custom {
+            font-weight: 600;
+            color: var(--emerald-dark);
+            margin-bottom: 0.4rem;
+            font-size: 0.82rem;
+        }
+
+        /* ==========================================
+           PAGE HEADER
+           ========================================== */
+        .page-title {
+            color: var(--emerald-dark);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-title .cart-count-badge {
+            background: var(--gold-amber);
+            color: var(--emerald-dark);
+            font-size: 0.85rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-family: var(--font-body);
+            letter-spacing: 0;
+        }
+
+        /* ==========================================
+           CART ITEM CARD
+           ========================================== */
+        .cart-item-card {
+            background-color: var(--surface-white);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 1.1rem;
+            margin-bottom: 1rem;
+            transition: all 0.25s ease;
+        }
+
+        .cart-item-card:hover {
+            border-color: var(--eucalyptus-soft);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .cart-thumb {
+            width: 90px;
+            height: 90px;
+            border-radius: 12px;
+            object-fit: cover;
+            background-color: var(--surface-card);
+            flex-shrink: 0;
+        }
+
+        .cart-item-title {
+            color: var(--emerald-dark);
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .cart-item-cat {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .cart-item-unit {
+            color: var(--sage-warm);
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .cart-item-subtotal {
+            color: var(--sage-warm);
+            font-weight: 800;
+            font-size: 1.05rem;
+        }
+
+        /* ==========================================
+           QTY STEPPER
+           ========================================== */
+        .qty-stepper {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            border: 1px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 3px;
+            background: var(--surface-card);
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: var(--text-dark);
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .qty-btn:hover {
+            background-color: var(--sage-warm);
+            color: #fff;
+        }
+
+        .qty-value {
+            min-width: 28px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        /* ==========================================
+           REMOVE BUTTON
+           ========================================== */
+        .remove-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: #B94A48;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .remove-btn:hover {
+            background-color: #FBE9E7;
+            border-color: #F1C4C0;
+            color: #8E2F2C;
+        }
+
+        /* ==========================================
+           SAVED FOR LATER PILL
+           ========================================== */
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--eucalyptus-light);
+            color: var(--sage-warm);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        /* ==========================================
+           ORDER SUMMARY CARD
+           ========================================== */
+        .summary-card {
+            background-color: var(--surface-white);
+            border: 1px solid var(--border-soft);
+            border-radius: 18px;
+            padding: 1.6rem;
+            box-shadow: var(--shadow-subtle);
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-title {
+            color: var(--emerald-dark);
+            font-weight: 700;
+            font-size: 1.15rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.9rem;
+            border-bottom: 1px dashed var(--border-soft);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.7rem;
+            font-size: 0.92rem;
+        }
+
+        .summary-row .label {
+            color: var(--text-muted);
+        }
+
+        .summary-row .value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .summary-row.discount .value {
+            color: #2E7D32;
+        }
+
+        .summary-divider {
+            border: 0;
+            border-top: 1px dashed var(--border-soft);
+            margin: 0.9rem 0;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--emerald-dark);
+            margin-bottom: 1.3rem;
+        }
+
+        .summary-total .amount {
+            color: var(--sage-warm);
+        }
+
+        .promo-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1.2rem;
+        }
+
+        .promo-row .form-control-custom {
+            flex: 1;
+        }
+
+        .promo-row .btn-sage {
+            white-space: nowrap;
+            padding: 0.6rem 1rem;
+        }
+
+        /* ==========================================
+           TRUST BADGE
+           ========================================== */
+        .trust-badge {
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .trust-badge i {
+            color: #2E7D32;
+        }
+
+        /* ==========================================
+           EMPTY CART STATE
+           ========================================== */
+        .empty-state {
+            background: var(--surface-white);
+            border: 1px dashed var(--border-soft);
+            border-radius: 20px;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .empty-state .icon-wrap {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: var(--eucalyptus-light);
+            color: var(--sage-warm);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ==========================================
+           CONTINUE SHOPPING ROW
+           ========================================== */
+        .cart-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .link-danger-soft {
+            color: #B94A48;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .link-danger-soft:hover {
+            text-decoration: underline;
+            color: #8E2F2C;
+        }
+
+        /* ==========================================
+           FOOTER
+           ========================================== */
+        footer {
+            background-color: var(--emerald-dark);
+            color: #C2D1C8;
+            border-top: 3px solid var(--gold-amber);
+            padding: 1.5rem 0;
+            text-align: center;
+            font-size: 0.82rem;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: var(--gold-amber);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ==========================================
+           RESPONSIVE
+           ========================================== */
+        @media (max-width: 767px) {
+            .cart-item-card .cart-thumb {
+                width: 70px;
+                height: 70px;
+            }
+
+            .summary-card {
+                position: static;
+            }
+
+            .cart-item-title {
+                font-size: 0.92rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ==========================================
+         TOP SWITCHER BAR
+         ========================================== -->
+    <div class="switcher-bar">
+        <div class="container d-flex align-items-center justify-content-between overflow-auto py-1 gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-white opacity-75 small fw-bold me-2 d-none d-sm-inline">
+                    <i class="fa-solid fa-layer-group text-warning me-1"></i> SCREEN:
+                </span>
+                <a href="auth.html" class="switcher-pill">
+                    <i class="fa-solid fa-lock"></i> 1. Auth / Login
+                </a>
+                <a href="store.html" class="switcher-pill">
+                    <i class="fa-solid fa-store"></i> 2. Main Store
+                </a>
+                <a href="add-product.html" class="switcher-pill">
+                    <i class="fa-solid fa-plus-circle"></i> 3. Add Product
+                </a>
+                <a href="cart.html" class="switcher-pill active">
+                    <i class="fa-solid fa-bag-shopping"></i> 4. Cart (2)
+                </a>
+                <a href="checkout.html" class="switcher-pill">
+                    <i class="fa-solid fa-credit-card"></i> 5. Checkout
+                </a>
+            </div>
+            <span class="text-warning small fw-semibold d-none d-lg-inline">
+                <i class="fa-solid fa-shield-halved me-1"></i> VERDANT & CO. Engine
+            </span>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         NAVBAR
+         ========================================== -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a href="store.html" class="navbar-brand-logo mb-0">
+                <i class="fa-solid fa-seedling text-warning me-2"></i>VERDANT <span>& Co.</span>
+            </a>
+            <div class="d-flex align-items-center gap-3 ms-auto">
+                <a href="store.html" class="nav-link-custom">
+                    <i class="fa-solid fa-store me-1"></i> Store
+                </a>
+                <a href="add-product.html" class="nav-link-custom">
+                    <i class="fa-solid fa-plus me-1"></i> Add Item
+                </a>
+                <a href="cart.html" class="btn btn-gold d-inline-flex align-items-center gap-2">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span>Cart (2)</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+
+        <!-- ==========================================
+             PAGE HEADER
+             ========================================== -->
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+            <h3 class="page-title mb-0">
+                <i class="fa-solid fa-bag-shopping text-warning"></i>
+                Shopping Cart
+                <span class="cart-count-badge">2 items</span>
+            </h3>
+            <a href="store.html" class="btn-outline-sage">
+                <i class="fa-solid fa-arrow-left me-1"></i> Continue Shopping
+            </a>
+        </div>
+
+        <!-- ==========================================
+             MAIN GRID
+             ========================================== -->
+        <div class="row g-4">
+
+            <!-- ==========================================
+                 LEFT: CART ITEMS
+                 ========================================== -->
+            <div class="col-lg-8">
+
+                <!-- Cart Item 1: Wild Lavender Soy Candle -->
+                <div class="cart-item-card">
+                    <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+                        <img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=200&q=80"
+                            alt="Wild Lavender Soy Candle" class="cart-thumb">
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-start justify-content-between gap-2 mb-1">
+                                <div>
+                                    <h6 class="cart-item-title mb-0">Wild Lavender Soy Candle</h6>
+                                    <div class="cart-item-cat">Aromatherapy · Handcrafted</div>
+                                </div>
+                                <span class="tag-chip d-none d-sm-inline-flex">
+                                    <i class="fa-solid fa-leaf"></i> Eco Packed
+                                </span>
+                            </div>
+                            <div class="cart-item-unit mb-2">$28.00 <span class="text-muted fw-normal small">each</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                                <div class="qty-stepper">
+                                    <button class="qty-btn" type="button" aria-label="Decrease quantity">−</button>
+                                    <span class="qty-value">1</span>
+                                    <button class="qty-btn" type="button" aria-label="Increase quantity">+</button>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <span class="cart-item-subtotal">$28.00</span>
+                                    <button class="remove-btn" type="button" title="Remove item">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Item 2: Artisan Earth Ceramic Vase -->
+                <div class="cart-item-card">
+                    <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+                        <img src="https://images.unsplash.com/photo-1612196808214-b7e239e5f6b7?auto=format&fit=crop&w=200&q=80"
+                            alt="Artisan Earth Ceramic Vase" class="cart-thumb">
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-start justify-content-between gap-2 mb-1">
+                                <div>
+                                    <h6 class="cart-item-title mb-0">Artisan Earth Ceramic Vase</h6>
+                                    <div class="cart-item-cat">Ceramics · Stoneware</div>
+                                </div>
+                                <span class="tag-chip d-none d-sm-inline-flex">
+                                    <i class="fa-solid fa-award"></i> Bestseller
+                                </span>
+                            </div>
+                            <div class="cart-item-unit mb-2">$52.00 <span class="text-muted fw-normal small">each</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                                <div class="qty-stepper">
+                                    <button class="qty-btn" type="button" aria-label="Decrease quantity">−</button>
+                                    <span class="qty-value">1</span>
+                                    <button class="qty-btn" type="button" aria-label="Increase quantity">+</button>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <span class="cart-item-subtotal">$52.00</span>
+                                    <button class="remove-btn" type="button" title="Remove item">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Item 3: Sage Organic Linen Blanket (with qty 2) -->
+                <div class="cart-item-card">
+                    <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+                        <img src="https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=200&q=80"
+                            alt="Sage Organic Linen Blanket" class="cart-thumb">
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-start justify-content-between gap-2 mb-1">
+                                <div>
+                                    <h6 class="cart-item-title mb-0">Sage Organic Linen Blanket</h6>
+                                    <div class="cart-item-cat">Textiles · 100% Organic</div>
+                                </div>
+                                <span class="tag-chip d-none d-sm-inline-flex">
+                                    <i class="fa-solid fa-percent"></i> 20% OFF
+                                </span>
+                            </div>
+                            <div class="cart-item-unit mb-2">$64.00 <span class="text-muted fw-normal small">each</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                                <div class="qty-stepper">
+                                    <button class="qty-btn" type="button" aria-label="Decrease quantity">−</button>
+                                    <span class="qty-value">2</span>
+                                    <button class="qty-btn" type="button" aria-label="Increase quantity">+</button>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <span class="cart-item-subtotal">$128.00</span>
+                                    <button class="remove-btn" type="button" title="Remove item">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart actions row -->
+                <div class="cart-actions">
+                    <a href="store.html" class="btn-outline-sage">
+                        <i class="fa-solid fa-arrow-left me-1"></i> Continue Shopping
+                    </a>
+                    <a href="cart.html" class="link-danger-soft">
+                        <i class="fa-solid fa-trash me-1"></i> Empty Cart
+                    </a>
+                </div>
+            </div>
+
+            <!-- ==========================================
+                 RIGHT: ORDER SUMMARY
+                 ========================================== -->
+            <div class="col-lg-4">
+                <div class="summary-card">
+                    <h5 class="summary-title">
+                        <i class="fa-solid fa-receipt me-2 text-warning"></i>Order Summary
+                    </h5>
+
+                    <!-- Promo code -->
+                    <div>
+                        <label for="promoInput" class="form-label-custom">Promo / Discount Code</label>
+                        <div class="promo-row">
+                            <input type="text" id="promoInput" class="form-control-custom" placeholder="e.g. VERDANT10">
+                            <button class="btn-sage" type="button">
+                                <i class="fa-solid fa-check"></i> Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr class="summary-divider">
+
+                    <!-- Line items -->
+                    <div class="summary-row">
+                        <span class="label">Subtotal (3 items)</span>
+                        <span class="value">$208.00</span>
+                    </div>
+                    <div class="summary-row discount">
+                        <span class="label">Promo Discount</span>
+                        <span class="value">−$20.80</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">Shipping</span>
+                        <span class="value" style="color:#2E7D32;">FREE</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">Estimated Tax (5%)</span>
+                        <span class="value">$9.36</span>
+                    </div>
+
+                    <hr class="summary-divider">
+
+                    <!-- Total -->
+                    <div class="summary-total">
+                        <span>Grand Total</span>
+                        <span class="amount">$196.56</span>
+                    </div>
+
+                    <!-- Checkout -->
+                    <a href="checkout.html" class="btn-gold w-100 text-center">
+                        Proceed to Checkout <i class="fa-solid fa-credit-card ms-2"></i>
+                    </a>
+
+                    <div class="trust-badge">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Guaranteed Safe &amp; Encrypted Checkout
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer>
+        <div class="container">
+            &copy; 2026 <strong>VERDANT &amp; CO.</strong> — Shopping Cart.
+            <a href="store.html" class="ms-2">Back to Store <i class="fa-solid fa-arrow-right ms-1"></i></a>
+        </div>
+    </footer>
+
+</body>
+
+</html>
