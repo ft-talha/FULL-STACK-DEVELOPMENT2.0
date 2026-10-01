@@ -67,7 +67,8 @@
 
 
 
-function func(a){return "hello from 1"}
-function func(a){return "hello from 2 "+a}
+// function func(a){return "hello from 1"}
+// function func(a){return "hello from 2 "+a}
 
-console.log(func());
+// console.log(func());// agar hum kuch bb define nai karain gay tu simple us variableki jagha undefine a ja ga
+
