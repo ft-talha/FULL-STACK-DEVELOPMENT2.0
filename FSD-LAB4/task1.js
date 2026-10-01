@@ -1,4 +1,3 @@
-// Part 1: Storing biography in primitive variables using 'var'
 var myName = "Ali Khan";
 var myAge = 20;
 var isStudent = true;
