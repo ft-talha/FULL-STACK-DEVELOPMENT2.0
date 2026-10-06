@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConnectFriend | Authentication Node</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#e6f5f5', 100: '#a8e0df', 200: '#7ed0ce',
+                            300: '#4db8b8', 400: '#2d8a8c', 500: '#1a5c5e',
+                            600: '#155050', 700: '#0f3d3e', 800: '#0a2c2d', 900: '#061e1f'
+                        },
+                        amber: {
+                            50: '#fef3c7', 400: '#f59e0b', 500: '#d97706', 700: '#b45309'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-6">
+
+    <!-- Main Login Card Container -->
+    <div
+        class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-12 glass-panel rounded-[32px] overflow-hidden animate-slide-up shadow-2xl">
+
+        <!-- Left Visual Branding Section -->
+        <div
+            class="md:col-span-5 glass-dark p-8 md:p-12 text-white flex flex-col justify-between relative overflow-hidden">
+            <div
+                class="absolute -right-12 -bottom-12 w-48 h-48 bg-teal-400/20 rounded-full blur-3xl pointer-events-none">
+            </div>
+
+            <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-10">
+                    <div
+                        class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-teal-500 to-teal-300 flex items-center justify-center font-extrabold text-xl text-white shadow-lg pulse-online">
+                        CF
+                    </div>
+                    <span
+                        class="font-extrabold text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-teal-100 to-teal-300">
+                        ConnectFriend
+                    </span>
+                </div>
+
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 text-teal-50 leading-tight">
+                    Social Network Node.
+                </h1>
+                <p class="text-xs sm:text-sm text-teal-200 leading-relaxed">
+                    Clean news distribution, authenticity matrix ratings, and private message protocols.
+                </p>
+            </div>
+
+            <div
+                class="relative z-10 mt-12 pt-6 border-t border-white/10 flex items-center justify-between text-[11px] text-teal-200">
+                <span>ConnectFriend Platform</span>
+                <span class="px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-white font-medium">v1.0
+                    2026</span>
+            </div>
+        </div>
+
+        <!-- Right Login Form Section -->
+        <div class="md:col-span-7 p-8 md:p-12 flex flex-col justify-center bg-white/40">
+            <div class="mb-6">
+                <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">Access Account</h2>
+                <p class="text-xs text-gray-500 mt-1">Select a demo profile or enter your credentials below.</p>
+            </div>
+
+            <!-- Error Banner -->
+            <div id="error-banner"
+                class="hidden mb-4 p-3.5 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-700 text-xs flex items-center gap-2.5 animate-slide-up">
+                <span class="text-base">⚠️</span>
+                <span id="error-message" class="font-medium">Invalid input.</span>
+            </div>
+
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1.5">Username or
+                        Email</label>
+                    <input type="text" id="username-input" placeholder="e.g. sara@connectfriend.org"
+                        class="w-full px-4 py-3.5 rounded-2xl border border-gray-200/80 text-sm focus:outline-none bg-white/80 font-medium text-gray-800 placeholder-gray-400">
+                </div>
+
+                <div>
+                    <label
+                        class="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1.5">Password</label>
+                    <input type="password" id="password-input" placeholder="••••••••"
+                        class="w-full px-4 py-3.5 rounded-2xl border border-gray-200/80 text-sm focus:outline-none bg-white/80 text-gray-800 placeholder-gray-400">
+                </div>
+
+                <button type="submit"
+                    class="w-full py-4 px-6 rounded-2xl btn-primary-gradient text-white text-xs font-bold uppercase tracking-wider transition-all">
+                    Authorize & Continue
+                </button>
+            </form>
+
+            <!-- Demo Quick Fill Section -->
+            <div class="mt-8 pt-6 border-t border-gray-200/60">
+                <label class="block text-[10px] font-bold uppercase tracking-widest text-teal-700 mb-3">
+                    ⚡ Quick Fill Demo Accounts
+                </label>
+                <div id="demo-users-container" class="flex flex-wrap gap-2">
+                    <!-- Dynamically populated from JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/login.js"></script>
+</body>
+
+</html>

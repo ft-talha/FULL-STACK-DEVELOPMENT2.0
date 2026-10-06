@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConnectFriend | Connections & Ratings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#e6f5f5', 100: '#a8e0df', 200: '#7ed0ce',
+                            300: '#4db8b8', 400: '#2d8a8c', 500: '#1a5c5e',
+                            600: '#155050', 700: '#0f3d3e', 800: '#0a2c2d', 900: '#061e1f'
+                        },
+                        amber: {
+                            50: '#fef3c7', 400: '#f59e0b', 500: '#d97706', 700: '#b45309'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="pb-16">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-40 glass-nav mb-8">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
+            <a href="home.html" class="flex items-center gap-3">
+                <div
+                    class="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-700 to-teal-400 flex items-center justify-center font-extrabold text-white shadow-md">
+                    CF
+                </div>
+                <span class="font-extrabold text-xl tracking-tight text-teal-900">ConnectFriend</span>
+            </a>
+
+            <div
+                class="flex items-center gap-1 sm:gap-1.5 bg-white/70 p-1.5 rounded-2xl border border-gray-200/80 text-xs shadow-sm">
+                <a href="home.html"
+                    class="px-3.5 py-2 rounded-xl font-semibold text-gray-600 hover:text-gray-900 transition-all">Home</a>
+                <a href="invitations.html"
+                    class="px-3.5 py-2 rounded-xl font-bold bg-teal-900 text-white shadow-sm">Invitations</a>
+                <a href="messages.html"
+                    class="px-3.5 py-2 rounded-xl font-semibold text-gray-600 hover:text-gray-900 transition-all">Messages</a>
+                <a href="profile.html"
+                    class="px-3.5 py-2 rounded-xl font-semibold text-gray-600 hover:text-gray-900 transition-all">Profile</a>
+            </div>
+
+            <button onclick="logoutUser()"
+                class="px-3.5 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 border border-red-200 transition-all">
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 space-y-8">
+
+        <!-- Pending Invitations Section -->
+        <section class="glass-panel rounded-[32px] p-6 md:p-8 animate-slide-up">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-lg font-extrabold text-gray-900">Pending Network Requests</h2>
+                    <p class="text-xs text-gray-500">Accept or decline incoming invitations.</p>
+                </div>
+                <span id="invitation-count-badge"
+                    class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-teal-50 text-teal-800 border border-teal-200">0
+                    Invites</span>
+            </div>
+
+            <div id="invitations-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Dynamically rendered -->
+            </div>
+        </section>
+
+        <!-- Suggested People (Send Invitation) -->
+        <section class="glass-panel rounded-[32px] p-6 md:p-8">
+            <div class="mb-6">
+                <h2 class="text-lg font-extrabold text-gray-900">Suggested People</h2>
+                <p class="text-xs text-gray-500">Send a connection invitation to these users.</p>
+            </div>
+
+            <div id="suggested-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Dynamically rendered -->
+            </div>
+        </section>
+
+        <!-- Friend Authenticity Rating Matrix Section -->
+        <section class="glass-panel rounded-[32px] p-6 md:p-8">
+            <div class="mb-6">
+                <h2 class="text-lg font-extrabold text-gray-900">Connected Network & Ratings</h2>
+                <p class="text-xs text-gray-500">Rate your connected friends on an authenticity matrix (1-5 Stars).</p>
+            </div>
+
+            <div id="friends-matrix-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Dynamically rendered -->
+            </div>
+        </section>
+    </main>
+
+    <div id="toast-notification"
+        class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-teal-800 text-white shadow-2xl transition-all duration-300 opacity-0 pointer-events-none translate-y-4 border border-teal-500/40">
+        <span id="toast-text" class="text-xs font-bold">Notification message</span>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/invitations.js"></script>
+</body>
+
+</html>
