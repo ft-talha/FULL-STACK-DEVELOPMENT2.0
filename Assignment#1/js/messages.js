@@ -1,99 +1,140 @@
-// ConnectFriend Messaging Controller - v1.0
+// Private Messaging with both Friends and Non-Friends & simulated automated responses[cite: 2]
 
-let activeFriendId = null;
+let currentUser = null;
+let activePartnerId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const friends = getData("cf_friends") || [];
-  if (friends.length > 0) activeFriendId = friends[0].id;
-  renderFriendsList();
-  renderActiveChatHeader();
-  renderMessages();
+  currentUser = requireAuth();
+  document.getElementById("navUserName").textContent = currentUser.name;
+
+  renderMembersList();
+
+  // Handle Enter key in message input
+  document.getElementById("messageInput").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") sendMessage();
+  });
 });
 
-function renderFriendsList() {
-  const friends = getData("cf_friends") || [];
-  const container = document.getElementById("chat-friends-list");
-  if (!container) return;
+// Render all platform members (Friends + Non-Friends)[cite: 2]
+function renderMembersList() {
+  const users = JSON.parse(localStorage.getItem("cf_users")) || [];
+  const friendsRel = JSON.parse(localStorage.getItem("cf_friends")) || [];
 
-  if (friends.length === 0) {
-    container.innerHTML = `<p class="text-xs text-gray-400 italic p-2">No friends to message.</p>`;
-    return;
-  }
+  const myFriendIds = friendsRel.filter(f => f.userId === currentUser.id).map(f => f.friendId);
+  const otherUsers = users.filter(u => u.id !== currentUser.id);
 
-  container.innerHTML = friends.map(friend => {
-    const active = friend.id === activeFriendId;
-    return `
-            <div onclick="selectChat(${friend.id})"
-                class="p-3 rounded-2xl cursor-pointer flex items-center gap-3 transition-all
-                ${active ? 'bg-teal-900 text-white shadow-md' : 'hover:bg-white/80 text-gray-800'}">
-                <img src="${friend.avatar}" class="w-10 h-10 rounded-xl object-cover" alt="">
-                <div>
-                    <h5 class="text-xs font-bold">${friend.name}</h5>
-                    <span class="text-[10px] font-semibold ${active ? 'text-teal-300' : 'text-gray-500'}">${friend.handle}</span>
-                </div>
-            </div>
-        `;
-  }).join("");
+  const list = document.getElementById("membersChatList");
+  list.innerHTML = "";
+
+  otherUsers.forEach(u => {
+    const isFriend = myFriendIds.includes(u.id);
+    const li = document.createElement("li");
+    li.className = `list-group-item list-group-item-action d-flex align-items-center justify-content-between cursor-pointer ${activePartnerId === u.id ? 'active' : ''}`;
+    li.onclick = () => selectChatPartner(u.id);
+    li.innerHTML = `
+      <div class="d-flex align-items-center">
+        <img src="${u.avatar}" class="avatar-img me-2" style="width:38px;height:38px;" alt="${u.name}">
+        <div>
+          <div class="fw-bold small ${activePartnerId === u.id ? 'text-white' : ''}">${u.name}</div>
+          <span class="small ${activePartnerId === u.id ? 'text-white-50' : 'text-muted'}" style="font-size:11px;">
+            ${isFriend ? '<span class="badge badge-olive">Friend</span>' : '<span class="badge badge-yellow">Non-Friend</span>'}[cite: 2]
+          </span>
+        </div>
+      </div>
+    `;
+    list.appendChild(li);
+  });
 }
 
-function selectChat(friendId) {
-  activeFriendId = friendId;
-  renderFriendsList();
-  renderActiveChatHeader();
-  renderMessages();
+// Select chat partner
+function selectChatPartner(partnerId) {
+  activePartnerId = partnerId;
+  const users = JSON.parse(localStorage.getItem("cf_users")) || [];
+  const partner = users.find(u => u.id === partnerId);
+
+  document.getElementById("activeChatPartnerName").textContent = partner ? partner.name : "Chat";
+  document.getElementById("messageInput").disabled = false;
+  document.getElementById("sendMsgBtn").disabled = false;
+
+  renderMembersList();
+  renderChatMessages();
 }
 
-function renderActiveChatHeader() {
-  const friends = getData("cf_friends") || [];
-  const friend = friends.find(f => f.id === activeFriendId);
-  if (!friend) return;
+// Render conversation thread
+function renderChatMessages() {
+  if (!activePartnerId) return;
 
-  document.getElementById("active-chat-avatar").src = friend.avatar;
-  document.getElementById("active-chat-name").innerText = friend.name;
-  document.getElementById("active-chat-status").innerText = friend.status || "Online";
-}
+  const messages = JSON.parse(localStorage.getItem("cf_messages")) || [];
+  const box = document.getElementById("chatBox");
+  box.innerHTML = "";
 
-function renderMessages() {
-  const data = getData("cf_messages") || {};
-  const container = document.getElementById("chat-messages-container");
-  if (!container) return;
-
-  const thread = data[activeFriendId] || [];
+  // Filter messages exchanged between currentUser and activePartnerId[cite: 2]
+  const thread = messages.filter(m => 
+    (m.senderId === currentUser.id && m.receiverId === activePartnerId) ||
+    (m.senderId === activePartnerId && m.receiverId === currentUser.id)
+  );
 
   if (thread.length === 0) {
-    container.innerHTML = `<div class="text-center text-xs text-gray-400 py-10">No messages yet. Say hi!</div>`;
+    box.innerHTML = `<div class="text-center text-muted my-auto small">No messages exchanged yet. Say hi!</div>`;
     return;
   }
 
-  container.innerHTML = thread.map(msg => {
-    const isMe = msg.sender === "You";
-    return `
-            <div class="flex ${isMe ? 'justify-end' : 'justify-start'}">
-                <div class="max-w-[75%] px-4 py-3 rounded-2xl text-xs font-medium shadow-sm
-                    ${isMe ? 'bg-teal-800 text-white rounded-br-none' : 'bg-white text-gray-800 rounded-bl-none border border-gray-200'}">
-                    <p>${msg.text}</p>
-                    <span class="block text-[9px] mt-1 ${isMe ? 'text-teal-300 text-right' : 'text-gray-400'}">${msg.time}</span>
-                </div>
-            </div>
-        `;
-  }).join("");
+  thread.forEach(msg => {
+    const isSentByMe = msg.senderId === currentUser.id;
+    const bubble = document.createElement("div");
+    bubble.className = isSentByMe ? "chat-bubble-sent" : "chat-bubble-received";
+    bubble.innerHTML = `
+      <div>${msg.text}</div>
+      <div class="text-end opacity-75 mt-1" style="font-size: 9px;">${formatTimeAgo(msg.timestamp)}</div>
+    `;
+    box.appendChild(bubble);
+  });
 
-  container.scrollTop = container.scrollHeight;
+  // Auto-scroll to bottom of conversation
+  box.scrollTop = box.scrollHeight;
 }
 
-function sendMessage(event) {
-  event.preventDefault();
-  const input = document.getElementById("message-input");
+// Send private message & simulate quick response[cite: 2]
+function sendMessage() {
+  const input = document.getElementById("messageInput");
   const text = input.value.trim();
-  if (!text || !activeFriendId) return;
 
-  const data = getData("cf_messages") || {};
-  if (!data[activeFriendId]) data[activeFriendId] = [];
+  if (!text || !activePartnerId) return;
 
-  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  data[activeFriendId].push({ sender: "You", text: text, time: time });
+  const messages = JSON.parse(localStorage.getItem("cf_messages")) || [];
+  const newMsg = {
+    id: "m_" + Date.now(),
+    senderId: currentUser.id,
+    receiverId: activePartnerId,
+    text: text,
+    timestamp: new Date().toISOString()
+  };
 
-  saveData("cf_messages", data);
+  messages.push(newMsg);
+  localStorage.setItem("cf_messages", JSON.stringify(messages));
   input.value = "";
-  renderMessages();
+
+  renderChatMessages();
+
+  // Simulated quick auto-response[cite: 2]
+  setTimeout(() => {
+    const responses = [
+      "Hey! Got your message on ConnecFriend![cite: 2]",
+      "Thanks for reaching out! Everything is looking good here.",
+      "Awesome! Talk to you soon!"
+    ];
+    const randomReply = responses[Math.floor(Math.random() * responses.length)];
+
+    const updatedMsgs = JSON.parse(localStorage.getItem("cf_messages")) || [];
+    updatedMsgs.push({
+      id: "m_auto_" + Date.now(),
+      senderId: activePartnerId,
+      receiverId: currentUser.id,
+      text: randomReply,
+      timestamp: new Date().toISOString()
+    });
+
+    localStorage.setItem("cf_messages", JSON.stringify(updatedMsgs));
+    renderChatMessages();
+  }, 1000);
 }

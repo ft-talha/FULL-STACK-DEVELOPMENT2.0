@@ -1,117 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConnectFriend | Connections & Ratings</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        teal: {
-                            50: '#e6f5f5', 100: '#a8e0df', 200: '#7ed0ce',
-                            300: '#4db8b8', 400: '#2d8a8c', 500: '#1a5c5e',
-                            600: '#155050', 700: '#0f3d3e', 800: '#0a2c2d', 900: '#061e1f'
-                        },
-                        amber: {
-                            50: '#fef3c7', 400: '#f59e0b', 500: '#d97706', 700: '#b45309'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConnecFriend - Invitations & Friend Ratings</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
+<body>
 
-<body class="pb-16">
-
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-40 glass-nav mb-8">
-        <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
-            <a href="home.html" class="flex items-center gap-3">
-                <div
-                    class="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-700 to-teal-400 flex items-center justify-center font-extrabold text-white shadow-md">
-                    CF
-                </div>
-                <span class="font-extrabold text-xl tracking-tight text-teal-900">ConnectFriend</span>
-            </a>
-
-            <div
-                class="flex items-center gap-1 sm:gap-1.5 bg-white/70 p-1.5 rounded-2xl border border-gray-200/80 text-xs shadow-sm">
-                <a href="home.html"
-                    class="px-3.5 py-2 rounded-xl font-semibold text-gray-600 hover:text-gray-900 transition-all">Home</a>
-                <a href="invitations.html"
-                    class="px-3.5 py-2 rounded-xl font-bold bg-teal-900 text-white shadow-sm">Invitations</a>
-                <a href="messages.html"
-                    class="px-3.5 py-2 rounded-xl font-semibold text-gray-600 hover:text-gray-900 transition-all">Messages</a>
-                <a href="profile.html"
-                    class="px-3.5 py-2 rounded-xl font-semibold text-gray-600 hover:text-gray-900 transition-all">Profile</a>
-            </div>
-
-            <button onclick="logoutUser()"
-                class="px-3.5 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 border border-red-200 transition-all">
-                Logout
-            </button>
+  <!-- Top Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="home.html"><i class="bi bi-share-fill me-2"></i>Connec<span>Friend</span></a>
+      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav me-auto ms-3 mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="home.html"><i class="bi bi-house-door me-1"></i>Home Feed</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html"><i class="bi bi-person me-1"></i>My Profile</a></li>
+          <li class="nav-item"><a class="nav-link active" href="invitations.html"><i class="bi bi-person-plus me-1"></i>Invitations & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="messages.html"><i class="bi bi-chat-text me-1"></i>Messages</a></li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <span id="navUserName" class="text-white fw-bold me-3"></span>
+          <button onclick="logout()" class="btn btn-yellow btn-sm"><i class="bi bi-box-arrow-right me-1"></i>Logout</button>
         </div>
-    </nav>
+      </div>
+    </div>
+  </nav>
 
-    <main class="max-w-5xl mx-auto px-4 space-y-8">
-
-        <!-- Pending Invitations Section -->
-        <section class="glass-panel rounded-[32px] p-6 md:p-8 animate-slide-up">
-            <div class="flex items-center justify-between mb-6">
-                <div>
-                    <h2 class="text-lg font-extrabold text-gray-900">Pending Network Requests</h2>
-                    <p class="text-xs text-gray-500">Accept or decline incoming invitations.</p>
-                </div>
-                <span id="invitation-count-badge"
-                    class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-teal-50 text-teal-800 border border-teal-200">0
-                    Invites</span>
-            </div>
-
-            <div id="invitations-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Dynamically rendered -->
-            </div>
-        </section>
-
-        <!-- Suggested People (Send Invitation) -->
-        <section class="glass-panel rounded-[32px] p-6 md:p-8">
-            <div class="mb-6">
-                <h2 class="text-lg font-extrabold text-gray-900">Suggested People</h2>
-                <p class="text-xs text-gray-500">Send a connection invitation to these users.</p>
-            </div>
-
-            <div id="suggested-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Dynamically rendered -->
-            </div>
-        </section>
-
-        <!-- Friend Authenticity Rating Matrix Section -->
-        <section class="glass-panel rounded-[32px] p-6 md:p-8">
-            <div class="mb-6">
-                <h2 class="text-lg font-extrabold text-gray-900">Connected Network & Ratings</h2>
-                <p class="text-xs text-gray-500">Rate your connected friends on an authenticity matrix (1-5 Stars).</p>
-            </div>
-
-            <div id="friends-matrix-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Dynamically rendered -->
-            </div>
-        </section>
-    </main>
-
-    <div id="toast-notification"
-        class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-teal-800 text-white shadow-2xl transition-all duration-300 opacity-0 pointer-events-none translate-y-4 border border-teal-500/40">
-        <span id="toast-text" class="text-xs font-bold">Notification message</span>
+  <div class="container my-4">
+    
+    <!-- Section 1: Send Friend Invitation (with Ignore List restriction)[cite: 1] -->
+    <div class="cf-card mb-4">
+      <div class="cf-card-header">
+        <i class="bi bi-person-add me-2"></i>Send Friend Request[cite: 1]
+      </div>
+      <div class="p-3">
+        <div id="inviteAlert" class="alert d-none py-2 mb-3" role="alert"></div>
+        <div class="row g-2 align-items-center">
+          <div class="col-md-8">
+            <select id="userToInviteSelect" class="form-select">
+              <option value="">-- Select a user to invite --</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <button onclick="sendFriendInvitation()" class="btn btn-olive w-100"><i class="bi bi-send-plus me-1"></i>Send Request</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <script src="js/common.js"></script>
-    <script src="js/invitations.js"></script>
-</body>
+    <div class="row">
+      <!-- Section 2: Pending Invitations Received[cite: 1] -->
+      <div class="col-md-6 mb-4">
+        <div class="cf-card h-100">
+          <div class="cf-card-header">
+            <i class="bi bi-envelope-paper me-2"></i>Pending Invitations[cite: 1]
+          </div>
+          <div class="p-3">
+            <ul id="pendingInvitesList" class="list-group list-group-flush">
+              <!-- Dynamically populated -->
+            </ul>
+          </div>
+        </div>
+      </div>
 
+      <!-- Section 3: Interactive Friend Rating Hub (Stupid, Cool, Trustworthy)[cite: 1] -->
+      <div class="col-md-6 mb-4">
+        <div class="cf-card h-100">
+          <div class="cf-card-header">
+            <i class="bi bi-star-fill me-2 text-warning"></i>Friend Rating Hub (Scale 1-3)[cite: 1]
+          </div>
+          <div class="p-3">
+            <p class="small text-muted mb-3">Rate your friends: 1 = Stupid 💩, 2 = Cool 😎, 3 = Trustworthy 🛡️[cite: 1]</p>
+            <div id="friendRatingList">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="container small">
+      &copy; 2026 ConnecFriend Network — Connection Requests & Friend Ratings Hub
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/invitations.js"></script>
+</body>
 </html>

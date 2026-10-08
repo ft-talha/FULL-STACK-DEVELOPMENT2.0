@@ -4,146 +4,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConnectFriend | Network Orbit</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        teal: {
-                            50: '#e6f5f5', 100: '#a8e0df', 200: '#7ed0ce',
-                            300: '#4db8b8', 400: '#2d8a8c', 500: '#1a5c5e',
-                            600: '#155050', 700: '#0f3d3e', 800: '#0a2c2d', 900: '#061e1f'
-                        },
-                        amber: {
-                            50: '#fef3c7', 400: '#f59e0b', 500: '#d97706', 700: '#b45309'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <title>ConnecFriend - Home Feed</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
 </head>
 
-<body class="pb-16">
+<body>
 
-    <!-- Top Glass Navigation -->
-    <nav class="sticky top-0 z-40 glass-nav mb-8">
-        <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
-            <a href="home.html" class="flex items-center gap-3">
-                <div
-                    class="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-700 to-teal-400 flex items-center justify-center font-extrabold text-white shadow-md">
-                    CF
-                </div>
-                <span class="font-extrabold text-xl tracking-tight text-teal-900">ConnectFriend</span>
-            </a>
-
-            <!-- Pill Nav Bar -->
-            <div
-                class="flex items-center gap-1 sm:gap-1.5 bg-white/70 p-1.5 rounded-2xl border border-gray-200/80 text-xs shadow-sm">
-                <a href="home.html" class="px-3.5 py-2 rounded-xl font-bold bg-teal-900 text-white shadow-sm">Home</a>
-                <a href="invitations.html"
-                    class="px-3.5 py-2 rounded-xl font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all flex items-center gap-1.5">
-                    Invitations <span id="nav-invite-badge"
-                        class="px-1.5 py-0.5 bg-teal-500 text-white text-[10px] rounded-full hidden">0</span>
-                </a>
-                <a href="messages.html"
-                    class="px-3.5 py-2 rounded-xl font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all">Messages</a>
-                <a href="profile.html"
-                    class="px-3.5 py-2 rounded-xl font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all">Profile</a>
-            </div>
-
-            <button onclick="logoutUser()"
-                class="px-3.5 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 border border-red-200 transition-all">
-                Logout
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html"><i class="bi bi-share-fill me-2"></i>Connec<span>Friend</span></a>
+            <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
             </button>
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav me-auto ms-3 mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="home.html"><i
+                                class="bi bi-house-door me-1"></i>Home Feed</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.html"><i class="bi bi-person me-1"></i>My
+                            Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="invitations.html"><i
+                                class="bi bi-person-plus me-1"></i>Invitations & Ratings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="messages.html"><i
+                                class="bi bi-chat-text me-1"></i>Messages</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span id="navUserName" class="text-white fw-bold me-3"></span>
+                    <button onclick="logout()" class="btn btn-yellow btn-sm"><i
+                            class="bi bi-box-arrow-right me-1"></i>Logout</button>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <!-- Content Layout -->
-    <main class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-12 gap-6">
+    <div class="container my-4">
+        <div class="row">
 
-        <!-- Left Column: User Profile Widget -->
-        <aside class="md:col-span-4 space-y-6">
-            <div class="glass-panel rounded-[28px] p-6 text-center interactive-card">
-                <div class="relative w-20 h-20 mx-auto mb-3">
-                    <img id="home-user-avatar"
-                        class="w-20 h-20 rounded-2xl object-cover border-2 border-teal-400 shadow-md" src=""
-                        alt="Avatar">
-                    <div
-                        class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white pulse-online">
+            <!-- Left Column: Order of Login Sidebar -->
+            <div class="col-lg-4 col-md-5 mb-4">
+                <div class="cf-card">
+                    <div class="cf-card-header">
+                        <i class="bi bi-clock-history me-2"></i>Friends (Sorted by Recent Login)
+                    </div>
+                    <div class="p-3">
+                        <p class="small text-muted mb-3">Friends ordered by their latest login time:</p>
+                        <ul id="friendsLoginList" class="list-group list-group-flush">
+                            <!-- Dynamically populated -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Share News & News Feed -->
+            <div class="col-lg-8 col-md-7">
+
+                <!-- Post Creation Widget -->
+                <div class="cf-card">
+                    <div class="cf-card-header">
+                        <i class="bi bi-pencil-square me-2"></i>Share News with Friends
+                    </div>
+                    <div class="p-3">
+                        <textarea id="postContent" class="form-control mb-3" rows="3"
+                            placeholder="What's happening? Share news with your network..."></textarea>
+
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                            <div>
+                                <label class="fw-bold small text-muted me-2">Share With:</label>
+                                <select id="shareAudienceSelect"
+                                    class="form-select form-select-sm d-inline-block w-auto"
+                                    onchange="toggleSpecificFriendsSelector()">
+                                    <option value="all">All Friends</option>
+                                    <option value="some">Specific Friends Only...</option>
+                                </select>
+                            </div>
+
+                            <button onclick="publishPost()" class="btn btn-olive"><i class="bi bi-send me-1"></i>Post
+                                News</button>
+                        </div>
+
+                        <!-- Specific Friends Selection Checklist (Hidden by default) -->
+                        <div id="specificFriendsBox" class="mt-3 p-2 border rounded bg-light d-none">
+                            <span class="small fw-bold d-block mb-1">Select Friends to Share With:</span>
+                            <div id="friendsCheckboxes" class="d-flex flex-wrap gap-3 small">
+                                <!-- Checkboxes populated by JS -->
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
-                <h3 id="home-user-name" class="font-extrabold text-base text-gray-900">User Name</h3>
-                <p id="home-user-role" class="text-xs text-teal-700 font-semibold mb-3">Role</p>
-                <p id="home-user-bio"
-                    class="text-xs text-gray-600 leading-relaxed bg-teal-50/60 p-3.5 rounded-2xl border border-teal-100">
-                    User Bio...</p>
-            </div>
+                <!-- News Feed Heading -->
+                <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-newspaper me-2"></i>News Feed</h5>
 
-            <!-- Pending Invitations Widget -->
-            <div class="glass-panel rounded-[28px] p-5">
-                <h4
-                    class="font-bold text-xs uppercase tracking-wider text-teal-800 mb-3 flex items-center justify-between">
-                    <span>Pending Invitations</span>
-                    <a href="invitations.html" class="text-teal-600 hover:underline normal-case font-semibold">View
-                        All</a>
-                </h4>
-                <div id="home-invites-preview" class="space-y-3">
-                    <!-- Dynamically populated -->
+                <!-- News Feed Container -->
+                <div id="newsFeedContainer">
+                    <!-- Dynamically populated posts -->
                 </div>
-            </div>
-        </aside>
 
-        <!-- Right Column: Create News & Feed -->
-        <section class="md:col-span-8 space-y-6">
-
-            <!-- Create News Card -->
-            <div class="glass-panel rounded-[28px] p-6 shadow-sm">
-                <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-3">Publish Network News</h3>
-
-                <form onsubmit="createPost(event)" class="space-y-3">
-                    <div>
-                        <textarea id="post-content" rows="3"
-                            placeholder="Broadcast breaking news, research updates, or announcements..."
-                            class="w-full p-4 rounded-2xl border border-gray-200/80 text-sm focus:outline-none bg-white/90 resize-none placeholder-gray-400"></textarea>
-                    </div>
-
-                    <div class="flex items-center justify-between flex-wrap gap-3">
-                        <select id="post-tag"
-                            class="px-3.5 py-2.5 rounded-xl text-xs font-semibold border border-gray-200 bg-white text-gray-700 focus:outline-none">
-                            <option value="General News">General News</option>
-                            <option value="Tech & Innovation">Tech & Innovation</option>
-                            <option value="Campus Event">Campus Event</option>
-                            <option value="Project Announcement">Project Announcement</option>
-                        </select>
-
-                        <button type="submit"
-                            class="px-6 py-2.5 rounded-xl btn-primary-gradient text-white text-xs font-bold uppercase tracking-wider">
-                            Publish Broadcast
-                        </button>
-                    </div>
-                </form>
             </div>
 
-            <!-- Dynamic Feed Container -->
-            <div id="posts-container" class="space-y-4">
-                <!-- Posts dynamically rendered -->
-            </div>
-        </section>
-    </main>
-
-    <!-- Notification Toast -->
-    <div id="toast-notification"
-        class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-teal-800 text-white shadow-2xl transition-all duration-300 opacity-0 pointer-events-none translate-y-4 border border-teal-500/40">
-        <span id="toast-text" class="text-xs font-bold">Notification message</span>
+        </div>
     </div>
 
+    <footer>
+        <div class="container small">
+            &copy; 2026 ConnecFriend Network — Distinctive Olive & Gold Dashboard Layout
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/common.js"></script>
     <script src="js/home.js"></script>
 </body>

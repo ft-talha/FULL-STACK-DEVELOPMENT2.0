@@ -1,157 +1,196 @@
-// ConnectFriend Invitations Controller - v1.0
+// Friend invitation handling, ignore list enforcement, and friend ratings logic[cite: 1]
+
+let currentUser = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  renderInvitations();
-  renderSuggested();
-  renderFriendMatrix();
+  currentUser = requireAuth();
+  document.getElementById("navUserName").textContent = currentUser.name;
+
+  populateInviteUserDropdown();
+  renderPendingInvitations();
+  renderFriendRatings();
 });
 
-function renderInvitations() {
-  const invites = getData("cf_invitations") || [];
-  const container = document.getElementById("invitations-grid");
-  const badge = document.getElementById("invitation-count-badge");
+// Populate dropdown for sending invites (excluding existing friends)
+function populateInviteUserDropdown() {
+  const users = JSON.parse(localStorage.getItem("cf_users")) || [];
+  const friendsRel = JSON.parse(localStorage.getItem("cf_friends")) || [];
 
-  if (badge) badge.innerText = `${invites.length} Invites`;
-  if (!container) return;
+  const myFriendIds = friendsRel.filter(f => f.userId === currentUser.id).map(f => f.friendId);
+  const availableUsers = users.filter(u => u.id !== currentUser.id && !myFriendIds.includes(u.id));
 
-  if (invites.length === 0) {
-    container.innerHTML = `<div class="col-span-full p-6 text-center text-xs text-gray-500">No pending invitations.</div>`;
+  const select = document.getElementById("userToInviteSelect");
+  select.innerHTML = `<option value="">-- Select a user to invite --</option>`;
+
+  availableUsers.forEach(u => {
+    select.innerHTML += `<option value="${u.id}">${u.name} (@${u.username})</option>`;
+  });
+}
+
+// Send Friend Invitation with IGNORE LIST check[cite: 1]
+function sendFriendInvitation() {
+  const targetId = document.getElementById("userToInviteSelect").value;
+  const alertBox = document.getElementById("inviteAlert");
+
+  if (!targetId) {
+    showAlert("Please select a user to invite.", "danger");
     return;
   }
 
-  container.innerHTML = invites.map(inv => `
-        <div class="glass-panel p-5 rounded-2xl flex items-center justify-between interactive-card">
-            <div class="flex items-center gap-3">
-                <img src="${inv.avatar}" class="w-12 h-12 rounded-2xl object-cover border border-teal-300" alt="">
-                <div>
-                    <h4 class="font-extrabold text-sm text-gray-900">${inv.name}</h4>
-                    <p class="text-[11px] text-teal-600 font-semibold">${inv.handle} • ${inv.mutual} mutuals</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <button onclick="acceptInvitation(${inv.id})"
-                    class="px-3.5 py-2 rounded-xl btn-primary-gradient text-white text-xs font-bold">Accept</button>
-                <button onclick="rejectInvitation(${inv.id})"
-                    class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 text-gray-600 hover:text-red-600 text-xs font-bold border border-gray-200">Decline</button>
-            </div>
-        </div>
-    `).join("");
-}
+  const users = JSON.parse(localStorage.getItem("cf_users")) || [];
+  const targetUser = users.find(u => u.id === targetId);
 
-// NEW: suggested users section
-function renderSuggested() {
-  const suggested = getData("cf_suggested") || [];
-  const container = document.getElementById("suggested-grid");
-  if (!container) return;
-
-  if (suggested.length === 0) {
-    container.innerHTML = `<div class="col-span-full p-6 text-center text-xs text-gray-500">No suggestions available.</div>`;
+  // CRITICAL REQUIREMENT CHECK: If target has sender in ignore list, request CANNOT be sent[cite: 1]
+  if (targetUser && targetUser.ignoreList && targetUser.ignoreList.includes(currentUser.id)) {
+    showAlert(`<strong>Request Blocked!</strong> ${targetUser.name} has placed you on their ignore list. Friend request cannot be sent.[cite: 1]`, "danger");
     return;
   }
 
-  container.innerHTML = suggested.map(user => `
-        <div class="glass-panel p-5 rounded-2xl flex items-center justify-between interactive-card">
-            <div class="flex items-center gap-3">
-                <img src="${user.avatar}" class="w-12 h-12 rounded-2xl object-cover border border-amber-300" alt="">
-                <div>
-                    <h4 class="font-extrabold text-sm text-gray-900">${user.name}</h4>
-                    <p class="text-[11px] text-amber-600 font-semibold">${user.handle} • ${user.mutual} mutuals</p>
-                </div>
-            </div>
-            <button onclick="sendInvitation(${user.id})"
-                class="px-3.5 py-2 rounded-xl btn-amber text-white text-xs font-bold">+ Send</button>
-        </div>
-    `).join("");
-}
+  const invitations = JSON.parse(localStorage.getItem("cf_invitations")) || [];
 
-function sendInvitation(userId) {
-  let suggested = getData("cf_suggested") || [];
-  let invites = getData("cf_invitations") || [];
+  // Check if invitation already exists
+  const existing = invitations.find(i => i.senderId === currentUser.id && i.receiverId === targetId && i.status === "pending");
+  if (existing) {
+    showAlert("Invitation is already pending for this user.", "warning");
+    return;
+  }
 
-  const user = suggested.find(u => u.id === userId);
-  if (!user) return;
-
-  // move to invitations
-  invites.push(user);
-  suggested = suggested.filter(u => u.id !== userId);
-
-  saveData("cf_invitations", invites);
-  saveData("cf_suggested", suggested);
-
-  renderInvitations();
-  renderSuggested();
-  showToast(`Invitation sent to ${user.name}!`);
-}
-
-function acceptInvitation(id) {
-  let invites = getData("cf_invitations") || [];
-  let friends = getData("cf_friends") || [];
-
-  const accepted = invites.find(i => i.id === id);
-  if (!accepted) return;
-
-  invites = invites.filter(i => i.id !== id);
-  friends.push({
-    id: accepted.id,
-    name: accepted.name,
-    handle: accepted.handle,
-    rating: 5,
-    status: "Active",
-    avatar: accepted.avatar
+  invitations.push({
+    id: "inv_" + Date.now(),
+    senderId: currentUser.id,
+    receiverId: targetId,
+    status: "pending"
   });
 
-  saveData("cf_invitations", invites);
-  saveData("cf_friends", friends);
-  renderInvitations();
-  renderFriendMatrix();
-  showToast(`Connected with ${accepted.name}!`);
+  localStorage.setItem("cf_invitations", JSON.stringify(invitations));
+  showAlert(`Friend request successfully sent to ${targetUser.name}!`, "success");
+  document.getElementById("userToInviteSelect").value = "";
 }
 
-function rejectInvitation(id) {
-  let invites = getData("cf_invitations") || [];
-  invites = invites.filter(i => i.id !== id);
-  saveData("cf_invitations", invites);
-  renderInvitations();
-  showToast("Invitation declined.", true);
+function showAlert(msg, type) {
+  const alertBox = document.getElementById("inviteAlert");
+  alertBox.className = `alert alert-${type} py-2 mb-3`;
+  alertBox.innerHTML = msg;
+  alertBox.classList.remove("d-none");
 }
 
-function renderFriendMatrix() {
-  const friends = getData("cf_friends") || [];
-  const container = document.getElementById("friends-matrix-grid");
-  if (!container) return;
+// Render Received Pending Invitations[cite: 1]
+function renderPendingInvitations() {
+  const invitations = JSON.parse(localStorage.getItem("cf_invitations")) || [];
+  const users = JSON.parse(localStorage.getItem("cf_users")) || [];
 
-  if (friends.length === 0) {
-    container.innerHTML = `<div class="col-span-full p-6 text-center text-xs text-gray-500">No connections yet.</div>`;
+  const myPending = invitations.filter(i => i.receiverId === currentUser.id && i.status === "pending");
+  const list = document.getElementById("pendingInvitesList");
+  list.innerHTML = "";
+
+  if (myPending.length === 0) {
+    list.innerHTML = `<li class="list-group-item text-muted small">No pending friend requests.</li>`;
     return;
   }
 
-  container.innerHTML = friends.map(friend => `
-        <div class="glass-panel p-5 rounded-2xl text-center space-y-3 interactive-card">
-            <img src="${friend.avatar}" class="w-16 h-16 rounded-2xl object-cover mx-auto border-2 border-teal-400" alt="">
-            <div>
-                <h4 class="font-extrabold text-sm text-gray-900">${friend.name}</h4>
-                <span class="text-xs font-semibold text-teal-600">${friend.handle}</span>
-            </div>
-            <div class="pt-2 border-t border-gray-100">
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Authenticity</label>
-                <div class="flex items-center justify-center gap-1">
-                    ${[1, 2, 3, 4, 5].map(star => `
-                        <button onclick="rateFriend(${friend.id},${star})"
-                            class="star-btn text-lg ${star <= friend.rating ? 'text-amber-400' : 'text-gray-300'}">★</button>
-                    `).join("")}
-                </div>
-            </div>
+  myPending.forEach(inv => {
+    const sender = users.find(u => u.id === inv.senderId);
+    if (!sender) return;
+
+    const li = document.createElement("li");
+    li.className = "list-group-item d-flex align-items-center justify-content-between px-0";
+    li.innerHTML = `
+      <div class="d-flex align-items-center">
+        <img src="${sender.avatar}" class="avatar-img me-2" alt="${sender.name}">
+        <div>
+          <div class="fw-bold small">${sender.name}</div>
+          <span class="text-muted style="font-size:11px;">@${sender.username}</span>
         </div>
-    `).join("");
+      </div>
+      <div>
+        <button onclick="respondInvitation('${inv.id}', 'accept')" class="btn btn-olive btn-sm me-1">Accept</button>
+        <button onclick="respondInvitation('${inv.id}', 'reject')" class="btn btn-outline-danger btn-sm">Reject</button>
+      </div>
+    `;
+    list.appendChild(li);
+  });
 }
 
-function rateFriend(friendId, rating) {
-  const friends = getData("cf_friends") || [];
-  const friend = friends.find(f => f.id === friendId);
-  if (friend) {
-    friend.rating = rating;
-    saveData("cf_friends", friends);
-    renderFriendMatrix();
-    showToast(`Updated ${friend.name}'s rating to ${rating} stars!`);
+// Respond to Friend Request (Accept / Reject)[cite: 1]
+function respondInvitation(invId, action) {
+  let invitations = JSON.parse(localStorage.getItem("cf_invitations")) || [];
+  const inv = invitations.find(i => i.id === invId);
+
+  if (!inv) return;
+
+  if (action === "accept") {
+    inv.status = "accepted";
+    // Add friend relationships in both directions[cite: 1]
+    const friendsRel = JSON.parse(localStorage.getItem("cf_friends")) || [];
+    friendsRel.push({ userId: inv.senderId, friendId: inv.receiverId });
+    friendsRel.push({ userId: inv.receiverId, friendId: inv.senderId });
+    localStorage.setItem("cf_friends", JSON.stringify(friendsRel));
+  } else {
+    inv.status = "rejected";
   }
+
+  localStorage.setItem("cf_invitations", JSON.stringify(invitations));
+  renderPendingInvitations();
+  populateInviteUserDropdown();
+  renderFriendRatings();
+}
+
+// Render Friend Rating Scale 1-3 (1=Stupid 💩, 2=Cool 😎, 3=Trustworthy 🛡️)[cite: 1]
+function renderFriendRatings() {
+  const users = JSON.parse(localStorage.getItem("cf_users")) || [];
+  const friendsRel = JSON.parse(localStorage.getItem("cf_friends")) || [];
+  const ratings = JSON.parse(localStorage.getItem("cf_ratings")) || [];
+
+  const myFriendIds = friendsRel.filter(f => f.userId === currentUser.id).map(f => f.friendId);
+  const myFriends = users.filter(u => myFriendIds.includes(u.id));
+
+  const container = document.getElementById("friendRatingList");
+  container.innerHTML = "";
+
+  if (myFriends.length === 0) {
+    container.innerHTML = `<p class="text-muted small">You have no friends to rate yet.</p>`;
+    return;
+  }
+
+  myFriends.forEach(friend => {
+    // Find current user's rating for this friend[cite: 1]
+    const ratingObj = ratings.find(r => r.raterId === currentUser.id && r.targetId === friend.id);
+    const currentRating = ratingObj ? ratingObj.rating : 0;
+
+    const div = document.createElement("div");
+    div.className = "d-flex align-items-center justify-content-between p-2 mb-2 bg-light rounded border";
+    div.innerHTML = `
+      <div class="d-flex align-items-center">
+        <img src="${friend.avatar}" class="avatar-img me-2" style="width:36px;height:36px;" alt="${friend.name}">
+        <span class="fw-bold small">${friend.name}</span>
+      </div>
+      <div class="btn-group btn-group-sm" role="group">
+        <button onclick="rateFriend('${friend.id}', 1)" class="btn ${currentRating === 1 ? 'btn-danger' : 'btn-outline-danger'}" title="1: Stupid">
+          💩 Stupid[cite: 1]
+        </button>
+        <button onclick="rateFriend('${friend.id}', 2)" class="btn ${currentRating === 2 ? 'btn-warning' : 'btn-outline-warning'}" title="2: Cool">
+          😎 Cool[cite: 1]
+        </button>
+        <button onclick="rateFriend('${friend.id}', 3)" class="btn ${currentRating === 3 ? 'btn-success' : 'btn-outline-success'}" title="3: Trustworthy">
+          🛡️ Trustworthy[cite: 1]
+        </button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// Rate Friend function[cite: 1]
+function rateFriend(targetId, ratingValue) {
+  let ratings = JSON.parse(localStorage.getItem("cf_ratings")) || [];
+  const index = ratings.findIndex(r => r.raterId === currentUser.id && r.targetId === targetId);
+
+  if (index >= 0) {
+    ratings[index].rating = ratingValue;
+  } else {
+    ratings.push({ raterId: currentUser.id, targetId: targetId, rating: ratingValue });
+  }
+
+  localStorage.setItem("cf_ratings", JSON.stringify(ratings));
+  renderFriendRatings();
 }

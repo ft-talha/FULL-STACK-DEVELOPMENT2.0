@@ -1,143 +1,115 @@
-// ConnectFriend Profile Controller - v1.0
+// Profile display, bio editing, and user friends list logic[cite: 1]
+
+let currentUser = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    renderProfile();
-    renderStats();
-    renderUserPosts();
-    renderSkillsAndLinks();
+  currentUser = requireAuth();
+  document.getElementById("navUserName").textContent = currentUser.name;
+
+  loadProfileInfo();
+  loadFriendsList();
+  loadMyPosts();
 });
 
-function renderProfile() {
-    const user = getData("cf_user") || {};
-    document.getElementById("profile-avatar").src =
-        user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
-    document.getElementById("profile-name").innerText = user.name || "Guest User";
-    document.getElementById("profile-handle").innerText = user.handle || "@guest";
-    document.getElementById("profile-role").innerText = user.role || "Student Developer";
-    document.getElementById("profile-bio").innerText = `"${user.bio || "No bio yet."}"`;
-
-    const aboutBio = document.getElementById("about-tab-bio");
-    if (aboutBio) aboutBio.innerText = user.bio || "No bio yet.";
+// Load Profile Header Details
+function loadProfileInfo() {
+  document.getElementById("profileName").textContent = currentUser.name;
+  document.getElementById("profileUsername").textContent = currentUser.username;
+  document.getElementById("profileAvatar").src = currentUser.avatar;
+  document.getElementById("profileBioDisplay").textContent = currentUser.bio || "No bio added yet.";
 }
 
-function renderStats() {
-    const posts = getData("cf_posts") || [];
-    const friends = getData("cf_friends") || [];
-    const user = getData("cf_user") || {};
+// Toggle Bio Edit Form
+function toggleBioEdit(show) {
+  const display = document.getElementById("profileBioDisplay");
+  const editBox = document.getElementById("bioEditBox");
+  const btn = document.getElementById("editBioBtn");
 
-    const myPosts = posts.filter(p => p.author === user.name || p.handle === user.handle).length;
-
-    let total = 0;
-    friends.forEach(f => total += (f.rating || 5));
-    const avg = friends.length > 0 ? (total / friends.length).toFixed(1) : "5.0";
-
-    document.getElementById("stat-posts").innerText = myPosts;
-    document.getElementById("stat-friends").innerText = friends.length;
-    document.getElementById("stat-avg-rating").innerText = `${avg} ★`;
+  if (show) {
+    document.getElementById("bioInput").value = currentUser.bio || "";
+    display.classList.add("d-none");
+    editBox.classList.remove("d-none");
+    btn.classList.add("d-none");
+  } else {
+    display.classList.remove("d-none");
+    editBox.classList.add("d-none");
+    btn.classList.remove("d-none");
+  }
 }
 
-function renderSkillsAndLinks() {
-    const user = getData("cf_user") || {};
-    const skillsContainer = document.getElementById("skills-container");
-    const githubLink = document.getElementById("link-github");
-    const linkedinLink = document.getElementById("link-linkedin");
+// Save Updated Bio to LocalStorage
+function saveBio() {
+  const newBio = document.getElementById("bioInput").value.trim();
+  currentUser.bio = newBio;
 
-    const skills = user.skills || ["JavaScript", "UI/UX", "Tailwind"];
+  // Update current session
+  localStorage.setItem("cf_current_user", JSON.stringify(currentUser));
 
-    if (skillsContainer) {
-        skillsContainer.innerHTML = skills.map(s => `
-            <span class="px-2.5 py-1 rounded-xl text-[10px] font-bold bg-teal-50 text-teal-800 border border-teal-200">
-                ${s.trim()}
-            </span>
-        `).join("");
-    }
+  // Update users array
+  const users = JSON.parse(localStorage.getItem("cf_users")) || [];
+  const updatedUsers = users.map(u => u.id === currentUser.id ? currentUser : u);
+  localStorage.setItem("cf_users", JSON.stringify(updatedUsers));
 
-    if (githubLink) githubLink.href = user.github ? `https://github.com/${user.github}` : "https://github.com";
-    if (linkedinLink) linkedinLink.href = user.linkedin ? `https://linkedin.com/in/${user.linkedin}` : "https://linkedin.com";
+  loadProfileInfo();
+  toggleBioEdit(false);
 }
 
-function renderUserPosts() {
-    const posts = getData("cf_posts") || [];
-    const user = getData("cf_user") || {};
-    const container = document.getElementById("user-posts-container");
-    if (!container) return;
+// Load List of Friends for current user[cite: 1]
+function loadFriendsList() {
+  const users = JSON.parse(localStorage.getItem("cf_users")) || [];
+  const friendsRel = JSON.parse(localStorage.getItem("cf_friends")) || [];
 
-    const myPosts = posts.filter(p => p.author === user.name || p.handle === user.handle);
+  const myFriendIds = friendsRel.filter(f => f.userId === currentUser.id).map(f => f.friendId);
+  const myFriends = users.filter(u => myFriendIds.includes(u.id));
 
-    if (myPosts.length === 0) {
-        container.innerHTML = `<div class="glass-panel p-8 text-center text-xs text-gray-500 rounded-[28px]">You haven't published any broadcasts yet.</div>`;
-        return;
-    }
+  const list = document.getElementById("profileFriendsList");
+  list.innerHTML = "";
 
-    container.innerHTML = myPosts.map(post => `
-        <article class="glass-panel rounded-[28px] p-5 space-y-3">
-            <div class="flex items-center justify-between">
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-teal-50 text-teal-800 border border-teal-200">
-                    ${post.tag}
-                </span>
-                <span class="text-[10px] text-gray-400 font-semibold">${post.timestamp}</span>
-            </div>
-            <p class="text-sm text-gray-800 leading-relaxed">${post.content}</p>
-            <div class="flex items-center gap-4 pt-2 border-t border-gray-100 text-xs font-bold text-gray-500">
-                <span>👍 ${post.likes}</span><span>👎 ${post.dislikes}</span>
-            </div>
-        </article>
-    `).join("");
+  if (myFriends.length === 0) {
+    list.innerHTML = `<li class="list-group-item text-muted">You have no friends in your network yet.</li>`;
+    return;
+  }
+
+  myFriends.forEach(f => {
+    const li = document.createElement("li");
+    li.className = "list-group-item d-flex align-items-center justify-content-between px-0";
+    li.innerHTML = `
+      <div class="d-flex align-items-center">
+        <img src="${f.avatar}" class="avatar-img me-2" alt="${f.name}">
+        <div>
+          <div class="fw-bold">${f.name}</div>
+          <span class="text-muted small">@${f.username}</span>
+        </div>
+      </div>
+      <a href="messages.html" class="btn btn-outline-olive btn-sm"><i class="bi bi-chat-dots me-1"></i>Message</a>
+    `;
+    list.appendChild(li);
+  });
 }
 
-function switchTab(tabName) {
-    const feed = document.getElementById("tab-content-feed");
-    const about = document.getElementById("tab-content-about");
-    const feedBtn = document.getElementById("tab-btn-feed");
-    const aboutBtn = document.getElementById("tab-btn-about");
+// Load current user's personal posts[cite: 1]
+function loadMyPosts() {
+  const posts = JSON.parse(localStorage.getItem("cf_posts")) || [];
+  const myPosts = posts.filter(p => p.authorId === currentUser.id);
 
-    if (tabName === "feed") {
-        feed.classList.remove("hidden");
-        about.classList.add("hidden");
-        feedBtn.className = "py-3.5 tab-active transition-all";
-        aboutBtn.className = "py-3.5 hover:text-gray-900 transition-all";
-    } else {
-        feed.classList.add("hidden");
-        about.classList.remove("hidden");
-        feedBtn.className = "py-3.5 hover:text-gray-900 transition-all";
-        aboutBtn.className = "py-3.5 tab-active transition-all";
-    }
-}
+  const container = document.getElementById("myPostsContainer");
+  container.innerHTML = "";
 
-function toggleEditModal() {
-    const modal = document.getElementById("edit-modal");
-    const user = getData("cf_user") || {};
+  if (myPosts.length === 0) {
+    container.innerHTML = `<p class="text-muted mb-0">You haven't posted any news updates yet.</p>`;
+    return;
+  }
 
-    if (modal.classList.contains("hidden")) {
-        document.getElementById("edit-name").value = user.name || "";
-        document.getElementById("edit-role").value = user.role || "";
-        document.getElementById("edit-bio").value = user.bio || "";
-        document.getElementById("edit-skills").value = (user.skills || []).join(", ");
-        document.getElementById("edit-github").value = user.github || "";
-        document.getElementById("edit-linkedin").value = user.linkedin || "";
-        modal.classList.remove("hidden");
-    } else {
-        modal.classList.add("hidden");
-    }
-}
-
-function saveProfileChanges(event) {
-    event.preventDefault();
-    const user = getData("cf_user") || {};
-
-    user.name = document.getElementById("edit-name").value.trim() || user.name;
-    user.role = document.getElementById("edit-role").value.trim() || user.role;
-    user.bio = document.getElementById("edit-bio").value.trim() || user.bio;
-
-    const rawSkills = document.getElementById("edit-skills").value.trim();
-    if (rawSkills) user.skills = rawSkills.split(",").map(s => s.trim());
-
-    user.github = document.getElementById("edit-github").value.trim();
-    user.linkedin = document.getElementById("edit-linkedin").value.trim();
-
-    saveData("cf_user", user);
-    toggleEditModal();
-    renderProfile();
-    renderSkillsAndLinks();
-    showToast("Profile updated!");
+  myPosts.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "p-3 mb-2 bg-light rounded border";
+    div.innerHTML = `
+      <p class="mb-2 fw-semibold">${p.content}</p>
+      <div class="small text-muted d-flex justify-content-between">
+        <span>${formatTimeAgo(p.timestamp)}</span>
+        <span>Likes: ${p.likes ? p.likes.length : 0} | Dislikes: ${p.dislikes ? p.dislikes.length : 0}[cite: 1, 2]</span>
+      </div>
+    `;
+    container.appendChild(div);
+  });
 }
