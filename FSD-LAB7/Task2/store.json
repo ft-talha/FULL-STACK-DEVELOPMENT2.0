@@ -1,0 +1,99 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Wild Lavender Soy Candle",
+      "price": 28,
+      "category": "Aromatherapy",
+      "image_url": "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80",
+      "stock": 20,
+      "description": ""
+    },
+    {
+      "id": 2,
+      "title": "Artisan Earth Ceramic Vase",
+      "price": 52,
+      "category": "Ceramics",
+      "image_url": "https://images.unsplash.com/photo-1612196808214-b7e239e5f6b7?auto=format&fit=crop&w=600&q=80",
+      "stock": 20,
+      "description": ""
+    },
+    {
+      "id": 3,
+      "title": "Sage Organic Linen Blanket",
+      "price": 64,
+      "category": "Textiles",
+      "image_url": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=600&q=80",
+      "stock": 20,
+      "description": ""
+    },
+    {
+      "id": 4,
+      "title": "Handcrafted Terracotta Pot",
+      "price": 38,
+      "category": "Botanicals",
+      "image_url": "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80",
+      "stock": 20,
+      "description": ""
+    },
+    {
+      "id": 5,
+      "title": "Rustic Stoneware Mug Set",
+      "price": 42,
+      "category": "Ceramics",
+      "image_url": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80",
+      "stock": 20,
+      "description": ""
+    },
+    {
+      "id": 6,
+      "title": "Eucalyptus Oil Diffuser",
+      "price": 46,
+      "category": "Aromatherapy",
+      "image_url": "https://images.unsplash.com/photo-1602928321679-560bb453f190?auto=format&fit=crop&w=600&q=80",
+      "stock": 20,
+      "description": ""
+    },
+    {
+      "id": 7,
+      "title": "Organic Cotton Throw Pillow",
+      "price": 34,
+      "category": "Textiles",
+      "image_url": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80",
+      "stock": 20,
+      "description": ""
+    },
+    {
+      "id": 8,
+      "title": "Monstera Deliciosa Plant",
+      "price": 29,
+      "category": "Botanicals",
+      "image_url": "https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?auto=format&fit=crop&w=600&q=80",
+      "stock": 20,
+      "description": ""
+    },
+    {
+      "title": "phone cas",
+      "category": "Textiles",
+      "price": 20,
+      "original_price": 30,
+      "stock": 20,
+      "image_url": "https://placehold.co/600x400?text=Product",
+      "description": "hello this is testing",
+      "id": 9
+    },
+    {
+      "title": "bowl",
+      "category": "Ceramics",
+      "price": 30,
+      "original_price": 65,
+      "stock": 10,
+      "image_url": "https://placehold.co/600x400?text=Product",
+      "description": "testing again",
+      "id": 10
+    }
+  ],
+  "users": [],
+  "orders": [],
+  "cart": []
+}
