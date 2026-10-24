@@ -182,7 +182,7 @@ function renderNewsFeed() {
             <h6 class="mb-0 fw-bold">${author.name}</h6>
             <span class="small text-muted" style="font-size: 11px;">
               <i class="bi bi-clock me-1"></i>Post: ${timeAgo} | 
-              <i class="bi bi-person-check me-1"></i>Author last logged in: <strong>${authorLastLoginAgo}</strong>[cite: 1]
+              <i class="bi bi-person-check me-1"></i>Author last logged in: <strong>${authorLastLoginAgo}</strong>
             </span>
           </div>
         </div>
@@ -193,10 +193,10 @@ function renderNewsFeed() {
 
       <div class="d-flex align-items-center gap-3 pt-2 border-top">
         <button onclick="handleLikeDislike('${post.id}', 'like')" class="btn btn-sm ${hasLiked ? 'btn-olive' : 'btn-outline-olive'}">
-          <i class="bi bi-hand-thumbs-up-fill me-1"></i> Like (${post.likes ? post.likes.length : 0})[cite: 1, 2]
+          <i class="bi bi-hand-thumbs-up-fill me-1"></i> Like (${post.likes ? post.likes.length : 0})
         </button>
         <button onclick="handleLikeDislike('${post.id}', 'dislike')" class="btn btn-sm ${hasDisliked ? 'btn-dark' : 'btn-outline-dark'}">
-          <i class="bi bi-hand-thumbs-down-fill me-1"></i> Dislike (${post.dislikes ? post.dislikes.length : 0})[cite: 1, 2]
+          <i class="bi bi-hand-thumbs-down-fill me-1"></i> Dislike (${post.dislikes ? post.dislikes.length : 0})
         </button>
       </div>
     `;
