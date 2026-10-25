@@ -1,18 +1,18 @@
-// let a = [1, 2, 3, 4, 5, 6, 7, 8];
+let a = [1, 2, 3, 4, 5, 6, 7, 8];
 
-// // 1. Changed index(7) to a.indexOf(7)
-// console.log(a, a.indexOf(7)); 
+// 1. Changed index(7) to a.indexOf(7)
+// console.log(a + "\n" + a.indexOf(7));
 
 // // 2. Added parentheses around (Mark, index)
-// a.forEach((Mark, index) => console.log(Mark, " ", index));
+a.forEach((Mark, index) => console.log(Mark, " ", index));
 
 // // Example 1: Filter numbers greater than 4
 // let greaterThanFour = a.filter((item) => item > 4);
-// console.log(greaterThanFour); 
+// console.log(greaterThanFour);
 // // Output: [5, 6, 7, 8] filter array ko chnage nai karta
 
-// let doubled = a.map((item) => item * 2);
-// console.log(doubled);// map b array ko chnage nai karta
+let doubled = a.map((item) => item * 2);
+console.log(doubled); // map b array ko chnage nai karta
 
 
 // // Example 1: Sum all numbers in the array
@@ -72,11 +72,11 @@
 // console.log(student.greet("Talha"));
 // // object destructuring is vip
 
-//spread and rest ops
-let marks = [23, 21, 34];
+// //spread and rest ops
+// let marks = [23, 21, 34];
 
-console.log(...marks); 
-// Output: 23 21 34 (Array hat gaya, values alag ho gayi)
+// console.log(...marks);
+// // Output: 23 21 34 (Array hat gaya, values alag ho gayi)
 
-let copyMarks = [...marks, 99]; 
-// Output: [23, 21, 34, 99] (Purani array khol kar naye mein daal di)
+// let copyMarks = [...marks, 99];
+// // Output: [23, 21, 34, 99] (Purani array khol kar naye mein daal di)

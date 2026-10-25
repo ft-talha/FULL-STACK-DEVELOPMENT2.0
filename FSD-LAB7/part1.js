@@ -5,40 +5,29 @@ let teachers = [];
 let attendance = [];
 let marks = [];
 
-const server = http.createServer((req, res) => {
+let nextStudentId = 1;
+let nextTeacherId = 1;
+let nextAttendanceId = 1;
+let nextMarksId = 1;
 
-    const url = new URL(req.url, 'http://localhost:3002');
+const server = http.createServer(async(req, res) => {
 
-    const reply = (code, body) => {
-        res.writeHead(code, {
-            'Content-Type': 'application/json; charset=utf-8'
+    const send = (status, body) => {
+        res.writeHead(status, {
+            'Content-Type': 'application/json'
         });
 
         res.end(JSON.stringify(body));
     };
 
+    const url = new URL(req.url, 'http://localhost:3004');
 
     if (req.method === 'GET' && url.pathname === '/') {
-        return reply(200, {
+        return send(200, {
             message: 'Welcome to Student Management System',
             modules: ['students', 'teachers', 'attendance', 'marks']
         });
     }
-
-
-    if (req.method === 'GET' && url.pathname === '/health') {
-        return reply(200, {
-            status: 'ok'
-        });
-    }
-
-
-    if (req.method === 'GET' && url.pathname === '/hello') {
-        return reply(200, {
-            message: `Hello ${url.searchParams.get('name') ?? 'Guest'}`
-        });
-    }
-
 
     let parts = url.pathname.split('/').filter(Boolean);
 
@@ -46,7 +35,6 @@ const server = http.createServer((req, res) => {
     let id = parts[1];
 
     let data;
-
 
     if (moduleName === 'students') {
         data = students;
@@ -57,16 +45,11 @@ const server = http.createServer((req, res) => {
     } else if (moduleName === 'marks') {
         data = marks;
     } else {
-        return reply(404, {
-            error: 'Route not found'
-        });
+        return send(404, { error: 'Not found' });
     }
 
-
     if (parts.length > 2) {
-        return reply(404, {
-            error: 'Route not found'
-        });
+        return send(404, { error: 'Not found' });
     }
 
 
@@ -74,138 +57,190 @@ const server = http.createServer((req, res) => {
 
         if (id) {
 
-            let item = data.find(x => String(x.id) === id);
+            let item = data.find(x => x.id == id);
 
             if (!item) {
-                return reply(404, {
-                    error: 'Record not found'
-                });
+                return send(404, { error: 'Record not found' });
             }
 
-            return reply(200, item);
+            return send(200, item);
         }
 
-        return reply(200, data);
+        return send(200, data);
     }
 
 
-    if (req.method === 'POST' || req.method === 'PUT') {
+    if (req.method === 'POST' && !id) {
 
-        if (req.method === 'POST' && id) {
-            return reply(404, {
-                error: 'Route not found'
-            });
-        }
+        try {
 
-        if (req.method === 'PUT' && !id) {
-            return reply(404, {
-                error: 'Route not found'
-            });
-        }
+            let raw = '';
 
-        let body = '';
+            for await (const chunk of req) {
 
-        req.on('data', chunk => {
-            body += chunk;
-        });
+                raw += chunk;
 
-        req.on('end', () => {
-
-            let item;
-
-            try {
-                item = JSON.parse(body);
-            } catch {
-                return reply(400, {
-                    error: 'Invalid JSON'
-                });
+                if (Buffer.byteLength(raw) > 65536) {
+                    return send(413, { error: 'Too large' });
+                }
             }
+
+            let item = JSON.parse(raw);
 
             if (!item || typeof item !== 'object' || Array.isArray(item)) {
-                return reply(400, {
-                    error: 'JSON object required'
-                });
+                return send(400, { error: 'Invalid data' });
             }
 
+            let newItem;
 
-            if (req.method === 'POST') {
+            if (moduleName === 'students') {
 
-                if (item.id == null) {
-                    return reply(400, {
-                        error: 'ID is required'
-                    });
+                if (typeof item.name !== 'string' || !item.name.trim()) {
+                    return send(400, { error: 'Student name required' });
                 }
 
-                let found = data.find(x => String(x.id) === String(item.id));
-
-                if (found) {
-                    return reply(400, {
-                        error: 'ID already exists'
-                    });
-                }
-
-                data.push(item);
-
-                return reply(201, {
-                    message: 'Record added successfully',
-                    data: item
-                });
-            }
-
-
-            if (req.method === 'PUT') {
-
-                let index = data.findIndex(x => String(x.id) === id);
-
-                if (index === -1) {
-                    return reply(404, {
-                        error: 'Record not found'
-                    });
-                }
-
-                data[index] = {
-                    ...data[index],
-                    ...item,
-                    id: data[index].id
+                newItem = {
+                    id: nextStudentId++,
+                    name: item.name.trim(),
+                    age: item.age,
+                    semester: item.semester
                 };
+            } else if (moduleName === 'teachers') {
 
-                return reply(200, {
-                    message: 'Record updated successfully',
-                    data: data[index]
-                });
+                if (typeof item.name !== 'string' || !item.name.trim()) {
+                    return send(400, { error: 'Teacher name required' });
+                }
+
+                newItem = {
+                    id: nextTeacherId++,
+                    name: item.name.trim(),
+                    subject: item.subject
+                };
+            } else if (moduleName === 'attendance') {
+
+                if (item.studentId == null || !item.date || !item.status) {
+                    return send(400, { error: 'Attendance details required' });
+                }
+
+                newItem = {
+                    id: nextAttendanceId++,
+                    studentId: item.studentId,
+                    date: item.date,
+                    status: item.status
+                };
+            } else if (moduleName === 'marks') {
+
+                if (item.studentId == null || !item.subject || item.marks == null) {
+                    return send(400, { error: 'Marks details required' });
+                }
+
+                newItem = {
+                    id: nextMarksId++,
+                    studentId: item.studentId,
+                    subject: item.subject,
+                    marks: item.marks
+                };
             }
 
-        });
+            data.push(newItem);
 
-        return;
+            return send(201, {
+                message: 'Record added successfully',
+                data: newItem
+            });
+
+        } catch (error) {
+
+            if (error instanceof SyntaxError) {
+                return send(400, { error: 'Invalid JSON' });
+            }
+
+            console.error(error);
+
+            return send(500, { error: 'Server error' });
+        }
+    }
+
+
+    if (req.method === 'PUT' && id) {
+
+        try {
+
+            let raw = '';
+
+            for await (const chunk of req) {
+
+                raw += chunk;
+
+                if (Buffer.byteLength(raw) > 65536) {
+                    return send(413, { error: 'Too large' });
+                }
+            }
+
+            let updatedData = JSON.parse(raw);
+
+            if (!updatedData || typeof updatedData !== 'object' || Array.isArray(updatedData)) {
+                return send(400, { error: 'Invalid data' });
+            }
+
+            let index = data.findIndex(x => x.id == id);
+
+            if (index === -1) {
+                return send(404, { error: 'Record not found' });
+            }
+
+            if (updatedData.name !== undefined) {
+                if (typeof updatedData.name !== 'string' || !updatedData.name.trim()) {
+                    return send(400, { error: 'Valid name required' });
+                }
+
+                updatedData.name = updatedData.name.trim();
+            }
+
+            data[index] = {
+                ...data[index],
+                ...updatedData,
+                id: data[index].id
+            };
+
+            return send(200, {
+                message: 'Record updated successfully',
+                data: data[index]
+            });
+
+        } catch (error) {
+
+            if (error instanceof SyntaxError) {
+                return send(400, { error: 'Invalid JSON' });
+            }
+
+            console.error(error);
+
+            return send(500, { error: 'Server error' });
+        }
     }
 
 
     if (req.method === 'DELETE' && id) {
 
-        let index = data.findIndex(x => String(x.id) === id);
+        let index = data.findIndex(x => x.id == id);
 
         if (index === -1) {
-            return reply(404, {
-                error: 'Record not found'
-            });
+            return send(404, { error: 'Record not found' });
         }
 
         data.splice(index, 1);
 
-        return reply(200, {
+        return send(200, {
             message: 'Record deleted successfully'
         });
     }
 
 
-    return reply(404, {
-        error: 'Route not found'
-    });
+    send(404, { error: 'Not found' });
 
 });
 
-
-server.listen(3002, () => {
-    console.log('Server running on http://localhost:3002');
+server.listen(3004, () => {
+    console.log('Memory API: http://localhost:3004');
 });

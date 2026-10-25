@@ -1,4 +1,3 @@
-
 // let names = ["talha", "iraj", 4, "irha"]
 // for (const name of names) {
 //     console.log(name);
@@ -46,10 +45,10 @@
 // }
 
 // console.log("===============================================");
-// function add(a,...numbers) {
+// function add(a, ...numbers) {
 //     let total = 0;
 
-//         console.log("my name is ",a);
+//     console.log("my name is ", a);
 //     for (const number of numbers) {
 //         total = total + number;
 //     }
@@ -57,7 +56,7 @@
 //     console.log(total);
 // }
 
-// add("talha",10, 20, 30, 40);
+// add("talha", 10, 20.0, 30, 40);
 
 
 // function func(){return "hello from 1"}
@@ -71,4 +70,3 @@
 // function func(a){return "hello from 2 "+a}
 
 // console.log(func());// agar hum kuch bb define nai karain gay tu simple us variableki jagha undefine a ja ga
-

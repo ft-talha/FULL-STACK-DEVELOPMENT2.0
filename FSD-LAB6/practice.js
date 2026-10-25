@@ -1,26 +1,25 @@
-// let myPromise = new Promise((resolve, reject) => {
+let myPromise = new Promise((resolve, reject) => {
 
-//     let marks = 80;
+    let marks = 80;
 
-//     if (marks >= 50) {
-//         resolve("Student passed");
-//     }
-//     else {
-//         reject("Student failed");
-//     }
+    if (marks >= 50) {
+        resolve("Student passed");
+    } else {
+        reject("Student failed");
+    }
 
-// });
+});
 
-// myPromise
-//     .then((result) => {
-//         console.log(result);
-//     })
-//     .catch((error) => {
-//         console.log(error);
-//     })
-//     .finally(() => {
-//         console.log("Result checked");
-//     });
+myPromise
+    .then((result) => {
+        console.log(result);
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+    .finally(() => {
+        console.log("Result checked");
+    });
 
 
 //============================================= settime out with promise=======================
